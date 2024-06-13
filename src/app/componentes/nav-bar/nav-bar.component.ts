@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
+import { AuthService } from '../../modulos/auth/servicios/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -24,13 +25,13 @@ export class NavBarComponent implements OnInit {
     { label: 'Turnos', icon: 'fa-solid fa-calendar-alt', routerLink: '/turnos' }
   ];
 
-  constructor(public router: Router) { }
+  constructor(public router: Router, public servAuth: AuthService) { }
 
   ngOnInit(): void {
   }
 
   Desloguear() {
-    //this.servAuth.LogOut();
+    this.servAuth.LogOut();
     this.router.navigateByUrl('/login');
   }
 }
