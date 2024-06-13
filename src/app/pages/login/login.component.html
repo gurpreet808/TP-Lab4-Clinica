@@ -1,1 +1,41 @@
-<p>login works!</p>
+<div id="login_container">
+    <div id="login_card_container">
+        <div id="login_header">
+            <!-- <img src="assets/logos/main_logo.jpg" alt="logo"> -->
+            <div id="login_title" class="text-900 text-3xl font-medium mb-3">Iniciar sesión</div>
+        </div>
+
+        <div id="login_form_container">
+            <div id="correo_container" name="login_form_input">
+                <label for="correo">Correo Electrónico</label>
+                <input id="correo" [(ngModel)]="correo" type="text" pInputText>
+            </div>
+
+            <div id="clave_container" name="login_form_input">
+                <label for="clave">Contraseña</label>
+                <p-password id="clave" [(ngModel)]="clave" inputStyleClass="widthfull" styleClass="widthfull"
+                    [feedback]="false" [toggleMask]="true"></p-password>
+                <a id="olvide_clave" (click)="olvideClave()">¿Olvidaste tu contraseña?</a>
+            </div>
+        </div>
+
+        <div id="login_footer">
+            <button pButton pRipple label="Iniciar sesión" icon="fas fa-sign-in-alt" class="p-button-primary"
+                (click)="login()"></button>
+
+            <button pButton pRipple label="Registrarse" icon="fa-solid fa-user-plus
+                            " class="p-button-secondary" (click)="Registrarse()"></button>
+
+            <div id="accesos_rapidos_container">
+                <div id="accesos_rapidos_title_container">Accesos rápidos</div>
+
+                <div id="accesos_rapidos_button_container">
+                    @for (user of ACCESO_RAPIDO; track $index) {
+                    <button pButton pRipple [label]="user.correo" class="p-button-help"
+                        (click)="AccesoRapido(user)"></button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
