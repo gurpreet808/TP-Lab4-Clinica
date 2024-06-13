@@ -1,1 +1,48 @@
-<p>bienvenida works!</p>
+<div id="home_container">
+
+    <div id="home_subcontainer">
+        <div id="home_header">
+            <img src="assets/logos/main_logo.png" alt="Clínica Online" height="100">
+            <div id="home_title_text">Clínica Online</div>
+        </div>
+
+        @if (servAuth.usuarioActual.value) {
+        <h2>
+            ¡Te damos la bienvenida {{this.servAuth.usuarioActual.value.tipo}}
+            {{this.servAuth.usuarioActual.value.nombre}}!
+        </h2>
+        }
+
+        <p>
+            Clínica Online es la forma más fácil y rápida de sacar turnos con especialistas en salud.
+            Con Clínica Online, puedes encontrar el especialista que necesitas, programar tu cita, todo desde tu
+            teléfono o computadora.
+        </p>
+
+        @if (servAuth.logueado == true && servAuth.emailVerified == false) {
+        <div id="not_verified_container">
+            <p>
+                Necesitas validar tu email, por favor revisa tu casilla de correo. Si no te llegó el mail, puedes
+                reenviarlo desde el siguiente botón.
+            </p>
+
+            <div>
+                <p-button [label]="resendLabel" [disabled]="cooldownResend > 0" severity="primary"
+                    (click)="EnviarMailVerificacion()"></p-button>
+            </div>
+        </div>
+        }
+
+        @if (servAuth.logueado == false && servAuth.firstRun == false) {
+        <div id="botonera_auth">
+            <div>
+                <p-button label="Iniciar sesión" severity="primary" routerLink="/login"></p-button>
+            </div>
+            <div>
+                <p-button label="Registrarse" severity="secondary" routerLink="/registrarse"></p-button>
+            </div>
+        </div>
+        }
+    </div>
+
+</div>
