@@ -1,14 +1,15 @@
+<!-- <p-confirmDialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" acceptLabel="Aceptar"
+  rejectLabel="Cancelar" acceptButtonStyleClass="p-button-success" rejectButtonStyleClass="p-button-danger">
+</p-confirmDialog>
+<p-toast [style]="{marginTop: '70px', 'z-index': 9300}" [preventOpenDuplicates]="true"></p-toast>
+
+<app-spinner></app-spinner> -->
+
 <div id="app_container">
-  <p-confirmDialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '50vw'}" acceptLabel="Aceptar"
-    rejectLabel="Cancelar" acceptButtonStyleClass="p-button-success" rejectButtonStyleClass="p-button-danger">
-  </p-confirmDialog>
-  <p-toast [style]="{marginTop: '70px', 'z-index': 9300}" [preventOpenDuplicates]="true"></p-toast>
-
-  <app-spinner></app-spinner>
-
   <div id="navbar_container">
     <app-nav-bar></app-nav-bar>
   </div>
+
 
   <div id="main_container" #main_container>
     <router-outlet></router-outlet>
