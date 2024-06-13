@@ -1,1 +1,54 @@
-<p>obras-sociales works!</p>
+<div id="obras_sociales_table_container">
+    <p-table #dt_obras_sociales [value]="servObraSocial.obras_sociales.value" dataKey="id" [rowHover]="true" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
+
+        <ng-template pTemplate="caption">
+            <div id="obras_sociales_table_header">
+                <div id="obras_sociales_table_title">
+                    Obras Sociales
+                </div>
+
+                <div id="nueva_obra_social_container">
+                    <input type="text" pInputText placeholder="Nueva obra social" [(ngModel)]="obra_social">
+                    <p-button icon="fa fa-plus" label="Agregar" (click)="AgregarObraSocial()" />
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="nombre">
+                    <div>
+                        Nombre
+                        <p-sortIcon field="nombre" />
+                    </div>
+                </th>
+                <th>
+                    <div>
+                        Acciones
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-obra_social>
+            <tr>
+                <td>
+                    <span class="p-column-title">Nombre</span>
+                    {{ obra_social.nombre }}
+                </td>
+                <td>
+                    <button pButton pRipple type="button" icon="fa fa-trash" label="Borrar"
+                        (click)="BorrarObraSocial(obra_social.id)" class="p-button-rounded p-button-danger"></button>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8">No hay obras_sociales.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
