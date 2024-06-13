@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class SpinnerService {
   loading: boolean = false;
-  url_logo: string = "assets/logos/goku-dance.gif";
+  url_logo: string = "assets/logos/main_logo.png";
   messages: { [key: string]: string } = {};
 
   constructor() {
