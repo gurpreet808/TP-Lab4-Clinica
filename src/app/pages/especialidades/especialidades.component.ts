@@ -1,12 +1,96 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { EspecialidadService } from '../../servicios/especialidad.service';
+import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { Especialidad } from '../../clases/especialidad';
 
 @Component({
   selector: 'app-especialidades',
   standalone: true,
-  imports: [],
+  imports: [
+    FormsModule,
+    TableModule,
+    ButtonModule,
+    InputTextModule,
+  ],
   templateUrl: './especialidades.component.html',
   styleUrl: './especialidades.component.scss'
 })
-export class EspecialidadesComponent {
+export class EspecialidadesComponent implements OnInit {
+
+  especialidad: string = '';
+
+  constructor(public servEspecialidad: EspecialidadService, public messageService: MessageService) {
+
+  }
+
+  ngOnInit(): void {
+  }
+
+  AgregarEspecialidad() {
+    let _especialidad = {
+      id: 'new',
+      nombre: this.especialidad,
+      valida: true
+    }
+
+    this.servEspecialidad.Nuevo(_especialidad).then(
+      (rdo) => {
+        //console.log('Especialidad agregada', rdo);
+        this.messageService.add({ severity: 'success', life: 10000, summary: 'Bien', detail: 'Se agregó la especialidad' });
+        this.especialidad = '';
+      }
+    ).catch(
+      (error: any) => {
+        console.log(error);
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+      }
+    );
+  }
+
+  ModificarEspecialidad(_especialidad: Especialidad) {
+    this.servEspecialidad.Modificar(_especialidad).then(
+      (rdo) => {
+        //console.log('Especialidad modificada', rdo);
+        this.messageService.add({ severity: 'success', life: 10000, summary: 'Bien', detail: 'Se modificó la especialidad' });
+      }
+    ).catch(
+      (error: any) => {
+        console.log(error);
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+      }
+    );
+  }
+
+  BorrarEspecialidad(id: string) {
+    this.servEspecialidad.Borrar(id).then(
+      (rdo) => {
+        console.log('Especialidad borrada', rdo);
+        this.messageService.add({ severity: 'success', life: 10000, summary: 'Bien', detail: 'Se borró la especialidad' });
+      }
+    ).catch(
+      (error: any) => {
+        console.log(error);
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+      }
+    );
+  }
+
+  ToogleValidarEspecialidad(_especialidad: Especialidad) {
+    this.servEspecialidad.ToogleValidarEspecialidad(_especialidad).then(
+      (rdo) => {
+        console.log('Especialidad cambio validación', rdo);
+        this.messageService.add({ severity: 'success', life: 10000, summary: 'Bien', detail: 'Se cambió la validación de la especialidad' });
+      }
+    ).catch(
+      (error: any) => {
+        console.log(error);
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+      }
+    );
+  }
 
 }
