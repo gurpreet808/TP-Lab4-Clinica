@@ -1,0 +1,22 @@
+#main_workspace {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+div#title {
+    font-size: 5rem;
+    font-weight: bold;
+    //color: #f44336;
+}
+
+div#subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+div#image_container>img {
+    max-width: 90%;
+    //max-width: fit-content;
+}
