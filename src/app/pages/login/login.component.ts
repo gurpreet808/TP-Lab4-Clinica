@@ -25,16 +25,12 @@ export class LoginComponent implements OnInit {
   correo: string = '';
   clave: string = '';
 
-  readonly ACCESO_RAPIDO: { correo: string, clave: string }[] = [
-    {
-      correo: "admin@admin.com",
-      clave: "admin.1234"
-    },
-    {
-      correo: "empleado@empleado.com",
-      clave: "empleado.1234"
-    }
-  ];
+  readonly ACCESO_RAPIDO = [
+    { nombre: "Esteban Quito", mail: "esteban@cj.MintEmail.com", tipo: "paciente", clave: "1q2w3e4r5t", foto: "" },
+    { nombre: "Elsa Pallo", mail: "elsa@cj.MintEmail.com", tipo: "paciente", clave: "1q2w3e4r5t", foto: "" },
+    { nombre: "Elvis Tek", mail: "elvis@cj.MintEmail.com", tipo: "especialista", clave: "1q2w3e4r5t" },
+    { nombre: "Armando Paredes", mail: "admin@cj.MintEmail.com", tipo: "admin", clave: "1q2w3e4r5t", foto: "" },
+  ]
 
   constructor(public router: Router, public servAuth: AuthService, public messageService: MessageService) {
     /* //Luego se reemplaza por guard
@@ -82,8 +78,8 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  AccesoRapido(usuario: { correo: string, clave: string }) {
-    this.correo = usuario.correo;
+  AccesoRapido(usuario: any) {
+    this.correo = usuario.mail;
     this.clave = usuario.clave;
   }
 

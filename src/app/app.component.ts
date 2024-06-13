@@ -5,6 +5,7 @@ import { SpinnerComponent } from './modulos/spinner/componentes/spinner/spinner.
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { AuthService } from './modulos/auth/servicios/auth.service';
+import { SpinnerService } from './modulos/spinner/servicios/spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +20,18 @@ import { AuthService } from './modulos/auth/servicios/auth.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'TPLab4Clinica';
 
-  constructor(public servAuth: AuthService) { }
+  constructor(public servAuth: AuthService, public servSpinner: SpinnerService) {
+    this.servSpinner.showWithMessage("app-init", "Cargando...");
+  }
 
   ngOnInit(): void {
+    this.servAuth.IsLoggedIn().then(
+      (logueado: boolean) => {
+        this.servSpinner.hideWithMessage("app-init");
+      }
+    );
   }
 }
