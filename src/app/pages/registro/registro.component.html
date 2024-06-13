@@ -1,1 +1,36 @@
-<p>registro works!</p>
+<div id="registrarse_container">
+    <div id="registrarse_card_container" name="form_card">
+        <div id="registrarse_title_container" name="form_card_title">
+            @if (tipo_usuario) {
+            <i class="fa-solid fa-arrow-left"></i>
+            }
+
+            <div id="registrarse_title">
+                Registrarse
+
+                <button pButton class="p-button-secondary" routerLink="/login">Ya tengo una cuenta</button>
+            </div>
+        </div>
+
+        <div id="registrarse_content">
+            @if (!tipo_usuario) {
+            <div id="select_tipousuario_container">
+                <div id="boton_registrar_paciente" name="form_card" (click)='SeleccionarTipo("paciente")'>
+                    <img src="assets/logos/paciente.jfif" height="100" class="mr-2" />
+                    Paciente
+                </div>
+                <div id="boton_registrar_especialista" name="form_card" (click)='SeleccionarTipo("especialista")'>
+                    <img src="assets/logos/especialista.jfif" height="100" class="mr-2" />
+                    Especialista
+                </div>
+            </div>
+            }
+
+            @if (tipo_usuario) {
+            <div id="registrarse_form_container">
+                <!-- <app-alta-usuario [tipo_usuario]="tipo_usuario"></app-alta-usuario> -->
+            </div>
+            }
+        </div>
+    </div>
+</div>
