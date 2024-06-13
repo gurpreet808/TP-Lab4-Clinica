@@ -22,7 +22,10 @@ export class NavBarComponent implements OnInit {
     { label: 'Usuarios', icon: 'fa-solid fa-user', routerLink: '/usuarios' },
     { label: 'Obras Sociales', icon: 'fa-solid fa-clinic-medical', routerLink: '/obras-sociales' },
     { label: 'Especialidades', icon: 'fa-solid fa-stethoscope', routerLink: '/especialidades' },
-    { label: 'Turnos', icon: 'fa-solid fa-calendar-alt', routerLink: '/turnos' }
+    { label: 'Turnos', icon: 'fa-solid fa-calendar-alt', routerLink: '/turnos' },
+    { label: 'Login', icon: 'fa-solid fa-calendar-alt', routerLink: '/login' },
+    { label: 'Registro', icon: 'fa-solid fa-calendar-alt', routerLink: '/registro' },
+
   ];
 
   constructor(public router: Router, public servAuth: AuthService) { }
@@ -32,6 +35,10 @@ export class NavBarComponent implements OnInit {
 
   Desloguear() {
     this.servAuth.LogOut();
+    this.router.navigateByUrl('/login');
+  }
+
+  IrLogin() {
     this.router.navigateByUrl('/login');
   }
 }
