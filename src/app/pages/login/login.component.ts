@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -16,7 +16,8 @@ import { HttpErrorResponse } from '@angular/common/http';
     FormsModule,
     InputTextModule,
     ButtonModule,
-    PasswordModule
+    PasswordModule,
+    RouterModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -33,15 +34,6 @@ export class LoginComponent implements OnInit {
   ]
 
   constructor(public router: Router, public servAuth: AuthService, public messageService: MessageService) {
-    /* //Luego se reemplaza por guard
-    this.servAuth.IsLoggedIn().then(
-      (rta: any) => {
-        //console.log(rta);
-        if (rta) {
-          this.router.navigate(['/']);
-        }
-      }
-    ); */
   }
 
   ngOnInit(): void {
@@ -81,10 +73,6 @@ export class LoginComponent implements OnInit {
   AccesoRapido(usuario: any) {
     this.correo = usuario.mail;
     this.clave = usuario.clave;
-  }
-
-  Registrarse() {
-    this.router.navigate(['/registrarse']);
   }
 
 }
