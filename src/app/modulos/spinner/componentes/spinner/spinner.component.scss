@@ -14,7 +14,7 @@ div#spinner_container {
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: #172f19ea;
+    background-color: #17212fea;
     -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
 }
@@ -55,7 +55,7 @@ div#loading {
     border-radius: 50%;
     border: 3px solid rgba(255, 255, 255, 0.2);
     /* border-top-color: #fff; */
-    border-top-color: rgb(216, 94, 24);
+    border-top-color: #6ca857;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
     position: absolute;
