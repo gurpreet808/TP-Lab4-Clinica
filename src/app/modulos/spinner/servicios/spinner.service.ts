@@ -4,6 +4,36 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SpinnerService {
+  loading: boolean = false;
+  url_logo: string = "assets/logos/goku-dance.gif";
+  messages: { [key: string]: string } = {};
 
-  constructor() { }
+  constructor() {
+  }
+
+  show() {
+    this.loading = true;
+  }
+
+  hide() {
+    this.loading = false;
+  }
+
+  showWithMessage(key: string, message: string) {
+    this.messages[key] = message;
+    this.show();
+  }
+
+  hideWithMessage(key: string) {
+    if (!(key in this.messages)) {
+      console.error(`No se encuentra la key: "${key}".`);
+      return;
+    }
+    delete this.messages[key];
+    this.hide();
+  }
+
+  get getMessagesArray(): string[] {
+    return Object.values(this.messages) || [];
+  }
 }

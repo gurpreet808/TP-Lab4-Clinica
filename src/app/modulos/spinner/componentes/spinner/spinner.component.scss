@@ -1,0 +1,74 @@
+div#spinner_container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 9999 !important;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #172f19ea;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+}
+
+div#messages {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+div#spinner_image_container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: 52%;
+    left: 49%;
+    /* Debería ser 50% pero se desplaza un poco por el gif mal recortado*/
+    transform: translate(-50%, -50%);
+}
+
+img#spinner_image {
+    max-width: 100%;
+    max-height: 100%;
+    //background-color: aqua;
+}
+
+div#loading {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    /* border-top-color: #fff; */
+    border-top-color: rgb(216, 94, 24);
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+    position: absolute;
+}
+
+@keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}

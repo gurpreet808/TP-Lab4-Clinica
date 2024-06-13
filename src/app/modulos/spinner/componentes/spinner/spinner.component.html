@@ -1,1 +1,22 @@
-<p>spinner works!</p>
+@if (servSpinner.loading) {
+<div id="spinner_container" class="fadein">
+    <div id="loading"></div>
+
+    <div id="spinner_image_container">
+        <img id="spinner_image" [src]="servSpinner.url_logo" alt="" />
+        <!-- <canvas id="spinner_canvas" width="150" height="150"></canvas> -->
+    </div>
+
+    @if (servSpinner.messages != {}) {
+    <div id="messages">
+        @for (message of servSpinner.getMessagesArray; track $index) {
+        <div>
+            <div class="spinner_message">
+                {{message}}
+            </div>
+        </div>
+        }
+    </div>
+    }
+</div>
+}
