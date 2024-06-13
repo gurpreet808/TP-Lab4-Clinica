@@ -6,9 +6,11 @@
 <app-spinner></app-spinner>
 
 <div id="app_container">
+  @if (servAuth.logueado) {
   <div id="navbar_container">
     <app-nav-bar></app-nav-bar>
   </div>
+  }
 
   <div id="main_container" #main_container>
     <router-outlet></router-outlet>

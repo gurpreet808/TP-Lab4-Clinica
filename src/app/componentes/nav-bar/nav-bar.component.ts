@@ -4,6 +4,7 @@ import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { AuthService } from '../../modulos/auth/servicios/auth.service';
+import { Usuario } from '../../modulos/auth/clases/usuario';
 
 @Component({
   selector: 'app-nav-bar',
@@ -23,12 +24,17 @@ export class NavBarComponent implements OnInit {
     { label: 'Obras Sociales', icon: 'fa-solid fa-clinic-medical', routerLink: '/obras-sociales' },
     { label: 'Especialidades', icon: 'fa-solid fa-stethoscope', routerLink: '/especialidades' },
     { label: 'Turnos', icon: 'fa-solid fa-calendar-alt', routerLink: '/turnos' },
-    { label: 'Login', icon: 'fa-solid fa-calendar-alt', routerLink: '/login' },
-    { label: 'Registro', icon: 'fa-solid fa-calendar-alt', routerLink: '/registro' },
-
   ];
 
-  constructor(public router: Router, public servAuth: AuthService) { }
+  constructor(public router: Router, public servAuth: AuthService) {
+    this.servAuth.usuarioActual.subscribe(
+      (usuario: Usuario | undefined) => {
+        if (usuario) {
+          //Logica para las opciones del navbar
+        }
+      }
+    );
+  }
 
   ngOnInit(): void {
   }
@@ -38,7 +44,4 @@ export class NavBarComponent implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
-  IrLogin() {
-    this.router.navigateByUrl('/login');
-  }
 }

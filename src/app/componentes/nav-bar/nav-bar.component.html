@@ -4,14 +4,7 @@
     </ng-template>
 
     <ng-template pTemplate="end">
-        @if (servAuth.firstRun == false) {
-        @if (servAuth.logueado == true) {
         <button pButton label="Desloguear" icon="fas fa-sign-out-alt" class="p-button-danger" iconPos="right"
             (click)="Desloguear()"></button>
-        } @else {
-        <button pButton label="Login" icon="fas fa-sign-in-alt" class="p-button-primary" iconPos="right"
-            (click)="IrLogin()"></button>
-        }
-        }
     </ng-template>
 </p-menubar>
