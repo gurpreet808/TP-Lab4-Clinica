@@ -1,0 +1,202 @@
+div#registro_container {
+    height: 100%;
+}
+
+div#registro_container>form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: last baseline;
+}
+
+div[name="registro_form_input"] {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+div#especialidad_panel {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+div#especialidad_panel>div>label {
+    font-weight: 500;
+}
+
+div#especialidad_panel>div {
+    //width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+div[name="registro_form_input"]>label {
+    font-weight: 500;
+}
+
+div[name="registro_form_input"]>input {
+    width: 100%;
+}
+
+div[name="registro_form_input"]>select {
+    width: 100%;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.invalid-input {
+    border-color: red;
+    color: red;
+}
+
+.invalid-input>input {
+    border-color: red;
+    //color: red;
+}
+
+div#submit_container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+div#clave_container,
+div#clave2_container,
+div#nombre_container,
+div#apellido_container,
+div#url_foto_1_container,
+div#url_foto_2_container,
+div#especialidades_container,
+div#agregar_especialidad_container {
+    width: calc(50% - 0.5rem);
+}
+
+div#edad_container {
+    width: calc(30% - 0.5rem);
+}
+
+div#dni_container {
+    width: calc(30% - 0.5rem);
+}
+
+div#email_container {
+    width: calc(38% - 0.5rem);
+}
+
+@media (max-width: 768px) {
+
+    div#nombre_container,
+    div#apellido_container,
+    div#email_container,
+    div#url_foto_1_container,
+    div#url_foto_2_container,
+    div#especialidades_container,
+    div#agregar_especialidad_container {
+        width: 100%;
+    }
+
+    div#edad_container,
+    div#dni_container {
+        width: calc(50% - 0.5rem);
+    }
+
+    div#disponibilidad_hora_inicio_container,
+    div#disponibilidad_hora_fin_container {
+        width: calc((100% - (0.5rem * 2) - 145px)/2);
+    }
+
+    div#disponibilidad_especialidad_container {
+        width: calc(100% - 107px - (0.5rem * 1)) !important;
+    }
+}
+
+div#disponibilidad_panel {
+    width: 100%;
+    //border: 1px solid #ced4da;
+    //border-radius: 0.25rem;
+    //padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+div#disponibilidad_panel>label {
+    font-weight: 500;
+}
+
+div#disponibilidad_input_container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+div[name="disponibilidad_input"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+div#disponibilidad_dia_container {
+    width: 145px;
+}
+
+div#disponibilidad_hora_inicio_container,
+div#disponibilidad_hora_fin_container {
+    width: 81.5px;
+}
+
+div#disponibilidad_agregar_container {
+    width: 107px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    justify-content: flex-end;
+}
+
+div#disponibilidad_especialidad_container {
+    width: calc(100% - 145px - 107px - 81.5px - 81.5px - (0.5rem * 4));
+}
+
+div#disponibilidades_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+div[name="disponibilidad_item"] {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+div[name="disponibilidad_content"] {
+    width: calc(100% - 50px - 0.5rem);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}

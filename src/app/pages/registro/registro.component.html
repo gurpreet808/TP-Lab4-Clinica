@@ -2,7 +2,7 @@
     <div id="registrarse_card_container" name="form_card">
         <div id="registrarse_title_container" name="form_card_title">
             @if (tipo_usuario) {
-            <i class="fa-solid fa-arrow-left"></i>
+            <i class="fa-solid fa-arrow-left" (click)='SeleccionarTipo("")'></i>
             }
 
             <div id="registrarse_title">
@@ -28,7 +28,7 @@
 
             @if (tipo_usuario) {
             <div id="registrarse_form_container">
-                <!-- <app-alta-usuario [tipo_usuario]="tipo_usuario"></app-alta-usuario> -->
+                <app-usuario-form [tipo_usuario]="tipo_usuario"></app-usuario-form>
             </div>
             }
         </div>
