@@ -26,15 +26,18 @@
                 reenviarlo desde el siguiente botón.
             </p>
 
-            <div>
+            <div id="botonera_not_verified" name="buttons_container">
                 <p-button [label]="resendLabel" [disabled]="cooldownResend > 0" severity="primary"
                     (click)="EnviarMailVerificacion()"></p-button>
+
+                <button pButton label="Desloguear" icon="fas fa-sign-out-alt" class="p-button-danger" iconPos="right"
+                    (click)="Desloguear()"></button>
             </div>
         </div>
         }
 
         @if (servAuth.logueado == false && servAuth.firstRun == false) {
-        <div id="botonera_auth">
+        <div id="botonera_auth" name="buttons_container">
             <div>
                 <p-button label="Iniciar sesión" severity="primary" routerLink="/login"></p-button>
             </div>

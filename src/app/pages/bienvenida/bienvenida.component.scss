@@ -27,7 +27,7 @@ div#home_title_text {
     font-size: 2rem;
 }
 
-div#botonera_auth {
+div[name="buttons_container"] {
     width: 100%;
     display: flex;
     justify-content: space-between;

@@ -3,7 +3,7 @@ import { MessageService } from 'primeng/api';
 import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
 import { ButtonModule } from 'primeng/button';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-bienvenida',
@@ -19,7 +19,7 @@ export class BienvenidaComponent implements OnInit {
   cooldownResend: number = 0;
   resendLabel: string = 'Reenviar mail de verificación';
 
-  constructor(public servAuth: AuthService, public messageService: MessageService, public servSpinner: SpinnerService) {
+  constructor(public servAuth: AuthService, public messageService: MessageService, public servSpinner: SpinnerService, public router: Router) {
   }
 
   ngOnInit(): void {
@@ -52,5 +52,10 @@ export class BienvenidaComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: '¡Error!', detail: 'No se pudo enviar el correo de verificación' });
       }
     );
+  }
+
+  Desloguear() {
+    this.servAuth.LogOut();
+    this.router.navigateByUrl('/login');
   }
 }

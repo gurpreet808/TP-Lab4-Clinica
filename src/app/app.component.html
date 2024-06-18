@@ -6,7 +6,7 @@
 <app-spinner></app-spinner>
 
 <div id="app_container">
-  @if (servAuth.logueado) {
+  @if (servAuth.logueado && servAuth.emailVerified) {
   <div id="navbar_container">
     <app-nav-bar></app-nav-bar>
   </div>
