@@ -37,9 +37,13 @@ export class ShowValidationErrorsDirective implements OnInit {
       for (const errorKey of Object.keys(control.errors || {})) {
         if (this.validationMessages[errorKey]) {
           let message = this.validationMessages[errorKey];
-          if (control.errors![errorKey][errorKey]) {
-            message = message.replace('{requiredLength}', control.errors![errorKey][errorKey]);
+
+          if (errorKey === 'min' || errorKey === 'max') {
+            if (control.errors && control.errors[errorKey][errorKey]) {
+              message = message.replace('{requiredLength}', control.errors![errorKey][errorKey]);
+            }
           }
+
           messages.push(message);
         }
       }
