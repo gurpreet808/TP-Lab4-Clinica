@@ -1,208 +1,120 @@
 <div id="registro_container">
-    <form [formGroup]="userForm" class="ng-invalid">
+    <form [formGroup]="userForm">
 
-        <!-- Nombre -->
-        <div id="nombre_container" name="registro_form_input" [ngClass]="{'invalid-input': isValidControl('nombre')}">
+        <div id="nombre_container" name="registro_form_input" [class.invalid-input]="isValidControl('nombre')">
             <label for="nombre">Nombre</label>
             <input id="nombre" pInputText type="text" formControlName="nombre" showValidationErrors
                 [validationMessages]="mensajes_validacion" errorContainerId="nombre_error_container" />
 
-            <div id="nombre_error_container"></div>
+            <div id="nombre_error_container" name="error_container"></div>
         </div>
 
-        <!-- Apellido -->
-        <div id="apellido_container" name="registro_form_input"
-            [ngClass]="{'invalid-input': isValidControl('apellido')}">
+        <div id="apellido_container" name="registro_form_input" [class.invalid-input]="isValidControl('apellido')">
             <label for="apellido">Apellido</label>
             <input id="apellido" pInputText type="text" formControlName="apellido" showValidationErrors
                 [validationMessages]="mensajes_validacion" errorContainerId="apellido_error_container" />
 
-            <div id="apellido_error_container"></div>
+            <div id="apellido_error_container" name="error_container"></div>
         </div>
 
-        <!-- Edad -->
-        <div id="edad_container" name="registro_form_input" [ngClass]="{'invalid-input': isValidControl('edad')}">
+        <div id="edad_container" name="registro_form_input" [class.invalid-input]="isValidControl('edad')">
             <label for="edad">Edad</label>
-            <p-inputNumber inputId="edad" inputStyleClass="w-full" styleClass="w-full" formControlName="edad" [min]="1"
-                [max]="200" [maxlength]="3" [useGrouping]="false" showValidationErrors
-                [validationMessages]="mensajes_validacion" errorContainerId="edad_error_container" />
+            <p-inputNumber inputId="edad" inputStyleClass="fullwidth" styleClass="fullwidth" formControlName="edad" [min]="1"
+                [maxlength]="3" [useGrouping]="false" showValidationErrors [validationMessages]="mensajes_validacion"
+                errorContainerId="edad_error_container" />
 
-            <div id="edad_error_container"></div>
+            <div id="edad_error_container" name="error_container"></div>
         </div>
 
-        <!-- DNI -->
-        <div id="dni_container" name="registro_form_input" [ngClass]="{'invalid-input': isValidControl('dni')}">
+        <div id="dni_container" name="registro_form_input" [class.invalid-input]="isValidControl('dni')">
             <label for="dni">DNI</label>
-            <p-inputNumber inputId="dni" inputStyleClass="w-full" styleClass="w-full" formControlName="dni"
+            <p-inputNumber inputId="dni" inputStyleClass="fullwidth" styleClass="fullwidth" formControlName="dni"
                 [min]="10000000" [max]="99999999" [maxlength]="8" [useGrouping]="false" showValidationErrors
                 [validationMessages]="mensajes_validacion" errorContainerId="dni_error_container" />
 
-            <div id="dni_error_container"></div>
+            <div id="dni_error_container" name="error_container"></div>
         </div>
 
-        <!-- Email -->
-        <div id="email_container" name="registro_form_input" [ngClass]="{'invalid-input': isValidControl('email')}">
+        <div id="email_container" name="registro_form_input" [class.invalid-input]="isValidControl('email')">
             <label for="mail">Correo electrónico</label>
             <input id="mail" pInputText type="email" formControlName="email" showValidationErrors
                 [validationMessages]="mensajes_validacion" errorContainerId="email_error_container" />
 
-            <div id="email_error_container"></div>
+            <div id="email_error_container" name="error_container"></div>
         </div>
 
-        <!-- Clave -->
-        <div id="clave_container" name="registro_form_input" [ngClass]="{'invalid-input': isValidControl('clave')}">
+        <div id="clave_container" name="registro_form_input" [class.invalid-input]="isValidControl('clave')">
             <label for="clave">Contraseña</label>
-            <p-password id="clave" formControlName="clave" inputStyleClass="w-full" styleClass="w-full"
+            <p-password id="clave" formControlName="clave" inputStyleClass="fullwidth" styleClass="fullwidth"
                 [feedback]="false" [toggleMask]="true" showValidationErrors [validationMessages]="mensajes_validacion"
                 errorContainerId="clave_error_container" />
 
-            <div id="clave_error_container"></div>
+            <div id="clave_error_container" name="error_container"></div>
         </div>
 
-        <!-- Repetir Clave -->
-        <div id="clave2_container" name="registro_form_input" [ngClass]="{'invalid-input': isValidControl('clave2')}">
+        <div id="clave2_container" name="registro_form_input" [class.invalid-input]="isValidControl('clave2')">
             <label for="clave2">Repita la contraseña</label>
-            <p-password id="clave2" formControlName="clave2" inputStyleClass="w-full" styleClass="w-full"
+            <p-password id="clave2" formControlName="clave2" inputStyleClass="fullwidth" styleClass="fullwidth"
                 [feedback]="false" [toggleMask]="true" showValidationErrors [validationMessages]="mensajes_validacion"
                 errorContainerId="clave2_error_container" />
 
-            <div id="clave2_error_container"></div>
+            <div id="clave2_error_container" name="error_container"></div>
         </div>
 
-        <!-- Imagen de perfil 1 -->
-        <div id="url_foto_1_container" name="registro_form_input"
-            [ngClass]="{'invalid-input': isValidControl('url_foto_1')}">
+        <div id="url_foto_1_container" name="registro_form_input" [class.invalid-input]="isValidControl('url_foto_1')">
             <label for="url_foto_1">Imagen de perfil 1</label>
             <input id="url_foto_1" type="file" formControlName="url_foto_1" accept="image/*" max="2097152"
                 (change)="fileChange($event, 1)" showValidationErrors [validationMessages]="mensajes_validacion"
                 errorContainerId="url_foto_1_error_container" />
 
-            <div id="url_foto_1_error_container"></div>
+            <div id="url_foto_1_error_container" name="error_container"></div>
         </div>
 
-        <!-- Imagen de perfil 2 (solo para pacientes) -->
         @if (tipo_usuario === 'paciente') {
-
-        <div id="url_foto_2_container" name="registro_form_input"
-            [ngClass]="{'invalid-input': isValidControl('url_foto_2')}">
+        <div id="url_foto_2_container" name="registro_form_input" [class.invalid-input]="isValidControl('url_foto_2')">
             <label for="url_foto_2">Imagen de perfil 2</label>
             <input id="url_foto_2" type="file" formControlName="url_foto_2" (change)="fileChange($event, 2)"
                 showValidationErrors [validationMessages]="mensajes_validacion"
                 errorContainerId="url_foto_2_error_container" />
 
-            <div id="url_foto_2_error_container"></div>
+            <div id="url_foto_2_error_container" name="error_container"></div>
         </div>
         }
 
-        <!-- Obra Social (solo para pacientes) -->
         @if (tipo_usuario === 'paciente') {
         <div id="obra_social_container" name="registro_form_input"
-            [ngClass]="{'invalid-input': isValidControl('obra_social')}">
+            [class.invalid-input]="isValidControl('obra_social')">
             <label for="obra_social">Obra Social</label>
-            <p-dropdown formControlName="obra_social" styleClass="w-full" [options]="obras_sociales"
+            <p-dropdown formControlName="obra_social" styleClass="fullwidth" [options]="obras_sociales"
                 optionLabel="nombre" appendTo="body" showValidationErrors [validationMessages]="mensajes_validacion"
                 errorContainerId="obra_social_error_container" />
 
-            <div id="obra_social_error_container"></div>
+            <div id="obra_social_error_container" name="error_container"></div>
         </div>
         }
 
-
-        <!-- Especialidades (solo para especialistas) -->
         @if (tipo_usuario === 'especialista') {
         <div id="especialidad_panel">
-            <div id="especialidades_container" [ngClass]="{'invalid-input': isValidControl('especialidades')}">
+            <div id="especialidades_container" [class.invalid-input]="isValidControl('especialidades')">
                 <label for="especialidades">Especialidades</label>
-                <p-multiSelect [options]="especialidades" styleClass="w-full" formControlName="especialidades"
+                <p-multiSelect [options]="especialidades" styleClass="fullwidth" formControlName="especialidades"
                     placeholder="Selecione sus especialidades" optionLabel="nombre"
                     selectedItemsLabel="{0} seleccionadas" appendTo="body" showValidationErrors
                     [validationMessages]="mensajes_validacion" errorContainerId="especialidades_error_container" />
 
-                <div id="especialidades_error_container"></div>
+                <div id="especialidades_error_container" name="error_container"></div>
             </div>
 
-            <!-- Agregar nueva especialidad -->
             <div id="agregar_especialidad_container">
                 <label for="agregar_especialidad">Si no está su especialidad:</label>
-                <div class="p-inputgroup">
+
+                <p-inputGroup>
                     <input id="agregar_especialidad" pInputText type="text" placeholder="Nueva especialidad"
                         [(ngModel)]="agregar_especialidad" [ngModelOptions]="{standalone: true}" />
-                    <button type="button" pButton pRipple class="p-button-secondary" label="Agregar"
-                        [disabled]="!agregar_especialidad" (click)="AgregarEspecialidad()">Agregar</button>
-                </div>
+                    <button type="button" pButton pRipple class="p-button-info" label="Agregar"
+                        [disabled]="!agregar_especialidad" (click)="AgregarEspecialidad()"></button>
+                </p-inputGroup>
             </div>
-        </div>
-        }
-
-        <!-- Disponibilidad horaria (solo para especialistas) -->
-        @if (tipo_usuario === 'especialista' && getControl('especialidades')!.value) {
-        <div id="disponibilidad_panel">
-            <label>Detallenos su disponibilidad horaria:</label>
-
-            <div id="disponibilidad_input_container">
-
-                <!-- Día -->
-                <div id="disponibilidad_dia_container" name="disponibilidad_input">
-                    <label for="disponibilidad_dia">Día</label>
-                    <p-dropdown id="disponibilidad_dia" [options]="dias"
-                        (onChange)="SetMaxMinHoraFinDisponibilidadDia()" [(ngModel)]="new_disponibilidad.dia"
-                        [ngModelOptions]="{standalone: true}" styleClass="w-full" placeholder="Elija un día"
-                        optionValue="value" optionLabel="label" appendTo="sub_container" />
-                </div>
-
-                <!-- Hora Inicio -->
-                <div id="disponibilidad_hora_inicio_container" name="disponibilidad_input">
-                    <label for="disponibilidad_hora_inicio">Hora Inicio</label>
-                    <p-inputNumber inputId="disponibilidad_hora_inicio" [min]="min_hora_inicio" [max]="max_hora_fin"
-                        [maxlength]="2" [useGrouping]="false" [(ngModel)]="new_disponibilidad.hora_inicio"
-                        [ngModelOptions]="{standalone: true}" inputStyleClass="w-full" styleClass="w-full" />
-                </div>
-
-                <!-- Hora Fin -->
-                <div id="disponibilidad_hora_fin_container" name="disponibilidad_input">
-                    <label for="disponibilidad_hora_fin">Hora Fin</label>
-                    <p-inputNumber inputId="disponibilidad_hora_fin" [min]="new_disponibilidad.hora_inicio + 1"
-                        [max]="max_hora_fin" [maxlength]="2" [useGrouping]="false"
-                        [(ngModel)]="new_disponibilidad.hora_fin" [ngModelOptions]="{standalone: true}"
-                        inputStyleClass="w-full" styleClass="w-full" />
-                </div>
-
-                <!-- Especialidad -->
-                <div id="disponibilidad_especialidad_container" name="disponibilidad_input">
-                    <label for="disponibilidad_especialidad">Especialidad</label>
-                    <p-dropdown id="disponibilidad_especialidad" [options]="getControl('especialidades')!.value"
-                        [(ngModel)]="new_disponibilidad.especialidad" [ngModelOptions]="{standalone: true}"
-                        styleClass="w-full" placeholder="Elija una especialidad" optionValue="id" optionLabel="nombre"
-                        appendTo="sub_container" />
-                </div>
-
-                <!-- Botón Agregar -->
-                <div id="disponibilidad_agregar_container">
-                    <button type="button" pButton pRipple class="p-button-secondary" label="Agregar"
-                        (click)="AgregarDisponibilidad()"
-                        [disabled]="!(new_disponibilidad.dia > -1 && new_disponibilidad.hora_inicio > 0 && new_disponibilidad.hora_fin > 0 && new_disponibilidad.especialidad != '')">Agregar</button>
-                </div>
-            </div>
-
-            <!-- Lista de disponibilidades -->
-            <div id="disponibilidades_container" *ngIf="getControl('disponibilidades')!.value">
-                <div *ngFor="let disponibilidad of getControl('disponibilidades')!.value" name="disponibilidad_item">
-                    <div name="disponibilidad_content">
-                        <!-- {{disponibilidad | json}} -->
-                        <div name="disponibilidad_dia">Dia: {{disponibilidad.dia | dia}}</div>
-                        <div name="disponibilidad_horario">Horario: {{disponibilidad.hora_inicio}} a
-                            {{disponibilidad.hora_fin}}</div>
-                        <div name="disponibilidad_especialidad">Especialidad: {{disponibilidad.especialidad |
-                            especialidad | async}}</div>
-                    </div>
-
-                    <div name="disponibilidad_delete">
-                        <button type="button" pButton pRipple icon="pi pi-trash" class="p-button-danger"
-                            (click)="BorrarDisponibilidad(disponibilidad)"></button>
-                    </div>
-                </div>
-            </div>
-
         </div>
         }
 
@@ -210,6 +122,7 @@
         <div id="submit_container">
             <button type="submit" pButton pRipple class="p-button-primary" [disabled]="!userForm.valid"
                 (click)="RegistrarUsuario()">Registrar</button>
+            <button pButton pRipple class="p-button-primary" (click)="logForm()">Log Form</button>
         </div>
 
     </form>

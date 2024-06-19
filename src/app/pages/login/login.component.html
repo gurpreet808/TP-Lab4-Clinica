@@ -31,7 +31,7 @@
 
                 <div id="accesos_rapidos_button_container">
                     @for (usuario of ACCESO_RAPIDO; track $index) {
-                    <p-button pRipple styleClass="p-button-help w-full" (click)="AccesoRapido(usuario)">
+                    <p-button pRipple styleClass="p-button-help fullwidth" (click)="AccesoRapido(usuario)">
                         <span class="ml-2 font-bold">{{usuario.nombre}}</span>
                         <span class="ml-2 text-sm">({{usuario.tipo}})</span>
                     </p-button>
