@@ -5,3 +5,16 @@ body {
     //word-break: break-word;
     height: 100dvh;
 }
+
+.cristal_card {
+    background-color: rgb(255 255 255 / 20%);
+    background: rgba(255, 255, 255, 0.2);
+    //border: 1px solid #ccc;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    //box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6.7px);
+    -webkit-backdrop-filter: blur(6.7px);
+}

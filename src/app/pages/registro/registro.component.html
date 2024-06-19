@@ -1,5 +1,5 @@
 <div id="registrarse_container">
-    <div id="registrarse_card_container" name="form_card">
+    <div id="registrarse_card_container" name="form_card" class="cristal_card">
         <div id="registrarse_title_container" name="form_card_title">
             @if (tipo_usuario) {
             <i class="fa-solid fa-arrow-left" (click)='SeleccionarTipo("")'></i>
@@ -15,11 +15,11 @@
         <div id="registrarse_content">
             @if (!tipo_usuario) {
             <div id="select_tipousuario_container">
-                <div id="boton_registrar_paciente" name="form_card" (click)='SeleccionarTipo("paciente")'>
+                <div id="boton_registrar_paciente" class="cristal_card" (click)='SeleccionarTipo("paciente")'>
                     <img src="assets/logos/paciente.jfif" height="100" class="mr-2" />
                     Paciente
                 </div>
-                <div id="boton_registrar_especialista" name="form_card" (click)='SeleccionarTipo("especialista")'>
+                <div id="boton_registrar_especialista" class="cristal_card" (click)='SeleccionarTipo("especialista")'>
                     <img src="assets/logos/especialista.jfif" height="100" class="mr-2" />
                     Especialista
                 </div>
