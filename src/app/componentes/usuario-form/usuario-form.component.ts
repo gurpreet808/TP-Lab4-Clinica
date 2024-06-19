@@ -49,7 +49,7 @@ import { EspecialidadPipe } from '../../pipes/especialidad.pipe';
   styleUrl: './usuario-form.component.scss'
 })
 export class UsuarioFormComponent implements OnInit, OnChanges {
-  @Output() closeModal = new EventEmitter();
+  @Output() UserCreated = new EventEmitter();
   @Input() tipo_usuario: string = '';
   especialidades: Especialidad[] = [];
   obras_sociales: ObraSocial[] = [];
@@ -243,7 +243,7 @@ export class UsuarioFormComponent implements OnInit, OnChanges {
               if (this.servAuth.usuarioActual.value && this.servAuth.usuarioActual.value.tipo != 'admin') {
                 this.router.navigate(['/']);
               } else {
-                this.closeModal.emit();
+                this.UserCreated.emit();
               }
             }
           ).catch(
@@ -332,7 +332,7 @@ export class UsuarioFormComponent implements OnInit, OnChanges {
       }
     }
 
-    console.log(this.file_1);
-    console.log(this.file_2);
+    console.log("File 1 change", this.file_1);
+    console.log("File 2 change", this.file_2);
   }
 }

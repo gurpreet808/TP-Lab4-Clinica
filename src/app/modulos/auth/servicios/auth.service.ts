@@ -15,7 +15,6 @@ export class AuthService {
   firstRun: boolean = true;
 
   constructor(private auth: Auth, private _http: HttpClient, private _servUsuario: UsuarioService) {
-
     this._servUsuario.Ready().then(
       (ready: boolean) => {
         console.log("servUsuario ready?", ready);

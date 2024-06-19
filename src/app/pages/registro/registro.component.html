@@ -28,7 +28,7 @@
 
             @if (tipo_usuario) {
             <div id="registrarse_form_container">
-                <app-usuario-form [tipo_usuario]="tipo_usuario"></app-usuario-form>
+                <app-usuario-form [tipo_usuario]="tipo_usuario" (UserCreated)="UserCreatedHandler()"></app-usuario-form>
             </div>
             }
         </div>

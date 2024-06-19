@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { UsuarioFormComponent } from '../../componentes/usuario-form/usuario-form.component';
 
@@ -17,9 +17,15 @@ import { UsuarioFormComponent } from '../../componentes/usuario-form/usuario-for
 export class RegistroComponent {
   tipo_usuario: string = '';
 
+  constructor(public router: Router) { }
+
   SeleccionarTipo(tipo_usuario: string) {
     console.log(tipo_usuario);
     this.tipo_usuario = tipo_usuario;
+  }
+
+  UserCreatedHandler() {
+    this.router.navigate(['/']);
   }
 
 }
