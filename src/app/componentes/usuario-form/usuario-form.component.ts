@@ -113,7 +113,7 @@ export class UsuarioFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log(this.tipo_usuario);
+    //console.log(this.tipo_usuario);
     this.userForm.markAllAsTouched();
     this.servSpinner.hideWithMessage('alta-usuario-init');
   }
@@ -235,8 +235,11 @@ export class UsuarioFormComponent implements OnInit, OnChanges {
           console.log("pre mod", _usuario);
 
           this.servUsuario.Modificar(_usuario).then(
-            () => {
+            async () => {
               console.log('Usuario modificado');
+
+              await this.servAuth.SetUsuarioActual();
+
               this.servSpinner.hideWithMessage('registrar-usuario');
               this.messageService.add({ severity: 'success', life: 10000, summary: 'Bien', detail: 'Se registró su usuario. Recuerde verificar su mail para usar la aplicación.' });
 

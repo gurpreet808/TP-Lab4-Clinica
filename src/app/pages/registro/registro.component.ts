@@ -20,7 +20,7 @@ export class RegistroComponent {
   constructor(public router: Router) { }
 
   SeleccionarTipo(tipo_usuario: string) {
-    console.log(tipo_usuario);
+    //console.log(tipo_usuario);
     this.tipo_usuario = tipo_usuario;
   }
 

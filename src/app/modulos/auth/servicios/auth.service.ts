@@ -17,17 +17,13 @@ export class AuthService {
   constructor(private auth: Auth, private _http: HttpClient, private _servUsuario: UsuarioService) {
     this._servUsuario.Ready().then(
       (ready: boolean) => {
-        console.log("servUsuario ready?", ready);
+        //console.log("servUsuario ready?", ready);
 
         this.auth.onAuthStateChanged(
           async (user: User | null) => {
             //console.log("authStateChange", user);
             this.firstRun = false;
-
-            this.usuarioActual.next(await this.BuscarUsuarioActual());
-            this.logueado = this.usuarioActual.value != undefined;
-
-            this.emailVerified = user ? user.emailVerified : false;
+            this.SetUsuarioActual();
           }
         );
       }
@@ -38,30 +34,27 @@ export class AuthService {
     );
   }
 
-  async BuscarUsuarioActual(): Promise<Usuario | undefined> {
-    let _usuario: Usuario | undefined = undefined;
-    //console.log("CurrentUser al inicio BuscarUsuarioActual", this.auth.currentUser);
+  async BuscarUsuarioPorUID(uid: string): Promise<Usuario | undefined> {
+    await this._servUsuario.Ready();
 
-    if (this.auth.currentUser != null) {
-      let usuarios: Usuario[] = this._servUsuario.usuarios.value;
-
-      if (this._servUsuario.firstRun) {
-        //console.log("firstRun UsuarioService", usuarios);
-        usuarios = await firstValueFrom(this._servUsuario.usuarios.pipe(skip(1)));
+    return this._servUsuario.usuarios.value.find(
+      (usuario: Usuario) => {
+        return usuario.uid == uid;
       }
+    );
+  }
 
-      //console.log("Usuarios luego de revisar firstRun usuario", usuarios);
-
-      //Si anda mal cambiar a for
-      _usuario = usuarios.find(
-        (usuario: Usuario) => {
-          return usuario.uid == this.auth.currentUser?.uid;
-        }
-      );
+  async SetUsuarioActual() {
+    //console.log("SetUsuarioActual");
+    if (this.auth.currentUser != null) {
+      this.usuarioActual.next(await this.BuscarUsuarioPorUID(this.auth.currentUser.uid));
+      this.emailVerified = this.auth.currentUser.emailVerified;
+      this.logueado = this.usuarioActual.value != undefined ? true : false;
+    } else {
+      this.usuarioActual.next(undefined);
+      this.emailVerified = false;
+      this.logueado = false;
     }
-
-    //console.log("Resultado de que usuario al finalizar BuscarUsuarioActual", _usuario);
-    return _usuario;
   }
 
   async LogInEmail(email: string, password: string) {
