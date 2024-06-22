@@ -1,27 +1,45 @@
-import { Directive, Input, OnInit, Optional, Renderer2, Self } from '@angular/core';
+import { Directive, ElementRef, Input, OnDestroy, OnInit, Optional, Renderer2, Self } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { ValidatorMessage } from '../clases/validator-message';
+import { Subscription, fromEvent } from 'rxjs';
 
 @Directive({
   selector: '[showValidationErrors]',
   standalone: true
 })
-export class ShowValidationErrorsDirective implements OnInit {
+export class ShowValidationErrorsDirective implements OnInit, OnDestroy {
   @Input() validationMessages: ValidatorMessage | undefined;
   @Input() errorContainerId: string = '';
+  statusChangesSuscription: Subscription | undefined;
+  blurSubscription: Subscription | undefined;
 
   constructor(
     @Optional() @Self() private ngControl: NgControl,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private elementRef: ElementRef
   ) { }
 
   ngOnInit() {
-    if (this.ngControl) {
-      this.updateErrorMessages();
+    if (this.ngControl && this.ngControl.control) {
+      //this.updateErrorMessages();
 
-      this.ngControl.control?.statusChanges!.subscribe(() => {
+      this.statusChangesSuscription = this.ngControl.control.statusChanges.subscribe(() => {
         this.updateErrorMessages();
       });
+
+      this.blurSubscription = fromEvent(this.elementRef.nativeElement, 'blur').subscribe(() => {
+        this.updateErrorMessages();
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.statusChangesSuscription) {
+      this.statusChangesSuscription.unsubscribe();
+    }
+
+    if (this.blurSubscription) {
+      this.blurSubscription.unsubscribe();
     }
   }
 
