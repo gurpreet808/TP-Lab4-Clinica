@@ -20,19 +20,18 @@
         </p>
 
         @if (servAuth.logueado == true && servAuth.emailVerified == false) {
-        <div id="not_verified_container">
-            <p>
-                Necesitas validar tu email, por favor revisa tu casilla de correo. Si no te llegó el mail, puedes
-                reenviarlo desde el siguiente botón.
-            </p>
+        <p>
+            Necesitas validar tu email, por favor revisa tu casilla de correo.
+            Si no ves el mail revisa la sección de Spam. Y si aún así no lo encuentras, puedes reenviar el mail de
+            verificación con el botón debajo.
+        </p>
 
-            <div id="botonera_not_verified" name="buttons_container">
-                <p-button [label]="resendLabel" [disabled]="cooldownResend > 0" severity="primary"
-                    (click)="EnviarMailVerificacion()"></p-button>
+        <div id="botonera_not_verified" name="buttons_container">
+            <p-button [label]="resendLabel" [disabled]="cooldownResend > 0" severity="primary"
+                icon="fa-solid fa-envelope" (click)="EnviarMailVerificacion()"></p-button>
 
-                <button pButton label="Desloguear" icon="fas fa-sign-out-alt" class="p-button-danger" iconPos="right"
-                    (click)="Desloguear()"></button>
-            </div>
+            <button pButton label="Desloguear" icon="fas fa-sign-out-alt" class="p-button-danger" iconPos="right"
+                (click)="Desloguear()"></button>
         </div>
         }
 
