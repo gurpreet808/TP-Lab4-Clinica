@@ -246,6 +246,15 @@ export class AuthService {
     return undefined;
   }
 
+  EspecialistaHabilitado(): boolean {
+    let especialista: Especialista | undefined = this.GetUsuarioAsEspecialista();
+    if (especialista != undefined) {
+      return especialista.habilitado;
+    }
+
+    return false;
+  }
+
   async IsLoggedIn(): Promise<boolean> {
     await new Promise(resolve => setTimeout(resolve, 0));
 

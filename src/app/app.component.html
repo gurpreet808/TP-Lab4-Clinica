@@ -6,7 +6,8 @@
 <app-spinner></app-spinner>
 
 <div id="app_container">
-  @if (servAuth.logueado && servAuth.emailVerified) {
+  @if (servAuth.logueado && servAuth.emailVerified && (servAuth.usuarioActual.value?.tipo !== 'especialista' ||
+  servAuth.EspecialistaHabilitado())) {
   <div id="navbar_container">
     <app-nav-bar></app-nav-bar>
   </div>

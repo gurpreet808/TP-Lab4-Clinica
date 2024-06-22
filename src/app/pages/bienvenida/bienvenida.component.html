@@ -19,32 +19,39 @@
             teléfono o computadora.
         </p>
 
+        @if (servAuth.usuarioActual.value && servAuth.usuarioActual.value.tipo == "especialista" &&
+        !servAuth.GetUsuarioAsEspecialista()?.habilitado) {
+        <p>
+            Tu cuenta de especialista aún no ha sido habilitada. Por favor, espera a que un administrador la habilite.
+        </p>
+        }
+
         @if (servAuth.logueado == true && servAuth.emailVerified == false) {
         <p>
             Necesitas validar tu email, por favor revisa tu casilla de correo.
             Si no ves el mail revisa la sección de Spam. Y si aún así no lo encuentras, puedes reenviar el mail de
             verificación con el botón debajo.
         </p>
+        }
 
-        <div id="botonera_not_verified" name="buttons_container">
-            <p-button [label]="resendLabel" [disabled]="cooldownResend > 0" severity="primary"
-                icon="fa-solid fa-envelope" (click)="EnviarMailVerificacion()"></p-button>
+        <div id="botonera_home" name="buttons_container">
+            @if (servAuth.logueado == false && servAuth.firstRun == false) {
+            <button pButton label="Iniciar sesión" severity="primary" routerLink="/login"></button>
 
+            <button pButton label="Registrarse" severity="secondary" routerLink="/registro"></button>
+            }
+
+            @if (servAuth.logueado == true && servAuth.emailVerified == false) {
+            <button pButton [label]="resendLabel" [disabled]="cooldownResend > 0" severity="primary"
+                icon="fa-solid fa-envelope" (click)="EnviarMailVerificacion()"></button>
+            }
+
+            @if (servAuth.usuarioActual.value && servAuth.usuarioActual.value.tipo == "especialista" &&
+            !servAuth.GetUsuarioAsEspecialista()?.habilitado) {
             <button pButton label="Desloguear" icon="fas fa-sign-out-alt" class="p-button-danger" iconPos="right"
                 (click)="Desloguear()"></button>
+            }
         </div>
-        }
-
-        @if (servAuth.logueado == false && servAuth.firstRun == false) {
-        <div id="botonera_auth" name="buttons_container">
-            <div>
-                <p-button label="Iniciar sesión" severity="primary" routerLink="/login"></p-button>
-            </div>
-            <div>
-                <p-button label="Registrarse" severity="secondary" routerLink="/registro"></p-button>
-            </div>
-        </div>
-        }
     </div>
 
 </div>
