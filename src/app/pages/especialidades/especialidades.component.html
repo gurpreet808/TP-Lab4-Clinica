@@ -1,7 +1,7 @@
 <div id="especialidades_table_container">
-    <p-table #dt_especialidades [value]="servEspecialidad.especialidades.value" dataKey="id" [rowHover]="true"
-        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
+    <p-table #dt_especialidades [value]="servEspecialidad.especialidades.value" dataKey="id" editMode="row"
+        [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
+        [paginator]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
 
         <ng-template pTemplate="caption">
             <div id="especialidades_table_header">
@@ -24,13 +24,15 @@
                         <p-sortIcon field="nombre" />
                     </div>
                 </th>
-                <th pSortableColumn="valida">
+
+                <th pSortableColumn="valida" class="valida_column">
                     <div>
                         Válida
                         <p-sortIcon field="valida" />
                     </div>
                 </th>
-                <th>
+
+                <th class="acciones_column">
                     <div>
                         Acciones
                     </div>
@@ -38,24 +40,49 @@
             </tr>
         </ng-template>
 
-        <ng-template pTemplate="body" let-especialidad>
-            <tr>
+        <ng-template pTemplate="body" let-especialidad let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="especialidad" [class.valida_row]="especialidad.valida" [class.invalida_row]="!especialidad.valida">
                 <td>
-                    <span class="p-column-title">Nombre</span>
-                    {{ especialidad.nombre }}
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" name="especialidad_name_input"
+                                [(ngModel)]="especialidad.nombre">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{especialidad.nombre}}
+                        </ng-template>
+                    </p-cellEditor>
                 </td>
-                <td>
-                    <span class="p-column-title">Válida</span>
+                
+                <td class="valida_column" name="valida_cell">
                     {{ especialidad.valida ? 'Sí' : 'No' }}
                 </td>
-                <td>
-                    <button pButton pRipple type="button" [icon]="especialidad.valida ? 'fa-regular fa-rectangle-xmark' : 'fa-regular fa-square-check'"
-                        [label]="especialidad.valida ? 'Invalidar' : 'Validar'"
-                        (click)="ToogleValidarEspecialidad(especialidad)" [rounded]="true"
-                        [severity]="especialidad.valida ? 'warning' : 'success'"></button>
 
-                    <button pButton pRipple type="button" icon="fa fa-trash" label="Borrar"
-                        (click)="BorrarEspecialidad(especialidad.id)" class="p-button-rounded p-button-danger"></button>
+                <td class="acciones_column">
+                    <div name="edit_buttons_container">
+                        @if (!editing) {
+                        <button pButton pRipple type="button" pInitEditableRow icon="fa fa-pencil" [rounded]="true"
+                            severity="info" (click)="onRowEditInit(especialidad)"></button>
+                        }
+
+                        @if (editing) {
+                        <button pButton pRipple type="button" pSaveEditableRow icon="fa fa-check" [rounded]="true"
+                            severity="success" (click)="onRowEditSave(especialidad, ri)"></button>
+
+                        <button pButton pRipple type="button" pCancelEditableRow icon="fa fa-times" [rounded]="true"
+                            severity="warning" (click)="onRowEditCancel(especialidad, ri)"></button>
+                        }
+
+                        <button pButton pRipple type="button" icon="fa fa-trash"
+                            (click)="BorrarEspecialidad(especialidad.id)" [rounded]="true" severity="danger"></button>
+
+                        <button pButton pRipple type="button"
+                            [icon]="especialidad.valida ? 'fa-regular fa-rectangle-xmark' : 'fa-regular fa-square-check'"
+                            [label]="especialidad.valida ? 'Invalidar' : 'Validar'"
+                            (click)="ToogleValidarEspecialidad(especialidad)" [rounded]="true"
+                            [severity]="especialidad.valida ? 'secondary' : 'help'"></button>
+
+                    </div>
                 </td>
             </tr>
         </ng-template>

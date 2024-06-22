@@ -22,6 +22,7 @@ import { Especialidad } from '../../clases/especialidad';
 export class EspecialidadesComponent implements OnInit {
 
   especialidad: string = '';
+  editando_especialidades: { [s: string]: Especialidad } = {};
 
   constructor(public servEspecialidad: EspecialidadService, public messageService: MessageService) {
 
@@ -91,6 +92,34 @@ export class EspecialidadesComponent implements OnInit {
         this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
       }
     );
+  }
+
+  onRowEditInit(especialidad: Especialidad) {
+    this.editando_especialidades[especialidad.id as string] = { ...especialidad };
+  }
+
+  onRowEditSave(especialidad: Especialidad, index: number) {
+    //console.log(especialidad);
+    try {
+      this.ModificarEspecialidad(especialidad);
+    } catch (error: any) {
+      if (typeof error === 'string') {
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+      } else if (error instanceof Error) {
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+      } else {
+        console.error("CopiarRutaCheckOut", error);
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+      }
+
+      this.onRowEditCancel(especialidad, index);
+    }
+  }
+
+  onRowEditCancel(especialidad: Especialidad, index: number) {
+    this.servEspecialidad.especialidades.value[index] = this.editando_especialidades[especialidad.id];
+    delete this.editando_especialidades[especialidad.id];
+    //console.log(this.editando_especialidades);
   }
 
 }
