@@ -24,6 +24,10 @@ export const authGuard: CanActivateFn = async (route: ActivatedRouteSnapshot, st
       let usuario: Usuario | undefined = servAuth.usuarioActual.value;
       if (usuario) {
         habilitado = ROLES_PERMITIDOS.includes(usuario.tipo);
+
+        if (usuario.tipo == "especialista" && servAuth.GetUsuarioAsEspecialista()?.habilitado == false) {
+          habilitado = false;
+        }
       }
     }
   } catch (error) {
