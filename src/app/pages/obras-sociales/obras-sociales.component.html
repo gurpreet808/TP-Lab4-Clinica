@@ -1,7 +1,7 @@
 <div id="obras_sociales_table_container">
-    <p-table #dt_obras_sociales [value]="servObraSocial.obras_sociales.value" dataKey="id" [rowHover]="true" [rows]="10"
-        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
-        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
+    <p-table #dt_obras_sociales [value]="servObraSocial.obras_sociales.value" dataKey="id" editMode="row"
+        [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
+        [paginator]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
 
         <ng-template pTemplate="caption">
             <div id="obras_sociales_table_header">
@@ -24,7 +24,7 @@
                         <p-sortIcon field="nombre" />
                     </div>
                 </th>
-                <th>
+                <th class="acciones_column">
                     <div>
                         Acciones
                     </div>
@@ -32,15 +32,36 @@
             </tr>
         </ng-template>
 
-        <ng-template pTemplate="body" let-obra_social>
-            <tr>
+        <ng-template pTemplate="body" let-obras_social let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="obras_social">
                 <td>
-                    <span class="p-column-title">Nombre</span>
-                    {{ obra_social.nombre }}
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" name="obra_social_name_input" [(ngModel)]="obras_social.nombre">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{obras_social.nombre}}
+                        </ng-template>
+                    </p-cellEditor>
                 </td>
-                <td>
-                    <button pButton pRipple type="button" icon="fa fa-trash" label="Borrar"
-                        (click)="BorrarObraSocial(obra_social.id)" class="p-button-rounded p-button-danger"></button>
+                <td class="acciones_column">
+                    <div name="edit_buttons_container">
+                        @if (!editing) {
+                        <button pButton pRipple type="button" pInitEditableRow icon="fa fa-pencil" [rounded]="true" severity="info"
+                            (click)="onRowEditInit(obras_social)"></button>
+                        }
+
+                        @if (editing) {
+                        <button pButton pRipple type="button" pSaveEditableRow icon="fa fa-check" [rounded]="true" severity="success"
+                            (click)="onRowEditSave(obras_social, ri)"></button>
+
+                        <button pButton pRipple type="button" pCancelEditableRow icon="fa fa-times" [rounded]="true"
+                            severity="warning" (click)="onRowEditCancel(obras_social, ri)"></button>
+                        }
+
+                        <button pButton pRipple type="button" icon="fa fa-trash" [rounded]="true" severity="danger"
+                            (click)="BorrarObraSocial(obras_social.id)"></button>
+                    </div>
                 </td>
             </tr>
         </ng-template>

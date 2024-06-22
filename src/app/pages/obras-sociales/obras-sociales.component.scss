@@ -19,3 +19,23 @@ div#nueva_obra_social_container {
     align-items: center;
     gap: 0.5rem;
 }
+
+div[name="edit_buttons_container"] {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+[name="obra_social_name_input"] {
+    width: 100%;
+}
+
+th {
+    text-align: center;
+}
+
+.acciones_column {
+    width: 170px;
+}

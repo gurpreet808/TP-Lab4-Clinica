@@ -70,8 +70,12 @@ export class ObraSocialService {
       throw new Error("ObraSocial nula");
     }
 
+    if (_obra_social.nombre == "" || _obra_social.nombre == null || _obra_social.nombre == undefined) {
+      throw new Error("Nombre de obra social vacío");
+    }
+
     if (this.obras_sociales.value.some(obra_social => obra_social.nombre === _obra_social.nombre && obra_social.id !== _obra_social.id)) {
-      throw new Error("Ya existe una obra_social con el mismo nombre");
+      throw new Error("Ya existe una obra social con el mismo nombre");
     }
 
     return _obra_social;
