@@ -114,15 +114,31 @@ export class UsuarioFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     //console.log(this.tipo_usuario);
-    this.userForm.markAllAsTouched();
+    //this.userForm.markAllAsTouched();
     this.servSpinner.hideWithMessage('alta-usuario-init');
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['tipo_usuario'] && !changes['tipo_usuario'].firstChange) {
+    //console.log(changes);
+    if (changes['tipo_usuario']) {
       this.userForm.get('obra_social')?.setValidators([requeridoSegunTipoUsuario(this.tipo_usuario, ['paciente'])]);
       this.userForm.get('url_foto_2')?.setValidators([requeridoSegunTipoUsuario(this.tipo_usuario, ['paciente'])]);
       this.userForm.get('especialidades')?.setValidators([requeridoSegunTipoUsuario(this.tipo_usuario, ['especialista'])]);
+
+      if (this.tipo_usuario === 'especialista') {
+        this.userForm.get('edad')?.setValidators([
+          Validators.required,
+          Validators.min(18),
+          Validators.max(99)
+        ]);
+      } else {
+        this.userForm.get('edad')?.setValidators([
+          Validators.required,
+          Validators.min(1),
+          Validators.max(99)
+        ]);
+      }
+
       this.userForm.updateValueAndValidity();
     }
   }
