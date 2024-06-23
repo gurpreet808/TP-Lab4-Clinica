@@ -46,8 +46,14 @@ export class EspecialidadesComponent implements OnInit {
       }
     ).catch(
       (error: any) => {
-        console.log(error);
-        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        if (typeof error === 'string') {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        } else if (error instanceof Error) {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+        } else {
+          console.error("CopiarRutaCheckOut", error);
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+        }
       }
     );
   }
@@ -60,8 +66,14 @@ export class EspecialidadesComponent implements OnInit {
       }
     ).catch(
       (error: any) => {
-        console.log(error);
-        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        if (typeof error === 'string') {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        } else if (error instanceof Error) {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+        } else {
+          console.error("CopiarRutaCheckOut", error);
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+        }
       }
     );
   }
@@ -74,8 +86,14 @@ export class EspecialidadesComponent implements OnInit {
       }
     ).catch(
       (error: any) => {
-        console.log(error);
-        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        if (typeof error === 'string') {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        } else if (error instanceof Error) {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+        } else {
+          console.error("CopiarRutaCheckOut", error);
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+        }
       }
     );
   }
@@ -88,8 +106,14 @@ export class EspecialidadesComponent implements OnInit {
       }
     ).catch(
       (error: any) => {
-        console.log(error);
-        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        if (typeof error === 'string') {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        } else if (error instanceof Error) {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+        } else {
+          console.error("CopiarRutaCheckOut", error);
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+        }
       }
     );
   }
