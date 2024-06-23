@@ -16,8 +16,8 @@ export class EspecialidadPipe implements PipeTransform {
       // Filtra el valor inicial para evitar procesarlo
       filter(especialidades => especialidades.length > 0),
       map((especialidades: Especialidad[]) => {
-        const obraSocial = especialidades.find((os: Especialidad) => os.id === value);
-        return obraSocial ? obraSocial.nombre : 'No encontrada';
+        const especialidad = especialidades.find((e: Especialidad) => e.id === value);
+        return especialidad ? especialidad.nombre : 'No encontrada';
       })
     );
   }
