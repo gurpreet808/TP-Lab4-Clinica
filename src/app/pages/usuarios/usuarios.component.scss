@@ -1,0 +1,109 @@
+div#usuarios_table_container {
+    height: 100%;
+    //background-color: aquamarine;
+}
+
+:host ::ng-deep #dt_usuarios>div>div>table>thead {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    background-color: #00000060;
+    min-height: 55px;
+    padding: 0.5rem;
+}
+
+:host ::ng-deep #dt_usuarios>div>div>table>tbody>tr>td {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    border: 0px;
+    //background-color: transparent;
+}
+
+/* :host ::ng-deep #dt_usuarios>div>div>table>tbody>tr {
+    background-color: transparent;
+} */
+
+:host ::ng-deep .p-column-filter-menu-button {
+    color: #475569;
+    background: #f1f5f9;
+    border: 1px solid #f1f5f9;
+    border-radius: var(--border-radius);
+    font-size: 0.875rem;
+    padding: 0rem 0.5rem !important;
+    height: 39px;
+    width: auto;
+
+    &:hover {
+        background: #e2e8f0;
+        color: #334155;
+        border-color: #e2e8f0;
+    }
+}
+
+:host ::ng-deep .p-column-filter-menu-button-active {
+    background-color: rgba(60, 184, 255, 0.75);
+
+    &:hover {
+        background-color: rgba(40, 132, 185, 0.75);
+    }
+}
+
+div#table_menu {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    div[name="table_menu_row"] {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    div#back_button {
+        font-size: 2rem;
+
+        i {
+            cursor: pointer;
+            color: var(--bluegray-500);
+
+            &:hover {
+                color: var(--bluegray-600);
+            }
+        }
+    }
+
+    div#select_all_contanier {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 400;
+        font-size: 0.8rem;
+    }
+
+    div#table_menu_title {
+        font-weight: 700;
+        font-size: 1.3rem;
+    }
+
+    div#acciones_masivas_buttons_container {
+        font-size: 0.875rem;
+    }
+
+    button#reset_filters_btn {
+        border-width: 2px;
+        background-color: var(--primary-100);
+        padding: 0rem 0.5rem !important;
+        height: 39px;
+
+        &:hover {
+            background-color: var(--primary-200);
+        }
+    }
+}

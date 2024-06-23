@@ -1,1 +1,87 @@
-<p>usuarios works!</p>
+<div id="usuarios_table_container">
+    <p-table #dt_usuarios id="dt_usuarios" [value]="servUsuario.usuarios.value" dataKey="id" [scrollable]="true"
+        scrollHeight="flex" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
+
+        <ng-template pTemplate="caption">
+            <div id="table_menu">
+                <div id="table_menu_title_container" name="table_menu_row">
+                    <div id="table_menu_title">
+                        Usuarios
+                    </div>
+                </div>
+
+                <div id="filter_buttons_container" name="table_menu_row">
+                    <p-iconField iconPosition="left">
+                        <p-inputIcon styleClass="fa-solid fa-magnifying-glass" />
+                        <input type="search" pInputText placeholder="Buscador"
+                            (input)="dt_usuarios.filterGlobal($any($event.target).value, 'contains')"
+                            [(ngModel)]="globalFilter">
+                    </p-iconField>
+
+                    <button id="reset_filters_btn" pButton label="Reset" class="p-button-outlined p-button-sm"
+                        icon="fa-solid fa-filter-circle-xmark" (click)="clear(dt_usuarios)"></button>
+
+                    <p-columnFilter type="text" field="nombre" display="menu">
+                        <ng-template pTemplate="filtericon">
+                            <i class="fa fa-filter"></i> Nombre
+                        </ng-template>
+                    </p-columnFilter>
+
+                    <p-columnFilter type="text" field="email" display="menu">
+                        <ng-template pTemplate="filtericon">
+                            <i class="fa fa-filter"></i> E-Mail
+                        </ng-template>
+                    </p-columnFilter>
+                </div>
+
+                <div id="acciones_masivas_buttons_container" name="table_menu_row">
+                    <button pButton pRipple label="Nuevo admin" icon="fa-solid fa-user-shield" severity="warning"
+                        (click)="NuevoUsuario()"></button>
+
+                    <button pButton pRipple label="Nuevo paciente" icon="fa-solid fa-user-injured" severity="info"
+                        (click)="NuevoUsuario()"></button>
+
+                    <button pButton pRipple label="Nuevo especialista" icon="fa-solid fa-user-doctor" severity="success"
+                        (click)="NuevoUsuario()"></button>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+
+        </ng-template>
+
+        <ng-template pTemplate="body" let-usuario_item>
+            <tr>
+                <td>
+                    <app-usuario-item [usuario]="usuario_item" (action)="actionHandler($event)"></app-usuario-item>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8">No hay usuarios.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="itemEdit" header="Detalles del usuario" [modal]="true" styleClass="p-fluid w-full md:w-11"
+    (onHide)="Cancelar()">
+    <ng-template pTemplate="content">
+        <!-- <app-usuario-form [usuario]="_usuario" [nuevo]="_nuevo"></app-usuario-form> -->
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <div id="dialog_acciones_competencia" class="flex justify-content-between">
+            <button pButton pRipple label="Cancelar" icon="fa fa-times" class="p-button-outlined p-button-warning"
+                (click)="Cancelar()"></button>
+
+            <button pButton pRipple label="Guardar" icon="fa fa-check" class="p-button-outlined p-button-success"
+                (click)="GuardarUsuario()"></button>
+        </div>
+    </ng-template>
+</p-dialog>
