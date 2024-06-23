@@ -20,7 +20,7 @@ export class NavBarComponent implements OnInit {
 
   menu_items: MenuItem[] = [
     { label: 'Home', icon: 'fa-solid fa-house', routerLink: '/' },
-    { label: 'Usuarios', icon: 'fa-solid fa-user', routerLink: '/usuarios' },
+    { label: 'Usuarios', icon: 'fa-solid fa-users', routerLink: '/usuarios' },
     { label: 'Obras Sociales', icon: 'fa-solid fa-clinic-medical', routerLink: '/obras-sociales' },
     { label: 'Especialidades', icon: 'fa-solid fa-stethoscope', routerLink: '/especialidades' },
     { label: 'Turnos', icon: 'fa-solid fa-calendar-alt', routerLink: '/turnos' },
