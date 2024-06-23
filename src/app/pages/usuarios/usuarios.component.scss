@@ -107,3 +107,11 @@ div#table_menu {
         }
     }
 }
+
+:host ::ng-deep .p-dialog {
+    width: 60dvw;
+
+    @media (max-width: 576px) {
+        width: 95vw;
+    }
+}

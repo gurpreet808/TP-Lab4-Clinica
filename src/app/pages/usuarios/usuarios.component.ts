@@ -7,12 +7,12 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule, Table } from 'primeng/table';
-import { Subscription } from 'rxjs';
 import { Especialista, Paciente, Usuario } from '../../modulos/auth/clases/usuario';
 import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { UsuarioService } from '../../modulos/auth/servicios/usuario.service';
 import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
 import { UsuarioItemComponent } from './componentes/usuario-item/usuario-item.component';
+import { UsuarioFormComponent } from '../../componentes/usuario-form/usuario-form.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -25,19 +25,17 @@ import { UsuarioItemComponent } from './componentes/usuario-item/usuario-item.co
     DialogModule,
     IconFieldModule,
     InputIconModule,
-    UsuarioItemComponent
+    UsuarioItemComponent,
+    UsuarioFormComponent
   ],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.scss'
 })
 export class UsuariosComponent implements OnInit {
-  _usuario: Usuario | undefined;
-  _nuevo: boolean = false;
-  usuarios_suscription: Subscription;
-  SEL_Usuarios: Usuario[] = [];
+  tipo_usuario: string = "";
   testing: any;
 
-  itemEdit: boolean = false;
+  editModal: boolean = false;
   globalFilter: string = "";
   filterByParams: string[] = ["nombre", "email"];
   sortField: string = "nombre";
@@ -45,8 +43,7 @@ export class UsuariosComponent implements OnInit {
   sortOptions: SelectItem[] = [
     { label: 'Nombre', value: 'nombre' },
     { label: 'E-Mail', value: 'email' },
-    { label: 'Fecha de creación', value: 'fecha_creacion' },
-    { label: 'Fecha de modificación', value: 'fecha_modificacion' }
+    { label: 'Fecha de creación', value: 'fecha_creacion' }
   ];
 
   constructor(
@@ -57,10 +54,23 @@ export class UsuariosComponent implements OnInit {
   ) {
     this.servSpinner.showWithMessage("usuarios-load", "Cargando datos de usuarios...");
 
-    this.usuarios_suscription = this.servUsuario.usuarios.subscribe(
-      (rta) => {
-
-        console.log("usuarios_suscription", rta);
+    this.servUsuario.Ready().then(
+      () => {
+        console.log("UsuariosComponent", "Ready");
+      }
+    ).catch(
+      (error: any) => {
+        if (typeof error === 'string') {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        } else if (error instanceof Error) {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+        } else {
+          console.error("UsuariosComponent", error);
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+        }
+      }
+    ).finally(
+      () => {
         this.servSpinner.hideWithMessage("usuarios-load");
       }
     );
@@ -74,30 +84,14 @@ export class UsuariosComponent implements OnInit {
     table.clear();
   }
 
-  NuevoUsuario() {
-    this._nuevo = true;
-    this.itemEdit = true;
-  }
-
-  EditarUsuario(_usuario: Usuario) {
-    this._nuevo = false;
-    //Lo ejecuta el evento del item (Output editar)
-    this._usuario = JSON.parse(JSON.stringify(_usuario));
-    this.itemEdit = true;
+  NuevoUsuario(tipo: string) {
+    this.tipo_usuario = tipo;
+    this.editModal = true;
   }
 
   Cancelar() {
     //console.log("Cancelar");
-    this.itemEdit = false;
-    this._nuevo = false;
-    delete this._usuario;
-  }
-
-  async GuardarUsuario() {
-  }
-
-  async BorrarUsuario(_usuario: Usuario) {
-    this.messageService.add({ severity: 'warn', life: 10000, summary: 'En desarrollo', detail: "Función aún no implementada" });
+    this.editModal = false;
   }
 
   async ToogleHabilitarEspecialista(especialista: Especialista) {
@@ -142,6 +136,5 @@ export class UsuariosComponent implements OnInit {
 
   Test(any?: any) {
     console.log("Test", any);
-    console.log("Test", this.SEL_Usuarios);
   }
 }

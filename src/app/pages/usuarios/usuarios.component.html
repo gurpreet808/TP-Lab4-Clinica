@@ -38,13 +38,13 @@
 
                 <div id="acciones_masivas_buttons_container" name="table_menu_row">
                     <button pButton pRipple label="Nuevo admin" icon="fa-solid fa-user-shield" severity="warning"
-                        (click)="NuevoUsuario()"></button>
+                        (click)='NuevoUsuario("admin")'></button>
 
                     <button pButton pRipple label="Nuevo paciente" icon="fa-solid fa-user-injured" severity="info"
-                        (click)="NuevoUsuario()"></button>
+                        (click)='NuevoUsuario("paciente")'></button>
 
                     <button pButton pRipple label="Nuevo especialista" icon="fa-solid fa-user-doctor" severity="success"
-                        (click)="NuevoUsuario()"></button>
+                        (click)='NuevoUsuario("especialista")'></button>
                 </div>
             </div>
         </ng-template>
@@ -69,19 +69,16 @@
     </p-table>
 </div>
 
-<p-dialog [(visible)]="itemEdit" header="Detalles del usuario" [modal]="true" styleClass="p-fluid w-full md:w-11"
-    (onHide)="Cancelar()">
+<p-dialog [(visible)]="editModal" [header]="'Nuevo usuario ' + tipo_usuario" [modal]="true" class="user-modal"
+    styleClass="p-fluid user-modal" (onHide)="Cancelar()">
     <ng-template pTemplate="content">
-        <!-- <app-usuario-form [usuario]="_usuario" [nuevo]="_nuevo"></app-usuario-form> -->
+        <app-usuario-form [tipo_usuario]="tipo_usuario" (UserCreated)="Cancelar()"></app-usuario-form>
     </ng-template>
 
-    <ng-template pTemplate="footer">
+    <!-- <ng-template pTemplate="footer">
         <div id="dialog_acciones_competencia" class="flex justify-content-between">
             <button pButton pRipple label="Cancelar" icon="fa fa-times" class="p-button-outlined p-button-warning"
                 (click)="Cancelar()"></button>
-
-            <button pButton pRipple label="Guardar" icon="fa fa-check" class="p-button-outlined p-button-success"
-                (click)="GuardarUsuario()"></button>
         </div>
-    </ng-template>
+    </ng-template> -->
 </p-dialog>
