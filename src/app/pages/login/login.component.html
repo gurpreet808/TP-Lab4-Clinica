@@ -1,7 +1,6 @@
 <div id="login_container">
     <div id="login_card_container" class="cristal_card">
         <div id="login_header">
-            <!-- <img src="assets/logos/main_logo.jpg" alt="logo"> -->
             <div id="login_title" class="text-900 text-3xl font-medium mb-3">Iniciar sesión</div>
         </div>
 
@@ -25,19 +24,23 @@
 
             <button pButton pRipple label="Registrarse" icon="fa-solid fa-user-plus" class="p-button-secondary"
                 routerLink="/registro"></button>
+        </div>
+    </div>
 
-            <div id="accesos_rapidos_container">
-                <div id="accesos_rapidos_title_container">Accesos rápidos</div>
+    <div id="accesos_rapidos_container" class="cristal_card">
+        <div id="accesos_rapidos_title_container">Accesos rápidos</div>
 
-                <div id="accesos_rapidos_button_container">
-                    @for (usuario of ACCESO_RAPIDO; track $index) {
-                    <p-button pRipple styleClass="p-button-help fullwidth" (click)="AccesoRapido(usuario)">
-                        <span class="ml-2 font-bold">{{usuario.nombre}}</span>
-                        <span class="ml-2 text-sm">({{usuario.tipo}})</span>
-                    </p-button>
-                    }
+        <div id="accesos_rapidos_button_container">
+            @for (usuario of ACCESO_RAPIDO; track $index) {
+            <p-button pRipple [severity]="SeveritySegunTipo(usuario.tipo)" styleClass="fullwidth"
+                (click)="AccesoRapido(usuario)">
+                <div name="acceso_rapido_button">
+                    <div name="acceso_rapido_img_container"><img [src]="usuario.foto"></div>
+                    <div name="acceso_rapido_nombre">{{usuario.nombre}}</div>
+                    <div name="acceso_rapido_tipo">({{usuario.tipo}})</div>
                 </div>
-            </div>
+            </p-button>
+            }
         </div>
     </div>
 </div>

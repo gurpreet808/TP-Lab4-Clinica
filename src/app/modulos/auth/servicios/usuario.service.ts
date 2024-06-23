@@ -126,10 +126,34 @@ export class UsuarioService {
       return Promise.reject('ID nulo');
     };
 
+    if (uid === "") {
+      return Promise.reject('ID vacío');
+    };
+
     let aux_usuarios: Usuario[] = JSON.parse(JSON.stringify(this.usuarios.value));
 
     for (let i = 0; i < aux_usuarios.length; i++) {
       if (aux_usuarios[i].uid == uid) {
+        return aux_usuarios[i];
+      }
+    }
+
+    throw new Error('Usuario no encontrado');
+  }
+
+  async BuscarUsuarioPorMail(email: string): Promise<Usuario> {
+    if (email === null) {
+      return Promise.reject('E-Mail nulo');
+    };
+
+    if (email === "") {
+      return Promise.reject('E-Mail vacío');
+    };
+
+    let aux_usuarios: Usuario[] = JSON.parse(JSON.stringify(this.usuarios.value));
+
+    for (let i = 0; i < aux_usuarios.length; i++) {
+      if (aux_usuarios[i].email == email) {
         return aux_usuarios[i];
       }
     }

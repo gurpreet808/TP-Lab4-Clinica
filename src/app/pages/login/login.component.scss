@@ -1,95 +1,123 @@
 div#login_container {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-evenly;
     align-items: center;
-    height: 100%;
-}
-
-div#login_card_container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    //height: 100%;
-    //max-width: 90dvw;
-    //min-width: 40dvh;
-    min-height: 0px;
-}
-
-div#login_header {
-    display: flex;
+    align-content: space-around;
     flex-wrap: wrap;
-    flex-direction: column;
-    align-items: center;
+    height: 100%;
+    min-height: 0px;
     gap: 1rem;
-
-    img {
-        height: 100px;
+    
+    div#login_card_container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    
+        div#login_header {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+    
+            div#login_title {
+                font-size: 1.75rem;
+                font-weight: 500;
+            }
+        }
+    
+        div#login_form_container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+    
+            div[name="login_form_input"] {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+    
+                label {
+                    font-weight: 500;
+                }
+    
+                input {
+                    width: 100%;
+                }
+            }
+    
+            a#olvide_clave {
+                font-weight: 500;
+                text-decoration: no-underline;
+                color: #0080e9;
+                cursor: pointer;
+                text-align: right;
+    
+                &:hover {
+                    color: #0d4879;
+                }
+            }
+        }
+    
+        div#login_footer {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+            min-height: 0px;
+            height: 100%;
+        }
     }
+    
+    div#accesos_rapidos_container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        max-height: 100%;
+        min-height: 0px;
+        gap: 0.5rem;
 
-    div#login_title {
-        font-size: 1.75rem;
-        font-weight: 500;
+        div#accesos_rapidos_title_container{
+            font-weight: 500;
+            font-size: 1rem;
+        }
+    
+        div#accesos_rapidos_button_container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+            height: 100%;
+            min-height: 0px;
+    
+            div[name="acceso_rapido_button"] {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.25rem;
+    
+                div[name="acceso_rapido_img_container"] {
+                    width: 3rem;
+                    height: 3rem;
+                    border-radius: 50%;
+                    overflow: hidden;
+    
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+    
+                div[name="acceso_rapido_tipo"] {
+                    font-size: 0.80rem;
+                    color: rgb(230, 230, 230);
+                }
+            }
+        }
+    
     }
-}
-
-div#login_form_container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-div[name="login_form_input"] {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-
-    label {
-        font-weight: 500;
-    }
-
-    input {
-        width: 100%;
-    }
-}
-
-div#login_footer {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
-    min-height: 0px;
-    height: 100%;
-}
-
-a#olvide_clave {
-    font-weight: 500;
-    text-decoration: no-underline;
-    color: #0080e9;
-    cursor: pointer;
-    text-align: right;
-
-    &:hover {
-        color: #0d4879;
-    }
-}
-
-div#accesos_rapidos_container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
-    height: 100%;
-    min-height: 0px;
-    overflow: auto;
-}
-
-div#accesos_rapidos_button_container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
-    height: 100%;
-    min-height: 0px;
 }

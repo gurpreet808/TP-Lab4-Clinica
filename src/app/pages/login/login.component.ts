@@ -8,6 +8,9 @@ import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { MessageService } from 'primeng/api';
 import { UserCredential } from '@angular/fire/auth';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UsuarioService } from '../../modulos/auth/servicios/usuario.service';
+import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
+import { Usuario } from '../../modulos/auth/clases/usuario';
 
 @Component({
   selector: 'app-login',
@@ -27,13 +30,36 @@ export class LoginComponent implements OnInit {
   clave: string = '';
 
   readonly ACCESO_RAPIDO = [
-    { nombre: "Esteban Quito", mail: "esteban@cj.MintEmail.com", tipo: "paciente", clave: "1q2w3e4r5t", foto: "" },
-    { nombre: "Elsa Pallo", mail: "elsa@cj.MintEmail.com", tipo: "paciente", clave: "1q2w3e4r5t", foto: "" },
-    { nombre: "Elvis Tek", mail: "elvis@cj.MintEmail.com", tipo: "especialista", clave: "1q2w3e4r5t" },
-    { nombre: "Armando Paredes", mail: "admin@cj.MintEmail.com", tipo: "admin", clave: "1q2w3e4r5t", foto: "" },
+    { nombre: "Armando Paredes", mail: "armando@cj.MintEmail.com", tipo: "admin", clave: "Admin.1234", foto: "" },
+    { nombre: "Cindy Entes", mail: "cindy@cj.MintEmail.com", tipo: "especialista", clave: "Especialista.1234", foto: "" },
+    { nombre: "Elvis Tek", mail: "elvis@cj.MintEmail.com", tipo: "especialista", clave: "Especialista.1234" },
+    { nombre: "Rubén Fermizo", mail: "ruben@cj.MintEmail.com", tipo: "paciente", clave: "Paciente.1234", foto: "" },
+    { nombre: "Elba Lazo", mail: "elba@cj.MintEmail.com", tipo: "paciente", clave: "Paciente.1234", foto: "" },
+    { nombre: "Elsa Pallo", mail: "elsa@cj.MintEmail.com", tipo: "paciente", clave: "Paciente.1234", foto: "" },
   ]
 
-  constructor(public router: Router, public servAuth: AuthService, public messageService: MessageService) {
+  constructor(public router: Router, public servAuth: AuthService, public servUsuario: UsuarioService, public messageService: MessageService, servSpinner: SpinnerService) {
+    servSpinner.showWithMessage('login-init', 'Cargando...');
+    this.servUsuario.Ready().then(
+      (rta: any) => {
+        this.AsignarFotos();
+      }
+    ).catch(
+      (error: any) => {
+        if (typeof error === 'string') {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        } else if (error instanceof Error) {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+        } else {
+          console.error("Ready", error);
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+        }
+      }
+    ).finally(
+      () => {
+        servSpinner.hideWithMessage('login-init');
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -68,6 +94,40 @@ export class LoginComponent implements OnInit {
         //this.messageService.add({ severity: 'error', life: 10000, summary: 'Error desconocido', detail: 'Revise la consola' });
       }
     );
+  }
+
+  SeveritySegunTipo(tipo: string): "success" | "info" | "warning" | "danger" | "help" | "primary" | "secondary" | "contrast" | null | undefined {
+    switch (tipo) {
+      case 'paciente':
+        return 'info';
+      case 'especialista':
+        return 'success';
+      case 'admin':
+        return 'warning';
+      default:
+        return 'primary';
+    }
+  }
+
+  AsignarFotos() {
+    for (let a = 0; a < this.ACCESO_RAPIDO.length; a++) {
+      this.servUsuario.BuscarUsuarioPorMail(this.ACCESO_RAPIDO[a].mail).then(
+        (usuario: Usuario) => {
+          this.ACCESO_RAPIDO[a].foto = usuario.url_foto_1;
+        }
+      ).catch(
+        (error: any) => {
+          if (typeof error === 'string') {
+            this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+          } else if (error instanceof Error) {
+            this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+          } else {
+            console.error("AsignarFoto", error);
+            this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+          }
+        }
+      );
+    }
   }
 
   AccesoRapido(usuario: any) {
