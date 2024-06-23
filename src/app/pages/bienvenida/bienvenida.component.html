@@ -46,8 +46,8 @@
                 icon="fa-solid fa-envelope" (click)="EnviarMailVerificacion()"></button>
             }
 
-            @if (servAuth.usuarioActual.value && servAuth.usuarioActual.value.tipo == "especialista" &&
-            !servAuth.GetUsuarioAsEspecialista()?.habilitado) {
+            @if ((servAuth.usuarioActual.value && servAuth.usuarioActual.value.tipo == "especialista" &&
+            !servAuth.GetUsuarioAsEspecialista()?.habilitado) || (servAuth.logueado == true && servAuth.emailVerified == false)) {
             <button pButton label="Desloguear" icon="fas fa-sign-out-alt" class="p-button-danger" iconPos="right"
                 (click)="Desloguear()"></button>
             }
