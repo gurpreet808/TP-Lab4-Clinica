@@ -11,7 +11,6 @@ export interface Usuario {
     edad: number;
     url_foto_1: string;
     fecha_alta: Date;
-    fecha_modificacion: Date;
 }
 
 export interface Especialista extends Usuario {
@@ -22,6 +21,5 @@ export interface Especialista extends Usuario {
 
 export interface Paciente extends Usuario {
     url_foto_2: string;
-    //guarda el id de la obra social
-    obra_social: string;
+    obra_social: string; //Guarda el ID de la obra social
 }

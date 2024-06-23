@@ -42,7 +42,6 @@ export class UsuarioService {
         usuarios.forEach(
           (usuario: Usuario) => {
             usuario.fecha_alta = new Date((usuario.fecha_alta as any).seconds * 1000 + (usuario.fecha_alta as any).nanoseconds/1000000);
-            usuario.fecha_modificacion = new Date((usuario.fecha_modificacion as any).seconds * 1000 + (usuario.fecha_modificacion as any).nanoseconds/1000000);
             
             if (usuario.tipo == 'especialista') {
               if ((usuario as Especialista).disponibilidades == undefined) {

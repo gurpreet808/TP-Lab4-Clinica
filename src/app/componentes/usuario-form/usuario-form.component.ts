@@ -182,7 +182,6 @@ export class UsuarioFormComponent implements OnInit, OnChanges {
         edad: this.getControlValue('edad'),
         url_foto_1: this.getControlValue('url_foto_1'),
         fecha_alta: new Date(),
-        fecha_modificacion: new Date(),
       }
 
       switch (usuario.tipo) {
