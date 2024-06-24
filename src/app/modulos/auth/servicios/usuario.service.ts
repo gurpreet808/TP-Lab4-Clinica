@@ -41,8 +41,8 @@ export class UsuarioService {
 
         usuarios.forEach(
           (usuario: Usuario) => {
-            usuario.fecha_alta = new Date((usuario.fecha_alta as any).seconds * 1000 + (usuario.fecha_alta as any).nanoseconds/1000000);
-            
+            usuario.fecha_alta = new Date((usuario.fecha_alta as any).seconds * 1000 + (usuario.fecha_alta as any).nanoseconds / 1000000);
+
             if (usuario.tipo == 'especialista') {
               if ((usuario as Especialista).disponibilidades == undefined) {
                 (usuario as Especialista).disponibilidades = [];
@@ -159,6 +159,14 @@ export class UsuarioService {
     }
 
     throw new Error('Usuario no encontrado');
+  }
+
+  GetUserAsPaciente(_usuario: Usuario): Paciente {
+    return _usuario as Paciente;
+  }
+
+  GetUserAsEspecialista(_usuario: Usuario): Especialista {
+    return _usuario as Especialista;
   }
 
   async Ready(): Promise<boolean> {

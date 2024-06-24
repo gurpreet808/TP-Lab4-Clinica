@@ -1,0 +1,16 @@
+@if (servAuth.usuarioActual.value) {
+<div id="mi_perfil_container">
+    <div id="mi_perfil_card" class="cristal_card" [class.paciente]='servAuth.usuarioActual.value.tipo == "paciente"'
+        [class.especialista]='servAuth.usuarioActual.value.tipo == "especialista"'
+        [class.admin]='servAuth.usuarioActual.value.tipo == "admin"'>
+        <app-usuario-item [usuario]="servAuth.usuarioActual.value"></app-usuario-item>
+    </div>
+
+    @if (servAuth.usuarioActual.value.tipo == "especialista") {
+    <div id="mis_horarios_container">
+        Mis Horarios
+    </div>
+    }
+
+</div>
+}

@@ -1,0 +1,77 @@
+@if (usuario) {
+<div name="usuario_item" [class.paciente]='usuario.tipo == "paciente"'
+    [class.especialista]='usuario.tipo == "especialista"' [class.admin]='usuario.tipo == "admin"'>
+    <div name="usuario_item_imgs_container">
+        <div name="usuario_item_img1" style="height: 100px; width: 100px;">
+            <img [src]="usuario.url_foto_1" alt="" style="height: 100%; width: 100%; object-fit: contain;">
+        </div>
+
+        @if (usuario.tipo == "paciente") {
+        <div name="usuario_item_img2" style="height: 100px; width: 100px;">
+            <img [src]="GetUserAsPaciente().url_foto_2" alt="" style="height: 100%; width: 100%; object-fit: contain;">
+        </div>
+        }
+    </div>
+
+    <div name="usuario_item_info">
+        <div name="usuario_item_info_nombre_container" class="usuario_item_info_group">
+            <label name="usuario_item_info_nombre_label">Nombre</label>
+            <div name="usuario_item_info_nombre_value">{{usuario.nombre}}</div>
+        </div>
+
+        <div name="usuario_item_info_apellido_container" class="usuario_item_info_group">
+            <label name="usuario_item_info_apellido_label">Apellido</label>
+            <div name="usuario_item_info_apellido_value">{{usuario.apellido}}</div>
+        </div>
+
+        <div name="usuario_item_info_email_container" class="usuario_item_info_group">
+            <label name="usuario_item_info_email_label">E-Mail</label>
+            <div name="usuario_item_info_email_value">{{usuario.email}}</div>
+        </div>
+
+        <div name="usuario_item_info_tipo_container" class="usuario_item_info_group">
+            <label name="usuario_item_info_tipo_label">Tipo</label>
+            <div name="usuario_item_info_tipo_value">{{usuario.tipo}}</div>
+        </div>
+
+        <div name="usuario_item_info_dni_container" class="usuario_item_info_group">
+            <label name="usuario_item_info_dni_label">DNI</label>
+            <div name="usuario_item_info_dni_value">{{usuario.dni}}</div>
+        </div>
+
+        <div name="usuario_item_info_edad_container" class="usuario_item_info_group">
+            <label name="usuario_item_info_edad_label">Edad</label>
+            <div name="usuario_item_info_edad_value">{{usuario.edad}}</div>
+        </div>
+
+        <div name="usuario_item_info_fecha_alta_container" class="usuario_item_info_group">
+            <label name="usuario_item_info_fecha_alta_label">Fecha alta</label>
+            <div name="usuario_item_info_fecha_alta_value">{{usuario.fecha_alta |
+                date:'dd/MM/yyyy HH:mm'}}</div>
+        </div>
+
+        @if (usuario.tipo == "paciente") {
+        <div name="usuario_item_info_obra_social_container" class="usuario_item_info_group">
+            <label name="usuario_item_info_obra_social_label">Obra social</label>
+            <div name="usuario_item_info_obra_social_value">{{GetUserAsPaciente().obra_social | obraSocial | async}}
+            </div>
+        </div>
+        }
+
+        @if (usuario.tipo == "especialista") {
+        <div name="usuario_item_info_habilitado_container" class="usuario_item_info_group">
+            <label name="usuario_item_info_habilitado_label">Habilitado</label>
+            <div name="usuario_item_info_habilitado_value">{{GetUserAsEspecialista().habilitado ? 'Sí' : 'No'}}
+            </div>
+        </div>
+
+        <div name="usuario_item_info_especialidades_container" class="usuario_item_info_group">
+            <label name="usuario_item_info_especialidades_label">Especialidades</label>
+            @for (especialidad of GetUserAsEspecialista().especialidades; track $index) {
+            <div name="usuario_item_info_especialidades_value">{{especialidad | especialidad | async}}</div>
+            }
+        </div>
+        }
+    </div>
+</div>
+}

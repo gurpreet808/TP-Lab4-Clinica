@@ -22,3 +22,20 @@ body {
 .fullwidth {
     width: 100%;
 }
+
+//define var colors for especialista, admin and paciente
+$especialista: rgb(123, 219, 124);
+$admin: rgb(235, 191, 58);
+$paciente: #49c6ff;
+
+.especialista {
+    background-color: $especialista;
+}
+
+.admin {
+    background-color: $admin;
+}
+
+.paciente {
+    background-color: $paciente;
+}

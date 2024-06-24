@@ -1,6 +1,6 @@
 <div id="usuarios_table_container">
     <p-table #dt_usuarios id="dt_usuarios" [value]="servUsuario.usuarios.value" dataKey="id" [scrollable]="true"
-        scrollHeight="flex" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true"
+        scrollHeight="flex" [rows]="10" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
 
@@ -56,7 +56,23 @@
         <ng-template pTemplate="body" let-usuario_item>
             <tr>
                 <td>
-                    <app-usuario-item [usuario]="usuario_item" (action)="actionHandler($event)"></app-usuario-item>
+                    <div name="usuario_item_card" [class.paciente]='usuario_item.tipo == "paciente"'
+                        [class.especialista]='usuario_item.tipo == "especialista"'
+                        [class.admin]='usuario_item.tipo == "admin"'>
+                        <app-usuario-item [usuario]="usuario_item" (action)="actionHandler($event)"></app-usuario-item>
+
+                        <div name="usuario_item_buttons">
+                            @if (usuario_item.tipo == "especialista") {
+                            <button pButton pRipple type="button"
+                                [icon]="servUsuario.GetUserAsEspecialista(usuario_item).habilitado ? 'fa-regular fa-rectangle-xmark' : 'fa-regular fa-square-check'"
+                                [label]="servUsuario.GetUserAsEspecialista(usuario_item).habilitado ? 'Deshabilitar' : 'Habilitar'"
+                                (click)="ToogleHabilitarEspecialista(servUsuario.GetUserAsEspecialista(usuario_item))"
+                                [rounded]="true"
+                                [severity]="servUsuario.GetUserAsEspecialista(usuario_item).habilitado ? 'contrast' : 'secondary'"></button>
+                            }
+                        </div>
+                    </div>
+
                 </td>
             </tr>
         </ng-template>

@@ -1,0 +1,35 @@
+div[name="usuario_item"] {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.25rem;
+
+    div[name="usuario_imgs_container"] {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    div[name="usuario_item_info"] {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+
+        .usuario_item_info_group {
+            label {
+                font-size: 0.75rem;
+                color: #686868;
+            }
+
+            div {
+                font-size: 1rem;
+                font-weight: bold;
+                //if text too long break the word
+                word-break: break-word;
+            }
+        }
+    }
+}

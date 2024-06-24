@@ -11,8 +11,8 @@ import { Especialista, Paciente, Usuario } from '../../modulos/auth/clases/usuar
 import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { UsuarioService } from '../../modulos/auth/servicios/usuario.service';
 import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
-import { UsuarioItemComponent } from './componentes/usuario-item/usuario-item.component';
 import { UsuarioFormComponent } from '../../componentes/usuario-form/usuario-form.component';
+import { UsuarioItemComponent } from '../../componentes/usuario-item/usuario-item.component';
 
 @Component({
   selector: 'app-usuarios',

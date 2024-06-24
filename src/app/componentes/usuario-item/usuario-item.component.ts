@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Especialista, Paciente, Usuario } from '../../../../modulos/auth/clases/usuario';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { EspecialidadPipe } from '../../../../pipes/especialidad.pipe';
-import { ObraSocialPipe } from '../../../../pipes/obra-social.pipe';
+import { Usuario, Paciente, Especialista } from '../../modulos/auth/clases/usuario';
+import { EspecialidadPipe } from '../../pipes/especialidad.pipe';
+import { ObraSocialPipe } from '../../pipes/obra-social.pipe';
 
 @Component({
   selector: 'app-usuario-item',
