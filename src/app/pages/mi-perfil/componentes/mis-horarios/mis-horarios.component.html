@@ -59,10 +59,13 @@
         </div>
     </form>
 
-    <div id="formgroup_errors_container">
-        <!-- Emprolijar esto y que marque en rojo el dia y horarios -->
-        {{ horarioForm.errors | json }}
+    @if(horarioForm.hasError('superposicionHorarios')){
+    <div id="formgroup_errors_container" name="error_container">
+        <small>
+            {{ horarioForm.getError('superposicionHorarios')?.mensaje }}
+        </small>
     </div>
+    }
 
     <div id="especialista_horarios_container">
         <p-table [value]="especialista.disponibilidades">

@@ -1,8 +1,8 @@
-import { AbstractControl, AsyncValidatorFn, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { DisponibilidadEspecialidad } from '../clases/disponibilidad';
+import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { Disponibilidad, DisponibilidadEspecialidad } from '../clases/disponibilidad';
 
-export function superposicionHorariosPropios(disponibilidades: DisponibilidadEspecialidad[], disponibilidadEditada?: DisponibilidadEspecialidad): AsyncValidatorFn {
-  return async (formGroup: AbstractControl) => {
+export function superposicionHorariosPropios(disponibilidades: DisponibilidadEspecialidad[], disponibilidadEditada?: DisponibilidadEspecialidad): ValidatorFn {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
     console.log('Ejecutando validación de superposición...');
 
     const diaControl = formGroup.get('dia');
@@ -17,9 +17,11 @@ export function superposicionHorariosPropios(disponibilidades: DisponibilidadEsp
       return null;
     }
 
+    let superposicion: Disponibilidad | undefined;
+
     for (const disponibilidad of disponibilidades) {
       if (
-        disponibilidad !== disponibilidadEditada && // Ignorar disponibilidad editada
+        disponibilidad !== disponibilidadEditada &&
         disponibilidad.dia === dia &&
         (
           (horaInicio >= disponibilidad.hora_inicio && horaInicio < disponibilidad.hora_fin) ||
@@ -29,14 +31,28 @@ export function superposicionHorariosPropios(disponibilidades: DisponibilidadEsp
       ) {
         console.log('Se encontró una superposición con:', disponibilidad);
 
-        // Establecer el error en el control hora_fin
-        let errors = horaFinControl.errors || {};
-        horaFinControl.setErrors({ ...errors, superposicionHorarios: true });
-        return { superposicionHorarios: true }; // Error a nivel de formulario
+        superposicion = disponibilidad;
       }
     }
 
-    console.log('No se encontraron superposiciones.');
-    return null;
+    if (superposicion != undefined) {
+      diaControl.setErrors({ superposicion: true });
+      horaInicioControl.setErrors({ superposicion: true });
+      horaFinControl.setErrors({ superposicion: true });
+
+      return {
+        superposicionHorarios: {
+          mensaje: `Se solapan esos horarios para ese día de ${superposicion.hora_inicio}:00 a ${superposicion.hora_fin}:00 hs.`
+        }
+      };
+    } else {
+      diaControl.setErrors(null);
+      horaInicioControl.setErrors(null);
+      horaFinControl.setErrors(null);
+
+      console.log('No se encontraron superposiciones.');
+      return null;
+    }
+
   };
 }

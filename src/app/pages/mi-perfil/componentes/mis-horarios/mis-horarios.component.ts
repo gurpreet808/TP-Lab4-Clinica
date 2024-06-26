@@ -78,7 +78,6 @@ export class MisHorariosComponent implements OnInit {
     private formBuilder: FormBuilder,
     private servUsuario: UsuarioService,
     private servEspecialidad: EspecialidadService,
-    private servDisponibilidad: DisponibilidadService,
     private servSpinner: SpinnerService,
     private messageService: MessageService
   ) {
@@ -93,15 +92,15 @@ export class MisHorariosComponent implements OnInit {
       }
     );
 
-    
+
     this.especialidades_suscription = this.servEspecialidad.especialidades.subscribe(
       (especialidades) => {
         this.especialidades = especialidades;
       }
     );
-    
+
   }
-  
+
   ngOnInit(): void {
     this.servEspecialidad.Ready().then(
       () => { }
@@ -114,9 +113,9 @@ export class MisHorariosComponent implements OnInit {
         this.servSpinner.hideWithMessage('mis-horarios-init');
       }
     );
-    
-    this.horarioForm.setAsyncValidators([superposicionHorariosPropios(this.especialista.disponibilidades)])
-    
+
+    this.horarioForm.setValidators([superposicionHorariosPropios(this.especialista.disponibilidades)])
+
     // Forzar revalidaciones de los campos de hora_inicio y hora_fin al cambiar el día
     this.horarioForm.get('dia')!.valueChanges.subscribe(() => {
       this.horarioForm.get('hora_inicio')!.updateValueAndValidity();
@@ -138,7 +137,7 @@ export class MisHorariosComponent implements OnInit {
       especialidad: _disponibilidad.especialidad
     });
 
-    this.horarioForm.setAsyncValidators([superposicionHorariosPropios(this.especialista.disponibilidades, this.disponibilidadSeleccionada)]);
+    this.horarioForm.setValidators([superposicionHorariosPropios(this.especialista.disponibilidades, this.disponibilidadSeleccionada)]);
     this.horarioForm.updateValueAndValidity();
     this.horarioForm.markAllAsTouched();
   }
@@ -196,7 +195,7 @@ export class MisHorariosComponent implements OnInit {
     this.servUsuario.Modificar(this.especialista).then(
       () => {
         if (this.disponibilidadSeleccionada == _disponibilidad) {
-          this.CancelarEdicion();  
+          this.CancelarEdicion();
         }
 
         this.messageService.add({ severity: 'success', life: 10000, summary: 'Éxito', detail: 'Disponibilidad eliminada correctamente.' });
