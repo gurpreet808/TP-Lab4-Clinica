@@ -25,7 +25,7 @@ export function horaFinValida(): AsyncValidatorFn {
       const disponibilidadClinica = await disponibilidadService.DisponibilidadTotalClinicaPorDia(dia);
 
       if (horaFin > disponibilidadClinica.hora_fin) {
-        return { horaFinMayorClinica: { mensaje: `La hora de fin no puede ser posterior a las ${disponibilidadClinica.hora_fin}:00` } };
+        return { horaFinMayorClinica: { mensaje: `La clínica ese día termina de atender a las ${disponibilidadClinica.hora_fin}:00` } };
       }
 
       if (horaFin <= horaInicio) {
