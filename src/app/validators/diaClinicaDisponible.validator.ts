@@ -8,8 +8,8 @@ export function diaClinicaDisponible(): AsyncValidatorFn {
   return async (control: AbstractControl) => {
     const dia = control.value;
     try {
-      await disponibilidadService.DisponibilidadesClinicaPorDia(dia);
-      return null;
+      const disponibilidades = await disponibilidadService.DisponibilidadesClinicaPorDia(dia);
+      return disponibilidades.some(d => d.dia === dia) ? null : { diaClinicaDisponible: { mensaje: "La clínica no atiende ese día" } };
     } catch (error) {
       return { diaClinicaDisponible: { mensaje: "La clínica no atiende ese día" } };
     };
