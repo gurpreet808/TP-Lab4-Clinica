@@ -53,8 +53,10 @@ export class ShowValidationErrorsDirective implements OnInit, OnDestroy {
 
     if (control && control.invalid && (control.dirty || control.touched)) {
       for (const errorKey of Object.keys(control.errors || {})) {
+        let message: string = '';
+
         if (this.validationMessages[errorKey]) {
-          let message = this.validationMessages[errorKey];
+          message = this.validationMessages[errorKey];
 
           if (errorKey === 'min' || errorKey === 'max') {
             if (control.errors && control.errors[errorKey][errorKey]) {
@@ -62,6 +64,14 @@ export class ShowValidationErrorsDirective implements OnInit, OnDestroy {
             }
           }
 
+        }
+
+        // Manejar errores con propiedad 'mensaje'
+        if (control.errors && control.errors[errorKey] && control.errors[errorKey].mensaje) {
+          message = control.errors[errorKey].mensaje;
+        }
+
+        if (message) {
           messages.push(message);
         }
       }
