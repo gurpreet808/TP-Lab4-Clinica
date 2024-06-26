@@ -3,7 +3,7 @@ import { Disponibilidad, DisponibilidadEspecialidad } from '../clases/disponibil
 
 export function superposicionHorariosPropios(disponibilidades: DisponibilidadEspecialidad[], disponibilidadEditada?: DisponibilidadEspecialidad): ValidatorFn {
   return (formGroup: AbstractControl): ValidationErrors | null => {
-    console.log('Ejecutando validación de superposición...');
+    //console.log('Ejecutando validación de superposición...');
 
     const diaControl = formGroup.get('dia');
     const horaInicioControl = formGroup.get('hora_inicio');
@@ -13,7 +13,7 @@ export function superposicionHorariosPropios(disponibilidades: DisponibilidadEsp
     const horaFin = horaFinControl?.value;
 
     if (!dia || !horaInicio || !horaFin) {
-      console.log('Faltan datos para la validación.');
+      //console.log('Faltan datos para la validación.');
       return null;
     }
 
