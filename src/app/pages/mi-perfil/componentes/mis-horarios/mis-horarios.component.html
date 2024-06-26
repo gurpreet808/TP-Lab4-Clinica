@@ -46,38 +46,62 @@
             <div id="hora_fin_error_container" name="error_container"></div>
         </div>
 
-        <div id="submit_container">
-            <button type="submit" pButton pRipple class="p-button-primary" [disabled]="!horarioForm.valid"
-                (click)="GuardarDisponibilidad()">Guardar</button>
+        <div id="submit_container" class="action_buttons_container">
+            <button type="submit" pButton pRipple label="Guardar" severity="primary" icon="fa fa-save"
+                [disabled]="!horarioForm.valid" (click)="GuardarDisponibilidad()"></button>
 
             @if (disponibilidadSeleccionada) {
-            <button type="submit" pButton pRipple class="p-button-secondary"
-                (click)="CancelarEdicion()">Cancelar</button>
+            <button type="submit" pButton pRipple label="Cancelar edición" severity="warning" icon="fa fa-times"
+                (click)="CancelarEdicion()"></button>
             }
 
-            <button pButton pRipple class="p-button-primary" (click)="logForm()">Log form</button>
+            <button pButton pRipple severity="secondary" label="Log form" (click)="logForm()"></button>
         </div>
     </form>
 
-    <div>
-        @for (disponibilidad of especialista.disponibilidades; track $index) {
-        <div [class.editando]="disponibilidadSeleccionada == disponibilidad">
-            <span>
-                <div name="disponibilidad_content">
-                    <div name="disponibilidad_dia">Dia: {{disponibilidad.dia | dia}}</div>
-                    <div name="disponibilidad_horario">Horario: {{disponibilidad.hora_inicio}} a
-                        {{disponibilidad.hora_fin}}</div>
-                    <div name="disponibilidad_especialidad">Especialidad: {{disponibilidad.especialidad |
-                        especialidad | async}}
-                    </div>
-                </div>
-            </span>
-            <span>
-                <button pButton label="Editar" (click)="EditarDisponibilidad(disponibilidad)"></button>
-                <button pButton label="Eliminar" (click)="BorrarDisponibilidad(disponibilidad)"></button>
-            </span>
-        </div>
-        }
+    <div id="formgroup_errors_container">
+        <!-- Emprolijar esto y que marque en rojo el dia y horarios -->
+        {{ horarioForm.errors | json }}
+    </div>
+
+    <div id="especialista_horarios_container">
+        <p-table [value]="especialista.disponibilidades">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="especialidad">
+                        Especialidad <p-sortIcon field="especialidad" />
+                    </th>
+                    <th pSortableColumn="dia">
+                        Día <p-sortIcon field="dia" />
+                    </th>
+                    <th pSortableColumn="hora_inicio">
+                        Hora inicio <p-sortIcon field="hora_inicio" />
+                    </th>
+                    <th pSortableColumn="hora_fin">
+                        Hora fin <p-sortIcon field="hora_fin" />
+                    </th>
+                    <th>
+                        Acciones
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-disponibilidad>
+                <tr [class.editando]="disponibilidadSeleccionada == disponibilidad">
+                    <td>{{ disponibilidad.especialidad | especialidad | async }}</td>
+                    <td>{{ disponibilidad.dia | dia }}</td>
+                    <td>{{ disponibilidad.hora_inicio }}</td>
+                    <td>{{ disponibilidad.hora_fin }}</td>
+                    <td>
+                        <div name="especialista_horarios_action_container" class="action_buttons_container">
+                            <button pButton label="Editar" severity="success" icon="fa fa-pencil"
+                                (click)="EditarDisponibilidad(disponibilidad)"></button>
+                            <button pButton label="Eliminar" severity="danger" icon="fa fa-trash"
+                                (click)="BorrarDisponibilidad(disponibilidad)"></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
     </div>
     }
 

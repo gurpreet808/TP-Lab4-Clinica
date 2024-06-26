@@ -3,7 +3,7 @@ div#mis_horarios_container>form {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
-    align-items: baseline;
+    align-items: stretch;
 }
 
 div[name="horarios_form_input"] {
@@ -12,8 +12,15 @@ div[name="horarios_form_input"] {
     gap: 0.25rem;
 }
 
+.action_buttons_container {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+}
+
 .editando {
-    background: rgba(7, 7, 7, 0.35);
+    background: lightblue;
 }
 
 div[name="error_container"] {

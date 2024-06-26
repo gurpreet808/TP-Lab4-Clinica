@@ -21,6 +21,7 @@ import { diaClinicaDisponible } from '../../../../validators/diaClinicaDisponibl
 import { horaInicioValida } from '../../../../validators/horaInicioValida.validator';
 import { horaFinValida } from '../../../../validators/horaFinValida.validator';
 import { superposicionHorariosPropios } from '../../../../validators/superposicionHorariosPropios.validator';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-mis-horarios',
@@ -31,6 +32,7 @@ import { superposicionHorariosPropios } from '../../../../validators/superposici
     ButtonModule,
     InputNumberModule,
     DropdownModule,
+    TableModule,
     EspecialidadPipe,
     DiaPipe,
     AsyncPipe,
@@ -138,6 +140,7 @@ export class MisHorariosComponent implements OnInit {
 
     this.horarioForm.setAsyncValidators([superposicionHorariosPropios(this.especialista.disponibilidades, this.disponibilidadSeleccionada)]);
     this.horarioForm.updateValueAndValidity();
+    this.horarioForm.markAllAsTouched();
   }
 
   async GuardarDisponibilidad() {
@@ -192,6 +195,10 @@ export class MisHorariosComponent implements OnInit {
 
     this.servUsuario.Modificar(this.especialista).then(
       () => {
+        if (this.disponibilidadSeleccionada == _disponibilidad) {
+          this.CancelarEdicion();  
+        }
+
         this.messageService.add({ severity: 'success', life: 10000, summary: 'Éxito', detail: 'Disponibilidad eliminada correctamente.' });
       }
     ).catch(
