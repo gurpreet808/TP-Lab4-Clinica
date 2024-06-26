@@ -53,12 +53,18 @@ export class DisponibilidadService {
   }
 
   async DisponibilidadTotalClinicaPorDia(dia: number): Promise<Disponibilidad> {
-    const disponibilidades = await this.DisponibilidadesClinicaPorDia(dia);
+    return this.DisponibilidadesClinicaPorDia(dia).then(
+      (disponibilidades) => {
+        const minHoraInicio = Math.min(...disponibilidades.map(d => d.hora_inicio));
+        const maxHoraFin = Math.max(...disponibilidades.map(d => d.hora_fin));
 
-    const minHoraInicio = Math.min(...disponibilidades.map(d => d.hora_inicio));
-    const maxHoraFin = Math.max(...disponibilidades.map(d => d.hora_fin));
-
-    return { dia, hora_inicio: minHoraInicio, hora_fin: maxHoraFin };
+        return { dia, hora_inicio: minHoraInicio, hora_fin: maxHoraFin };
+      }
+    ).catch(
+      (error) => {
+        throw new Error('No hay disponibilidad para ese día');
+      }
+    );
   }
 
   async DisponibilidadEspecialidadDeEspecialistaPorDia(_dia: number, _especialidad_id: string, _disponibilidades: DisponibilidadEspecialidad[]): Promise<DisponibilidadEspecialidad[]> {

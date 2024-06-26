@@ -17,6 +17,10 @@ import { EspecialidadService } from '../../../../servicios/especialidad.service'
 import { Subscription } from 'rxjs';
 import { ValidatorMessage } from '../../../../clases/validator-message';
 import { ShowValidationErrorsDirective } from '../../../../directivas/show-validation-errors.directive';
+import { diaClinicaDisponible } from '../../../../validators/diaClinicaDisponible.validator';
+import { horaInicioValida } from '../../../../validators/horaInicioValida.validator';
+import { horaFinValida } from '../../../../validators/horaFinValida.validator';
+import { superposicionHorariosPropios } from '../../../../validators/superposicionHorariosPropios.validator';
 
 @Component({
   selector: 'app-mis-horarios',
@@ -62,7 +66,10 @@ export class MisHorariosComponent implements OnInit {
     min: 'Este campo debe ser como mínimo {requiredLength}.',
     max: 'Este campo debe ser como máximo {requiredLength}.',
     pattern: 'El formato de este campo no es válido.',
-    //Agregar mensajes de validación de los validadores personalizados
+    horasInvalidas: 'La hora de fin debe ser mayor que la hora de inicio.',
+    horarioClinicaInvalido: 'El horario seleccionado no está dentro del rango de disponibilidad de la clínica.',
+    horarioInicioTarde: 'La hora de inicio debe ser al menos una hora antes del cierre de la clínica.',
+    superposicionHorarioPropio: 'Ya existe una disponibilidad para ese horario y especialidad.'
   };
 
   constructor(
@@ -78,20 +85,21 @@ export class MisHorariosComponent implements OnInit {
     this.horarioForm = this.formBuilder.group(
       {
         especialidad: ['', [Validators.required]],
-        dia: ['', [Validators.required]],
-        hora_inicio: [undefined, [Validators.required, Validators.minLength(0), Validators.max(23)]],
-        hora_fin: [undefined, [Validators.required, Validators.minLength(0), Validators.max(23)]]
+        dia: ['', [Validators.required], [diaClinicaDisponible()]],
+        hora_inicio: [undefined, [Validators.required, Validators.min(0), Validators.max(23)], [horaInicioValida()]],
+        hora_fin: [undefined, [Validators.required, Validators.min(0), Validators.max(23)], [horaFinValida()]]
       }
     );
 
+    
     this.especialidades_suscription = this.servEspecialidad.especialidades.subscribe(
       (especialidades) => {
         this.especialidades = especialidades;
       }
     );
-
+    
   }
-
+  
   ngOnInit(): void {
     this.servEspecialidad.Ready().then(
       () => { }
@@ -104,6 +112,14 @@ export class MisHorariosComponent implements OnInit {
         this.servSpinner.hideWithMessage('mis-horarios-init');
       }
     );
+    
+    this.horarioForm.setAsyncValidators([superposicionHorariosPropios(this.especialista.disponibilidades)])
+    
+    // Forzar revalidaciones de los campos de hora_inicio y hora_fin al cambiar el día
+    this.horarioForm.get('dia')!.valueChanges.subscribe(() => {
+      this.horarioForm.get('hora_inicio')!.updateValueAndValidity();
+      this.horarioForm.get('hora_fin')!.updateValueAndValidity();
+    });
   }
 
   ngOnDestroy(): void {
@@ -119,6 +135,9 @@ export class MisHorariosComponent implements OnInit {
       hora_fin: _disponibilidad.hora_fin,
       especialidad: _disponibilidad.especialidad
     });
+
+    this.horarioForm.setAsyncValidators([superposicionHorariosPropios(this.especialista.disponibilidades, this.disponibilidadSeleccionada)]);
+    this.horarioForm.updateValueAndValidity();
   }
 
   async GuardarDisponibilidad() {
@@ -203,6 +222,10 @@ export class MisHorariosComponent implements OnInit {
     }
 
     return false;
+  }
+
+  logForm() {
+    console.log(this.horarioForm);
   }
 
   mostrarError(error: any) {
