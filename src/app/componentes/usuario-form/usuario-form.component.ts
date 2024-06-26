@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SelectItem, MessageService } from 'primeng/api';
@@ -13,7 +13,7 @@ import { FileHandlerService } from '../../servicios/file-handler.service';
 import { ObraSocialService } from '../../servicios/obra-social.service';
 import { DisponibilidadService } from '../../servicios/disponibilidad.service';
 import { ExisteStringValidator } from '../../validators/existeStringValidator';
-import { map } from 'rxjs';
+import { Subscription, map } from 'rxjs';
 import { confirmarCalveValidator } from '../../validators/confirmarClaveValidator';
 import { requeridoSegunTipoUsuario } from '../../validators/requeridoSegunTipoUsuarioValidator';
 import { InputTextModule } from 'primeng/inputtext';
@@ -48,7 +48,7 @@ import { EspecialidadPipe } from '../../pipes/especialidad.pipe';
   templateUrl: './usuario-form.component.html',
   styleUrl: './usuario-form.component.scss'
 })
-export class UsuarioFormComponent implements OnInit, OnChanges {
+export class UsuarioFormComponent implements OnInit, OnDestroy, OnChanges {
   @Output() UserCreated = new EventEmitter();
   @Input() tipo_usuario: string = '';
   especialidades: Especialidad[] = [];
@@ -57,6 +57,9 @@ export class UsuarioFormComponent implements OnInit, OnChanges {
   userForm: FormGroup;
   file_1: File | undefined;
   file_2: File | undefined;
+
+  obras_sociales_suscription: Subscription;
+  especialidades_suscription: Subscription;
 
   mensajes_validacion: ValidatorMessage = {
     required: 'Debe completar este campo.',
@@ -81,13 +84,13 @@ export class UsuarioFormComponent implements OnInit, OnChanges {
   ) {
     this.servSpinner.showWithMessage('alta-usuario-init', 'Cargando datos...');
 
-    this.servObraSocial.obras_sociales.subscribe(
+    this.obras_sociales_suscription = this.servObraSocial.obras_sociales.subscribe(
       (obras_sociales) => {
         this.obras_sociales = obras_sociales;
       }
     );
 
-    this.servEspecialidad.especialidades.subscribe(
+    this.especialidades_suscription = this.servEspecialidad.especialidades.subscribe(
       (especialidades) => {
         this.especialidades = especialidades;
       }
@@ -116,6 +119,11 @@ export class UsuarioFormComponent implements OnInit, OnChanges {
     //console.log(this.tipo_usuario);
     //this.userForm.markAllAsTouched();
     this.servSpinner.hideWithMessage('alta-usuario-init');
+  }
+
+  ngOnDestroy(): void {
+    this.obras_sociales_suscription.unsubscribe();
+    this.especialidades_suscription.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
