@@ -114,7 +114,7 @@ export class MisHorariosComponent implements OnInit {
       }
     );
 
-    this.horarioForm.setValidators([superposicionHorariosPropios(this.especialista.disponibilidades)])
+    this.horarioForm.setValidators([superposicionHorariosPropios(this.especialista.disponibilidades)]);
 
     // Forzar revalidaciones de los campos de hora_inicio y hora_fin al cambiar el día
     this.horarioForm.get('dia')!.valueChanges.subscribe(() => {
@@ -183,6 +183,7 @@ export class MisHorariosComponent implements OnInit {
 
   CancelarEdicion() {
     this.disponibilidadSeleccionada = undefined;
+    this.horarioForm.setValidators([superposicionHorariosPropios(this.especialista.disponibilidades)]);
     this.horarioForm.reset(); // Resetear el formulario
   }
 
