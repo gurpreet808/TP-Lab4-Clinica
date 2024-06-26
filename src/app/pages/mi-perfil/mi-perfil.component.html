@@ -8,7 +8,7 @@
 
     @if (servAuth.usuarioActual.value.tipo == "especialista") {
     <div id="mis_horarios_container">
-        Mis Horarios
+        <app-mis-horarios [especialista]="servAuth.GetUsuarioAsEspecialista()!"></app-mis-horarios>
     </div>
     }
 

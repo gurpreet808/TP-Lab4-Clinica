@@ -1,0 +1,83 @@
+<div id="mis_horarios_container">
+    @if (especialista) {
+    <form [formGroup]="horarioForm">
+        <div id="especialidad_container" name="horarios_form_input"
+            [class.invalid-input]="isValidControl('especialidad')">
+            <label for="especialidad">Especialidad</label>
+            <p-dropdown formControlName="especialidad" styleClass="fullwidth" [options]="especialista.especialidades"
+                appendTo="body" showValidationErrors [validationMessages]="mensajes_validacion"
+                errorContainerId="especialidad_error_container">
+                <ng-template pTemplate="selectedItem">
+                    <div>{{ getControlValue('especialidad') | especialidad | async }}</div>
+                </ng-template>
+                <ng-template let-especialidad pTemplate="item">
+                    <div>{{ especialidad | especialidad | async }}</div>
+                </ng-template>
+            </p-dropdown>
+
+            <div id="especialidad_error_container" name="error_container"></div>
+        </div>
+
+        <div id="dia_container" name="horarios_form_input" [class.invalid-input]="isValidControl('dia')">
+            <label for="dia">Día</label>
+            <p-dropdown formControlName="dia" styleClass="fullwidth" [options]="dias" optionLabel="label"
+                optionValue="value" appendTo="body" showValidationErrors [validationMessages]="mensajes_validacion"
+                errorContainerId="dia_error_container" />
+
+            <div id="dia_error_container" name="error_container"></div>
+        </div>
+
+        <div id="hora_inicio_container" name="horarios_form_input"
+            [class.invalid-input]="isValidControl('hora_inicio')">
+            <label for="hora_inicio">Hora inicio</label>
+            <p-inputNumber inputId="hora_inicio" inputStyleClass="fullwidth" styleClass="fullwidth"
+                formControlName="hora_inicio" [min]="0" [maxlength]="23" [useGrouping]="false" showValidationErrors
+                [validationMessages]="mensajes_validacion" errorContainerId="hora_inicio_error_container" />
+
+            <div id="hora_inicio_error_container" name="error_container"></div>
+        </div>
+
+        <div id="hora_fin_container" name="horarios_form_input" [class.invalid-input]="isValidControl('hora_fin')">
+            <label for="hora_fin">Hora fin</label>
+            <p-inputNumber inputId="hora_fin" inputStyleClass="fullwidth" styleClass="fullwidth"
+                formControlName="hora_fin" [min]="0" [maxlength]="23" [useGrouping]="false" showValidationErrors
+                [validationMessages]="mensajes_validacion" errorContainerId="hora_fin_error_container" />
+
+            <div id="hora_fin_error_container" name="error_container"></div>
+        </div>
+
+        <div id="submit_container">
+            <button type="submit" pButton pRipple class="p-button-primary" [disabled]="!horarioForm.valid"
+                (click)="GuardarDisponibilidad()">Guardar</button>
+
+            @if (disponibilidadSeleccionada) {
+            <button type="submit" pButton pRipple class="p-button-secondary"
+                (click)="CancelarEdicion()">Cancelar</button>
+            }
+        </div>
+    </form>
+
+    <div>
+        @for (disponibilidad of especialista.disponibilidades; track $index) {
+        <div [class.editando]="disponibilidadSeleccionada == disponibilidad">
+            <span>
+                <div name="disponibilidad_content">
+                    <div name="disponibilidad_dia">Dia: {{disponibilidad.dia | dia}}</div>
+                    <div name="disponibilidad_horario">Horario: {{disponibilidad.hora_inicio}} a
+                        {{disponibilidad.hora_fin}}</div>
+                    <div name="disponibilidad_especialidad">Especialidad: {{disponibilidad.especialidad |
+                        especialidad | async}}
+                    </div>
+                </div>
+            </span>
+            <span>
+                <button pButton label="Editar" (click)="EditarDisponibilidad(disponibilidad)"></button>
+                <button pButton label="Eliminar" (click)="BorrarDisponibilidad(disponibilidad)"></button>
+            </span>
+        </div>
+        }
+    </div>
+    }
+
+
+</div>

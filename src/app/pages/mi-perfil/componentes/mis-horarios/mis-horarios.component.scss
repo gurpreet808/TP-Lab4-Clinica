@@ -1,0 +1,17 @@
+div#mis_horarios_container>form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: baseline;
+}
+
+div[name="horarios_form_input"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.editando {
+    background: rgba(7, 7, 7, 0.35);
+}
