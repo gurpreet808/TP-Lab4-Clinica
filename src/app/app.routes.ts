@@ -12,5 +12,6 @@ export const routes: Routes = [
     { path: 'mi-perfil', canActivate: [authGuard], data: { roles_permitidos: ['admin', 'especialista', 'paciente'] }, loadComponent: () => import('./pages/mi-perfil/mi-perfil.component').then(c => c.MiPerfilComponent) },
     { path: 'obras-sociales', canActivate: [authGuard], data: { roles_permitidos: ['admin'] }, loadComponent: () => import('./pages/obras-sociales/obras-sociales.component').then(c => c.ObrasSocialesComponent) },
     { path: 'especialidades', canActivate: [authGuard], data: { roles_permitidos: ['admin'] }, loadComponent: () => import('./pages/especialidades/especialidades.component').then(c => c.EspecialidadesComponent) },
+    { path: 'solicitar-turno', canActivate: [authGuard], data: { roles_permitidos: ['paciente'] }, loadComponent: () => import('./pages/solicitar-turno/solicitar-turno.component').then(c => c.SolicitarTurnoComponent) },
     { path: '**', component: Error404Component }
 ];
