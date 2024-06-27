@@ -3,9 +3,8 @@ import { Especialista } from '../../../../modulos/auth/clases/usuario';
 import { DisponibilidadEspecialidad } from '../../../../clases/disponibilidad';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Especialidad } from '../../../../clases/especialidad';
-import { MessageService, SelectItem } from 'primeng/api';
+import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { UsuarioService } from '../../../../modulos/auth/servicios/usuario.service';
-import { DisponibilidadService } from '../../../../servicios/disponibilidad.service';
 import { SpinnerService } from '../../../../modulos/spinner/servicios/spinner.service';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DropdownModule } from 'primeng/dropdown';
@@ -79,7 +78,8 @@ export class MisHorariosComponent implements OnInit {
     private servUsuario: UsuarioService,
     private servEspecialidad: EspecialidadService,
     private servSpinner: SpinnerService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     this.servSpinner.showWithMessage('mis-horarios-init', 'Cargando datos...');
 
@@ -188,28 +188,37 @@ export class MisHorariosComponent implements OnInit {
   }
 
   async BorrarDisponibilidad(_disponibilidad: DisponibilidadEspecialidad) {
-    this.servSpinner.showWithMessage('mis-horarios-delete', 'Eliminando disponibilidad...');
+    let nombre_dia: string = this.dias.find((dia) => dia.value == _disponibilidad.dia)?.label || "";
 
-    let index = this.especialista.disponibilidades.indexOf(_disponibilidad);
-    this.especialista.disponibilidades.splice(index, 1);
+    this.confirmationService.confirm({
+      header: 'Confirmación',
+      icon: 'fa fa-exclamation-triangle',
+      message: `¿Está seguro que desea borrar el horario del ${nombre_dia} de ${_disponibilidad.hora_inicio} a ${_disponibilidad.hora_fin} ?`,
+      accept: () => {
+        this.servSpinner.showWithMessage('mis-horarios-delete', 'Eliminando disponibilidad...');
 
-    this.servUsuario.Modificar(this.especialista).then(
-      () => {
-        if (this.disponibilidadSeleccionada == _disponibilidad) {
-          this.CancelarEdicion();
-        }
+        let index = this.especialista.disponibilidades.indexOf(_disponibilidad);
+        this.especialista.disponibilidades.splice(index, 1);
 
-        this.messageService.add({ severity: 'success', life: 10000, summary: 'Éxito', detail: 'Disponibilidad eliminada correctamente.' });
+        this.servUsuario.Modificar(this.especialista).then(
+          () => {
+            if (this.disponibilidadSeleccionada == _disponibilidad) {
+              this.CancelarEdicion();
+            }
+
+            this.messageService.add({ severity: 'success', life: 10000, summary: 'Éxito', detail: 'Disponibilidad eliminada correctamente.' });
+          }
+        ).catch(
+          (error) => {
+            this.mostrarError(error);
+          }
+        ).finally(
+          () => {
+            this.servSpinner.hideWithMessage('mis-horarios-delete');
+          }
+        );
       }
-    ).catch(
-      (error) => {
-        this.mostrarError(error);
-      }
-    ).finally(
-      () => {
-        this.servSpinner.hideWithMessage('mis-horarios-delete');
-      }
-    );
+    });
   }
 
   getControl(control_name: string) {

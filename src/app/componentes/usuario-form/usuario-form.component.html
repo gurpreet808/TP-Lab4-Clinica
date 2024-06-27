@@ -1,6 +1,5 @@
 <div id="registro_container">
     <form [formGroup]="userForm">
-
         <div id="nombre_container" name="registro_form_input" [class.invalid-input]="isValidControl('nombre')">
             <label for="nombre">Nombre</label>
             <input id="nombre" pInputText type="text" formControlName="nombre" showValidationErrors
@@ -19,9 +18,9 @@
 
         <div id="edad_container" name="registro_form_input" [class.invalid-input]="isValidControl('edad')">
             <label for="edad">Edad</label>
-            <p-inputNumber inputId="edad" inputStyleClass="fullwidth" styleClass="fullwidth" formControlName="edad" [min]="1"
-                [maxlength]="3" [useGrouping]="false" showValidationErrors [validationMessages]="mensajes_validacion"
-                errorContainerId="edad_error_container" />
+            <p-inputNumber inputId="edad" inputStyleClass="fullwidth" styleClass="fullwidth" formControlName="edad"
+                [min]="1" [maxlength]="3" [useGrouping]="false" showValidationErrors
+                [validationMessages]="mensajes_validacion" errorContainerId="edad_error_container" />
 
             <div id="edad_error_container" name="error_container"></div>
         </div>
@@ -116,6 +115,27 @@
                 </p-inputGroup>
             </div>
         </div>
+        }
+
+        @if (mostrarCaptcha == true) {
+        <div id="captcha_container" name="registro_form_input" [class.invalid-input]="isValidControl('captcha')">
+            <label for="captcha">Verifica que eres un humano</label>
+            <input id="captcha" type="text" appCaptcha [disabled]="servAuth.usuarioActual.value?.tipo == 'admin'"
+                (captchaResolved)="onCaptchaResolved($event)">
+
+            @if(this.getControl('captcha')!.hasError('captchaInvalido')){
+            <div id="captcha_error_container" name="error_container">
+                <small>Intente otra vez</small>
+            </div>
+            }
+        </div>
+        } @else {
+        @if (captchaResuelto) {
+        <div id="captcha_success">
+            <i class="fa-regular fa-circle-check"></i>
+            Eres humano.
+        </div>
+        }
         }
 
         <!-- Botón Registrar -->

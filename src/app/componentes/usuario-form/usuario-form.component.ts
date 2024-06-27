@@ -27,6 +27,7 @@ import { ShowValidationErrorsDirective } from '../../directivas/show-validation-
 import { ValidatorMessage } from '../../clases/validator-message';
 import { DiaPipe } from '../../pipes/dia.pipe';
 import { EspecialidadPipe } from '../../pipes/especialidad.pipe';
+import { CaptchaDirective } from '../../directivas/captcha.directive';
 
 @Component({
   selector: 'app-usuario-form',
@@ -43,7 +44,8 @@ import { EspecialidadPipe } from '../../pipes/especialidad.pipe';
     InputGroupModule,
     ShowValidationErrorsDirective,
     DiaPipe,
-    EspecialidadPipe
+    EspecialidadPipe,
+    CaptchaDirective
   ],
   templateUrl: './usuario-form.component.html',
   styleUrl: './usuario-form.component.scss'
@@ -60,6 +62,9 @@ export class UsuarioFormComponent implements OnInit, OnDestroy, OnChanges {
 
   obras_sociales_suscription: Subscription;
   especialidades_suscription: Subscription;
+
+  mostrarCaptcha: boolean = true;
+  captchaResuelto: boolean = false;
 
   mensajes_validacion: ValidatorMessage = {
     required: 'Debe completar este campo.',
@@ -105,6 +110,7 @@ export class UsuarioFormComponent implements OnInit, OnDestroy, OnChanges {
         apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Záéíóúñ .,]+$')]],
         dni: ['', [Validators.required, Validators.minLength(10000000), Validators.maxLength(99999999), Validators.pattern('^[0-9]{8}$')], [ExisteStringValidator(this.servUsuario.usuarios.pipe(map(usuarios => usuarios.map(usuario => usuario.dni.toString()))))]],
         edad: ['', [Validators.required, Validators.min(1), Validators.max(99)]],
+        captcha: ['', Validators.required],
         url_foto_1: ['', [Validators.required]],
         url_foto_2: ['',],
         obra_social: ['',],
@@ -117,6 +123,14 @@ export class UsuarioFormComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     //console.log(this.tipo_usuario);
+    if (this.servAuth.usuarioActual.value?.tipo !== 'admin') {
+      this.mostrarCaptcha = true;
+      this.getControl('captcha')?.enable();
+    } else {
+      this.mostrarCaptcha = false;
+      this.getControl('captcha')?.disable();
+    }
+
     //this.userForm.markAllAsTouched();
     this.servSpinner.hideWithMessage('alta-usuario-init');
   }
@@ -294,9 +308,9 @@ export class UsuarioFormComponent implements OnInit, OnDestroy, OnChanges {
         valida: false
       }
 
-      /* if (this.servAuth.usuarioActual && this.servAuth.usuarioActual.tipo == 'admin') {
+      if (this.servAuth.usuarioActual.value && this.servAuth.usuarioActual.value.tipo == 'admin') {
         especialidad.valida = true;
-      } */
+      }
 
       this.servSpinner.showWithMessage('agregar-especialidad', 'Agregando especialidad...');
 
@@ -360,5 +374,15 @@ export class UsuarioFormComponent implements OnInit, OnDestroy, OnChanges {
 
     console.log("File 1 change", this.file_1);
     console.log("File 2 change", this.file_2);
+  }
+
+  onCaptchaResolved(isValid: boolean) {
+    if (isValid) {
+      this.userForm.get('captcha')?.setValue(true);
+      this.mostrarCaptcha = false;
+      this.captchaResuelto = true;
+    } else {
+      this.userForm.get('captcha')?.setErrors({ captchaInvalido: true });
+    }
   }
 }

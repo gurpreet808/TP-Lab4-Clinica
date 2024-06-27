@@ -1,7 +1,7 @@
 <div id="usuarios_table_container">
-    <p-table #dt_usuarios id="dt_usuarios" [value]="servUsuario.usuarios.value" dataKey="id" [scrollable]="true"
-        scrollHeight="flex" [rows]="10" [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+    <p-table #dt_usuarios id="dt_usuarios" [value]="servUsuario.usuarios.value" dataKey="id"
+        [globalFilterFields]="filterByParams" [scrollable]="true" scrollHeight="flex" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
 
         <ng-template pTemplate="caption">
@@ -23,15 +23,38 @@
                     <button id="reset_filters_btn" pButton label="Reset" class="p-button-outlined p-button-sm"
                         icon="fa-solid fa-filter-circle-xmark" (click)="clear(dt_usuarios)"></button>
 
-                    <p-columnFilter type="text" field="nombre" display="menu">
+                    <p-columnFilter type="text" field="nombre" display="menu" matchMode="contains"
+                        [showOperator]="false" [showAddButton]="false">
                         <ng-template pTemplate="filtericon">
                             <i class="fa fa-filter"></i> Nombre
                         </ng-template>
                     </p-columnFilter>
 
-                    <p-columnFilter type="text" field="email" display="menu">
+                    <p-columnFilter type="text" field="apellido" display="menu" matchMode="contains"
+                        [showOperator]="false" [showAddButton]="false">
+                        <ng-template pTemplate="filtericon">
+                            <i class="fa fa-filter"></i> Apellido
+                        </ng-template>
+                    </p-columnFilter>
+
+                    <p-columnFilter type="text" field="email" display="menu" matchMode="contains" [showOperator]="false"
+                        [showAddButton]="false">
                         <ng-template pTemplate="filtericon">
                             <i class="fa fa-filter"></i> E-Mail
+                        </ng-template>
+                    </p-columnFilter>
+
+                    <p-columnFilter field="tipo" display="menu" matchMode="equals" [showMatchModes]="false"
+                        [showOperator]="false" [showAddButton]="false">
+                        <ng-template pTemplate="filtericon">
+                            <i class="fa fa-filter"></i> Tipo de usuario
+                        </ng-template>
+
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-dropdown [ngModel]="value" [options]="tipoUsuarioOptions" [filter]="false"
+                                placeholder="Tipo de usuario" optionLabel="label" optionValue="value" appendTo="body"
+                                (onChange)="filter($event.value)">
+                            </p-dropdown>
                         </ng-template>
                     </p-columnFilter>
                 </div>
@@ -79,7 +102,7 @@
 
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="8">No hay usuarios.</td>
+                <td colspan="8" class="empty_table_message">No hay usuarios.</td>
             </tr>
         </ng-template>
     </p-table>

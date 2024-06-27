@@ -163,3 +163,29 @@ div[name="error_container"] {
     gap: 0.25rem;
     color: red;
 }
+
+div#captcha {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+
+    div#captcha_input_container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        height: 100%;
+
+        div#captcha_buttons_container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-content: flex-end;
+            flex-wrap: wrap;
+        }
+    }
+}
+
+div#captcha_success {
+    color: green;
+}
