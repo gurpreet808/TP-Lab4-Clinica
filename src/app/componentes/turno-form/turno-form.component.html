@@ -1,82 +1,88 @@
 <div id="turno_form_container">
-    <div id="seleccionados_container">
-        @if (paciente && servAuth.usuarioActual.value!.tipo == 'admin') {
-        <div id="paciente_seleccionado_container">
-            <h1>Paciente:</h1>
+    <div id="turno_armado_container">
+        <h1>Turno:</h1>
+        <div id="seleccionados_container">
 
-            <div id="paciente_seleccionado" name="paciente_item">
-                <div name="paciente_nombre">
-                    {{paciente.nombre + ", " + paciente.apellido}}
+            @if (paciente && servAuth.usuarioActual.value!.tipo == 'admin') {
+            <div id="paciente_seleccionado_container">
+                <h1>Paciente:</h1>
+
+                <div id="paciente_seleccionado" name="paciente_item">
+                    <div name="paciente_nombre">
+                        {{paciente.nombre + ", " + paciente.apellido}}
+                    </div>
+
+                    <div name="paciente_imagen_container">
+                        <img name="paciente_imagen" [src]="paciente.url_foto_1"
+                            [alt]='paciente.nombre + ", " + paciente.apellido'>
+                    </div>
                 </div>
 
-                <div name="paciente_imagen_container">
-                    <img name="paciente_imagen" [src]="paciente.url_foto_1"
-                        [alt]='paciente.nombre + ", " + paciente.apellido'>
+                <div>
+                    <p-button icon="fa fa-times" [rounded]="true" severity="danger"
+                        (click)="CancelarPaciente()"></p-button>
                 </div>
             </div>
+            }
 
-            <div>
-                <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="CancelarPaciente()"></p-button>
+            @if (especialista) {
+            <div id="especialista_seleccionado_container">
+                <h1>Especialista:</h1>
+
+                <div id="especialista_seleccionado" name="especialista_item">
+                    <div name="especialista_nombre">
+                        {{especialista.nombre + ", " + especialista.apellido}}
+                    </div>
+
+                    <div name="especialista_imagen_container">
+                        <img name="especialista_imagen" [src]="especialista.url_foto_1"
+                            [alt]='especialista.nombre + ", " + especialista.apellido'>
+                    </div>
+                </div>
+
+                <div>
+                    <p-button icon="fa fa-times" [rounded]="true" severity="danger"
+                        (click)="CancelarEspecialista()"></p-button>
+                </div>
             </div>
+            }
+
+            @if (especialidad) {
+            <div id="especialidad_seleccionado_container">
+                <h1>Especialidad:</h1>
+
+                <div id="especialidad_seleccionado" name="especialidad_item">
+                    <p-button pRipple styleClass="p-button-help">
+                        <i class="fa-solid fa-stethoscope"></i>
+                        <!-- <img [alt]="especialidad.nombre" [src]="especialidad.url_foto" style="width: 3rem" /> -->
+                        <span class="ml-2 font-bold">{{especialidad.id | especialidad | async}}</span>
+                    </p-button>
+                </div>
+
+                <div>
+                    <p-button icon="fa fa-times" [rounded]="true" severity="danger"
+                        (click)="CancelarEspecialidad()"></p-button>
+                </div>
+            </div>
+            }
+
+            @if (turno) {
+            <div id="especialidad_seleccionado_container">
+                <h1>Turno:</h1>
+
+                <div id="turno_seleccionado" name="especialidad_item">
+                    <div name="turno_item">
+                        {{turno.fecha | date : 'dd/MM/yyyy HH:mm' }}
+                    </div>
+                </div>
+
+                <div>
+                    <p-button icon="fa fa-times" [rounded]="true" severity="danger"
+                        (click)="CancelarTurno()"></p-button>
+                </div>
+            </div>
+            }
         </div>
-        }
-
-        @if (especialista) {
-        <div id="especialista_seleccionado_container">
-            <h1>Especialista:</h1>
-
-            <div id="especialista_seleccionado" name="especialista_item">
-                <div name="especialista_nombre">
-                    {{especialista.nombre + ", " + especialista.apellido}}
-                </div>
-
-                <div name="especialista_imagen_container">
-                    <img name="especialista_imagen" [src]="especialista.url_foto_1"
-                        [alt]='especialista.nombre + ", " + especialista.apellido'>
-                </div>
-            </div>
-
-            <div>
-                <p-button icon="pi pi-times" [rounded]="true" severity="danger"
-                    (click)="CancelarEspecialista()"></p-button>
-            </div>
-        </div>
-        }
-
-        @if (especialidad) {
-        <div id="especialidad_seleccionado_container">
-            <h1>Especialidad:</h1>
-
-            <div id="especialidad_seleccionado" name="especialidad_item">
-                <p-button pRipple styleClass="p-button-help">
-                    <i class="fa-solid fa-stethoscope"></i>
-                    <!-- <img [alt]="especialidad.nombre" [src]="especialidad.url_foto" style="width: 3rem" /> -->
-                    <span class="ml-2 font-bold">{{especialidad.id | especialidad | async}}</span>
-                </p-button>
-            </div>
-
-            <div>
-                <p-button icon="pi pi-times" [rounded]="true" severity="danger"
-                    (click)="CancelarEspecialidad()"></p-button>
-            </div>
-        </div>
-        }
-
-        @if (turno) {
-        <div id="especialidad_seleccionado_container">
-            <h1>Turno:</h1>
-
-            <div id="turno_seleccionado" name="especialidad_item">
-                <div name="turno_item">
-                    {{turno.fecha | date : 'dd/MM/yyyy HH:mm' }}
-                </div>
-            </div>
-
-            <div>
-                <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="CancelarTurno()"></p-button>
-            </div>
-        </div>
-        }
     </div>
 
     @if (!paciente && servAuth.usuarioActual.value!.tipo == 'admin') {
@@ -116,12 +122,11 @@
     @if (paciente && especialista && !especialidad) {
     <div id="seleccionar_especialidad">
         @for (especialidad of especialista.especialidades; track $index) {
-            <p-button pRipple styleClass="p-button-help"
-                (click)="ElegirEspecialidad(especialidad)">
-                <i class="fa-solid fa-stethoscope"></i>
-                <!-- <img [alt]="especialidad.nombre" [src]="especialidad.url_foto" style="width: 3rem" /> -->
-                <span class="ml-2 font-bold">{{especialidad | especialidad | async}}</span>
-            </p-button>
+        <p-button pRipple styleClass="p-button-help" (click)="ElegirEspecialidad(especialidad)">
+            <i class="fa-solid fa-stethoscope"></i>
+            <!-- <img [alt]="especialidad.nombre" [src]="especialidad.url_foto" style="width: 3rem" /> -->
+            <span class="ml-2 font-bold">{{especialidad | especialidad | async}}</span>
+        </p-button>
         }
     </div>
     }
