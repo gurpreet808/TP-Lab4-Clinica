@@ -123,7 +123,13 @@ export class UsuarioFormComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     //console.log(this.tipo_usuario);
-    this.mostrarCaptcha = this.servAuth.usuarioActual.value?.tipo !== 'admin';
+    if (this.servAuth.usuarioActual.value?.tipo !== 'admin') {
+      this.mostrarCaptcha = true;
+      this.getControl('captcha')?.enable();
+    } else {
+      this.mostrarCaptcha = false;
+      this.getControl('captcha')?.disable();
+    }
 
     //this.userForm.markAllAsTouched();
     this.servSpinner.hideWithMessage('alta-usuario-init');
