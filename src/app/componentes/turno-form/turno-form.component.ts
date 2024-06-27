@@ -12,7 +12,7 @@ import { Turno } from '../../clases/turno';
 import { Subscription } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { EspecialidadPipe } from '../../pipes/especialidad.pipe';
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-turno-form',
@@ -22,7 +22,8 @@ import { AsyncPipe, DatePipe } from '@angular/common';
     DatePipe,
     AsyncPipe,
     EspecialidadPipe,
-  ], // Asegúrate de importar los módulos de PrimeNG que necesites
+    JsonPipe
+  ],
   templateUrl: './turno-form.component.html',
   styleUrl: './turno-form.component.scss'
 })
@@ -141,6 +142,36 @@ export class TurnoFormComponent implements OnInit, OnDestroy {
     this.turno = undefined;
   }
 
+  SolicitarTurno() {
+    console.log(this.turno);
+    
+    if (this.turno) {
+      this.servSpinner.showWithMessage('turno-form-solicitar-turno', "Solicitando turno...");
+
+      this.servTurno.Nuevo(this.turno).then(
+        () => {
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Turno solicitado' });
+          this.CancelarTurno();
+          this.CancelarEspecialidad();
+          this.CancelarEspecialista();
+
+          if (this.servAuth.usuarioActual.value!.tipo != "paciente") {
+            this.CancelarPaciente();
+          }
+        }
+      ).catch(
+        (err) => {
+          console.log(err);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo solicitar el turno' });
+        }
+      ).finally(
+        () => {
+          this.servSpinner.hideWithMessage('turno-form-solicitar-turno');
+        }
+      );
+    }
+  }
+
   FiltrarEspecialistas() {
     this.servSpinner.showWithMessage('turno-form-filtrar-especialistas', "Filtrando especialistas datos...");
 
@@ -164,6 +195,7 @@ export class TurnoFormComponent implements OnInit, OnDestroy {
     if (this.especialista && this.paciente && this.especialidad) {
       this.servTurno.GenerarTurnos(this.paciente.uid, this.especialista.uid, this.especialidad.id, this.especialista.disponibilidades, 15).then(
         (_turnos: Turno[]) => {
+          //console.log(_turnos);
           this.turnos = _turnos;
         }
       ).catch(

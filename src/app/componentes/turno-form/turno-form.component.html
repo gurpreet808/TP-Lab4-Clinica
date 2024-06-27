@@ -81,6 +81,11 @@
                         (click)="CancelarTurno()"></p-button>
                 </div>
             </div>
+
+            <div id="confirmar_button_container">
+                <button pButton label="Solicitar turno" severity="primary" rounded="true"
+                    (click)="SolicitarTurno()"></button>
+            </div>
             }
         </div>
     </div>
@@ -133,10 +138,8 @@
 
     @if (paciente && especialista && especialidad && !turno) {
     <div id="seleccionar_turno">
-        @for (turno of turnos; track $index) {
-        <div name="turno_item" (click)="ElegirTurno(turno)">
-            {{turno.fecha | date : 'dd/MM/yyyy HH:mm' }}
-        </div>
+        @for (_turno of turnos; track $index) {
+        <div name="turno_item" (click)="ElegirTurno(_turno)">{{_turno.fecha | date : 'dd/MM/yyyy HH:mm' }}</div>
         }
     </div>
     }
