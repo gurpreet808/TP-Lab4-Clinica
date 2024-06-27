@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     firstValueFrom(this.http.get<{ [key: string]: Translation }>('assets/archivos/es-AR.json')).then(
       (translation: { [key: string]: Translation }) => {
-        console.log(translation["es-AR"]);
+        //console.log(translation["es-AR"]);
         this.primengConfig.setTranslation(translation["es-AR"]);
       }
     ).catch(
