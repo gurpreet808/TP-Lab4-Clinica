@@ -152,13 +152,16 @@ export class TurnoService {
               }
 
               for (let hora = hora_inicio; hora < hora_fin; hora++) {
-                _fecha_iteracion.setHours(hora, 0, 0, 0);
+                // Crear una nueva instancia de Date para cada turno
+                const fechaTurno = new Date(_fecha_iteracion);
+                fechaTurno.setHours(hora, 0, 0, 0);
+
                 let _turno_model: Turno = {
                   id: "new",
                   id_especialista: id_especialista,
                   id_paciente: id_paciente,
                   estado: 1,
-                  fecha: _fecha_iteracion,
+                  fecha: fechaTurno,
                   hora: hora.toString() + ':00',
                   especialidad: id_especialidad,
                   comentario: {
@@ -174,8 +177,10 @@ export class TurnoService {
                     _turnos.push(_turno_model);
 
                     let _turno: Turno = this.ClonarTurno(_turno_model);
-                    _fecha_iteracion.setHours(hora, 30, 0, 0);
-                    _turno.fecha = _fecha_iteracion;
+
+                    const fechaTurno2 = new Date(fechaTurno);
+                    fechaTurno2.setHours(hora, 30, 0, 0);
+                    _turno.fecha = fechaTurno2;
                     _turno.hora = hora.toString() + ':30'
                     _turnos.push(_turno);
                     break;
@@ -190,6 +195,8 @@ export class TurnoService {
 
       _fecha_iteracion.setDate(_fecha_iteracion.getDate() + 1);
     }
+
+    //Aqui filtrar turnos que ya existen
 
     return _turnos;
   }
