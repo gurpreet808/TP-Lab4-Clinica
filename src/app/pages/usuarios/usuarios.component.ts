@@ -13,6 +13,7 @@ import { UsuarioService } from '../../modulos/auth/servicios/usuario.service';
 import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
 import { UsuarioFormComponent } from '../../componentes/usuario-form/usuario-form.component';
 import { UsuarioItemComponent } from '../../componentes/usuario-item/usuario-item.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-usuarios',
@@ -25,6 +26,7 @@ import { UsuarioItemComponent } from '../../componentes/usuario-item/usuario-ite
     DialogModule,
     IconFieldModule,
     InputIconModule,
+    DropdownModule,
     UsuarioItemComponent,
     UsuarioFormComponent
   ],
@@ -37,13 +39,19 @@ export class UsuariosComponent implements OnInit {
 
   editModal: boolean = false;
   globalFilter: string = "";
-  filterByParams: string[] = ["nombre", "email"];
+  filterByParams: string[] = ["nombre", "apellido", "email"];
   sortField: string = "nombre";
   sortOrder: number = 1;
   sortOptions: SelectItem[] = [
     { label: 'Nombre', value: 'nombre' },
     { label: 'E-Mail', value: 'email' },
     { label: 'Fecha de creación', value: 'fecha_creacion' }
+  ];
+
+  tipoUsuarioOptions: SelectItem[] = [
+    { label: 'Administrador', value: 'admin' },
+    { label: 'Especialista', value: 'especialista' },
+    { label: 'Paciente', value: 'paciente' }
   ];
 
   constructor(
