@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, firstValueFrom, skip } from 'rxjs';
-import { CollectionReference, DocumentData, DocumentReference, Firestore, Query, collection, collectionData, deleteDoc, doc, orderBy, query, setDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, DocumentReference, Firestore, Query, collection, collectionData, deleteDoc, doc, getDocs, orderBy, query, setDoc, where } from '@angular/fire/firestore';
 import { Turno } from '../clases/turno';
 import { Disponibilidad, DisponibilidadEspecialidad } from '../clases/disponibilidad';
 import { DisponibilidadService } from './disponibilidad.service';
@@ -26,6 +26,11 @@ export class TurnoService {
       this.rootRef,
       orderBy('fecha', 'desc')
     ) as Query<Turno, DocumentData>;
+    return collectionData<Turno>(_query, { idField: 'id' });
+  }
+
+  TraerTurnosOcupadosPorEspecialistaEntreFechas(fechaInicio: Date, fechaFin: Date, id_especialista: string): Observable<Turno[]> {
+    let _query = query(this.rootRef, where('fecha', '>=', fechaInicio), where('fecha', '<=', fechaFin), where('id_especialista', '==', id_especialista)) as Query<Turno, DocumentData>;
     return collectionData<Turno>(_query, { idField: 'id' });
   }
 
@@ -79,23 +84,23 @@ export class TurnoService {
   }
 
   TurnosPorPaciente(id_paciente: string): Turno[] {
-    return this.turnos.value.filter(turno => turno.id_paciente === id_paciente);
+    return this.turnos.value.filter(turno => turno.id_paciente == id_paciente);
   }
 
   TurnosPorEspecialista(id_especialista: string): Turno[] {
-    return this.turnos.value.filter(turno => turno.id_especialista === id_especialista);
+    return this.turnos.value.filter(turno => turno.id_especialista == id_especialista);
   }
 
   TurnosPorEspecialidad(id_especialidad: string): Turno[] {
-    return this.turnos.value.filter(turno => turno.especialidad === id_especialidad);
+    return this.turnos.value.filter(turno => turno.especialidad == id_especialidad);
   }
 
   TurnosPorEstado(estado: number): Turno[] {
-    return this.turnos.value.filter(turno => turno.estado === estado);
+    return this.turnos.value.filter(turno => turno.estado == estado);
   }
 
   TurnosPorFecha(fecha: Date): Turno[] {
-    return this.turnos.value.filter(turno => turno.fecha === fecha);
+    return this.turnos.value.filter(turno => turno.fecha == fecha);
   }
 
   TurnosEntreFechas(fecha_inicio: Date, fecha_fin: Date): Turno[] {
@@ -104,10 +109,14 @@ export class TurnoService {
 
   SonTurnosIguales(turno1: Turno, turno2: Turno): boolean {
     return (
-      turno1.id_paciente === turno2.id_paciente &&
-      turno1.id_especialista === turno2.id_especialista &&
-      (turno1.fecha === turno2.fecha && turno1.hora === turno2.hora)
+      turno1.id_paciente == turno2.id_paciente &&
+      turno1.id_especialista == turno2.id_especialista &&
+      (turno1.fecha == turno2.fecha && turno1.hora == turno2.hora)
     );
+  }
+
+  sonTurnosMismaFechaHora(turno1: Turno, turno2: Turno): boolean {
+    return turno1.fecha == turno2.fecha && turno1.hora == turno2.hora;
   }
 
   ClonarTurno(turno: Turno): Turno {
@@ -195,8 +204,6 @@ export class TurnoService {
 
       _fecha_iteracion.setDate(_fecha_iteracion.getDate() + 1);
     }
-
-    //Aqui filtrar turnos que ya existen
 
     return _turnos;
   }

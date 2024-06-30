@@ -12,7 +12,7 @@ export interface Turno {
     };
 }
 
-enum EstadoTurno {
+export enum EstadoTurno {
     Pendiente = 1,
     Cancelado = 2,
     Rechazado = 3,
