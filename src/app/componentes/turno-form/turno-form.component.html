@@ -57,7 +57,8 @@
 
         <div id="turno_a_solicitar_button_container">
             <button pButton id="turno_a_solicitar_button" label="Solicitar Turno" severity="primary"
-                [disabled]="!(_paciente && _especialidad && _especialista && _fecha && _hora)"></button>
+                [disabled]="!(_paciente && _especialidad && _especialista && _fecha && _hora)"
+                (click)="SolicitarTurno()"></button>
         </div>
     </div>
 
@@ -154,7 +155,7 @@
             <div name="buttons_container">
                 @for (turno of turnos_filtrados_fecha; track $index) {
                 <button pButton name="turno_form_hora_button" [label]='turno.hora' severity="contrast"
-                    (click)="ElegirHora(turno.hora)"></button>
+                    (click)="ElegirHora(turno)"></button>
                 }
             </div>
         </div>

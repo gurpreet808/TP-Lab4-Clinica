@@ -138,7 +138,7 @@ export class TurnoService {
     let _fecha_iteracion: Date = new Date(_fecha_inicio);
     _fecha_fin.setDate(_fecha_inicio.getDate() + cant_dias);
 
-    console.log(_fecha_fin);
+    //console.log(_fecha_fin);
     //console.log(_fecha_inicio.getDate());
     //console.log(_fecha_inicio.getDay());
 
