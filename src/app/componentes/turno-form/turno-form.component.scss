@@ -26,6 +26,28 @@ div#nuevo_turno_container {
 
         div#turno_a_solicitar_datos_container {
             flex: 1;
+            display: flex;
+            align-items: stretch;
+            gap: 0.5rem;
+            flex-direction: column;
+
+            div {
+                display: grid; // Cambiar a display: grid
+                grid-template-columns: 1fr 2fr auto; // Definir 3 columnas
+                align-items: center; // Alinear verticalmente al centro
+                gap: 0.5rem;
+                min-height: 50px;
+
+                padding: 0.25rem;
+
+                label {
+                    font-weight: bold;
+                }
+
+                button {
+                    margin-right: 0;
+                }
+            }
         }
 
         div#turno_a_solicitar_button_container {
@@ -37,6 +59,8 @@ div#nuevo_turno_container {
     }
 
     div#turno_form_container {
+        text-align: center;
+        font-weight: bold;
         width: 100%;
 
         div[name="turno_form_item_container"] {

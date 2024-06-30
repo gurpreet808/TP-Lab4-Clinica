@@ -224,13 +224,23 @@ export class TurnoFormComponent implements OnInit, OnDestroy {
   FiltrarEspecialistas() {
     this.servSpinner.showWithMessage('turno-form-filtrar-especialistas', "Filtrando especialistas datos...");
 
-    this.especialistas = this.servUsuario.especialistas.value.filter(especialista =>
-      especialista.habilitado &&
-      especialista.especialidades.some(especialidadId =>
-        this.servEspecialidad.especialidades.value.some(especialidad =>
-          especialidad.id === especialidadId && especialidad.valida
+    this.especialistas = this.servUsuario.especialistas.value.filter(
+      (especialista: Especialista) => {
+        // Verificar si el especialista tiene la especialidad seleccionada
+        const tieneEspecialidad = this._especialidad 
+          ? especialista.especialidades.includes(this._especialidad.id) 
+          : true; // Si no se ha seleccionado especialidad, mostrar todos los especialistas
+
+        return especialista.habilitado && tieneEspecialidad && especialista.especialidades.some(
+          (especialidadId: string) => {
+            return this.servEspecialidad.especialidades.value.some(
+              (especialidad: Especialidad) => {
+                return especialidad.id === especialidadId && especialidad.valida
+              }
+            )
+          }
         )
-      )
+      }
     );
 
     if (this.ready.especialistas && this.ready.especialidades) {

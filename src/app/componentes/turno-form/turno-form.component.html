@@ -1,4 +1,4 @@
-<div id="nuevo_turno_container" class="cristal_card">
+<div id="nuevo_turno_container">
 
     <div id="nuevo_turno_title">
         Nuevo turno
@@ -6,47 +6,51 @@
 
     <div id="turno_a_solicitar_container" class="cristal_card">
         <div id="turno_a_solicitar_datos_container">
-            <div>
+            <div class="cristal_card">
                 <label for="turno_a_solicitar_paciente">Paciente:</label>
                 @if (_paciente) {
                 <span>{{_paciente.nombre + ", " + _paciente.apellido}}</span>
-                <button pButton icon="fa fa-times" severity="danger" [rounded]="true"
+
+                @if (servAuth.usuarioActual.value?.tipo != "paciente") {
+                <button pButton icon="fa fa-times" severity="danger" [rounded]="true" size="small"
                     (click)="CancelarPaciente()"></button>
+                }
                 }
             </div>
 
-            <div>
+            <div class="cristal_card">
                 <label for="turno_a_solicitar_especialidad">Especialidad:</label>
                 @if (_especialidad) {
                 <span>{{_especialidad.nombre}}</span>
-                <button pButton icon="fa fa-times" severity="danger" [rounded]="true"
+                <button pButton icon="fa fa-times" severity="danger" [rounded]="true" size="small"
                     (click)="CancelarEspecialidad()"></button>
                 }
             </div>
 
-            <div>
+            <div class="cristal_card">
                 <label for="turno_a_solicitar_especialista">Especialista:</label>
                 @if (_especialista) {
                 <span>{{_especialista.nombre + ", " + _especialista.apellido}}</span>
-                <button pButton icon="fa fa-times" severity="danger" [rounded]="true"
+                <button pButton icon="fa fa-times" severity="danger" [rounded]="true" size="small"
                     (click)="CancelarEspecialista()"></button>
                 }
             </div>
 
-            <div>
+            <div class="cristal_card">
                 <label for="turno_a_solicitar_fecha">Fecha:</label>
                 @if (_fecha) {
                 <span>{{_fecha | fechaDiaMes}}</span>
-                <button pButton icon="fa fa-times" severity="danger" [rounded]="true"
+                <button pButton icon="fa fa-times" severity="danger" [rounded]="true" size="small"
                     (click)="CancelarFecha()"></button>
                 }
             </div>
 
-            <div>
+            <div class="cristal_card">
                 <label for="turno_a_solicitar_hora">Hora:</label>
                 @if (_hora) {
                 <span>{{_hora}}</span>
-                <button pButton icon="fa fa-times" severity="danger" [rounded]="true" (click)="CancelarHora()"></button>
+                <button pButton icon="fa fa-times" severity="danger" [rounded]="true" size="small"
+                    (click)="CancelarHora()"></button>
                 }
             </div>
         </div>
@@ -58,7 +62,8 @@
     </div>
 
     <div id="turno_form_container">
-        @if (!_paciente && pacientes) {
+        @if (!_paciente) {
+        @if (pacientes.length > 0) {
         <div id="turno_form_pacientes_container" name="turno_form_item_container">
             <div name="turno_form_item_label">Elija un paciente:</div>
 
@@ -74,9 +79,13 @@
                 }
             </div>
         </div>
+        } @else {
+        <div>No hay pacientes.</div>
+        }
         }
 
-        @if (!_especialidad && _paciente && especialidades) {
+        @if (!_especialidad && _paciente) {
+        @if (especialidades) {
         <div id="turno_form_especialidades_container" name="turno_form_item_container">
             <div name="turno_form_item_label">Elija una especialidad:</div>
 
@@ -93,9 +102,13 @@
             </div>
 
         </div>
+        } @else {
+        <div>No hay especialidades.</div>
+        }
         }
 
-        @if (!_especialista && _paciente && _especialidad && especialistas) {
+        @if (!_especialista && _paciente && _especialidad) {
+        @if (especialistas.length > 0) {
         <div id="turno_form_especialistas_container" name="turno_form_item_container">
             <div name="turno_form_item_label">Elija un especialista:</div>
 
@@ -111,9 +124,13 @@
                 }
             </div>
         </div>
+        }@else {
+        <div>No hay especialistas para la especialidad seleccionada.</div>
+        }
         }
 
-        @if (!_fecha && _paciente && _especialidad && _especialista && fechas_disponibles) {
+        @if (!_fecha && _paciente && _especialidad && _especialista) {
+        @if (fechas_disponibles.length > 0) {
         <div id="turno_form_fechas_container" name="turno_form_item_container">
             <div name="turno_form_item_label">Elija la fecha:</div>
 
@@ -124,9 +141,13 @@
                 }
             </div>
         </div>
+        } @else {
+        <div>No hay fechas disponibles para ese especialista.</div>
+        }
         }
 
-        @if (!_hora && _paciente && _especialidad && _especialista && _fecha && turnos_filtrados_fecha) {
+        @if (!_hora && _paciente && _especialidad && _especialista && _fecha) {
+        @if (turnos_filtrados_fecha.length > 0) {
         <div id="turno_form_horarios_container" name="buttons_container" name="turno_form_item_container">
             <div name="turno_form_item_label">Elija la hora:</div>
 
@@ -137,6 +158,9 @@
                 }
             </div>
         </div>
+        } @else {
+        <div>No hay horarios disponibles para ese especialista en esa fecha.</div>
+        }
         }
     </div>
 
