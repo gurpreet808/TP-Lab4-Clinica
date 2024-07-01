@@ -13,7 +13,9 @@ div#login_container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 2rem;
+        justify-content: space-around;
+        min-width: 400px;
+        min-height: 500px;
     
         div#login_header {
             display: flex;
@@ -32,11 +34,13 @@ div#login_container {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            width: 100%;
     
             div[name="login_form_input"] {
                 display: flex;
                 flex-direction: column;
                 gap: 0.25rem;
+                width: 100%;
     
                 label {
                     font-weight: 500;
