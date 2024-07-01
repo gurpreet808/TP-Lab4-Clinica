@@ -1,6 +1,8 @@
-<div id="mis_horarios_container">
+<div id="mis_horarios_container" class="cristal_card">
     @if (especialista) {
-    <form [formGroup]="horarioForm">
+    <div id="mis_horarios_title">Mis horarios</div>
+
+    <form [formGroup]="horarioForm" class="cristal_card">
         <div id="especialidad_container" name="horarios_form_input"
             [class.invalid-input]="isValidControl('especialidad')">
             <label for="especialidad">Especialidad</label>
@@ -113,6 +115,4 @@
         </p-table>
     </div>
     }
-
-
 </div>
