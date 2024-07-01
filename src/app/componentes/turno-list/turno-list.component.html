@@ -1,1 +1,75 @@
-<p>turno-list works!</p>
+<div id="turnos_table_container">
+    <p-table #dt_turnos id="dt_turnos" [value]="servTurno.turnos.value" dataKey="id"
+        [globalFilterFields]="filterByParams" [scrollable]="true" scrollHeight="flex" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
+
+        <ng-template pTemplate="caption">
+            <div id="table_menu">
+                <div id="table_menu_title_container" name="table_menu_row">
+                    <div id="table_menu_title">
+                        Turnos
+                    </div>
+                </div>
+
+                <div id="filter_buttons_container" name="table_menu_row">
+                    <p-iconField iconPosition="left">
+                        <p-inputIcon styleClass="fa-solid fa-magnifying-glass" />
+                        <input type="search" pInputText placeholder="Buscador"
+                            (input)="dt_turnos.filterGlobal($any($event.target).value, 'contains')"
+                            [(ngModel)]="globalFilter">
+                    </p-iconField>
+
+                    <button id="reset_filters_btn" pButton label="Reset" class="p-button-outlined p-button-sm"
+                        icon="fa-solid fa-filter-circle-xmark" (click)="clear(dt_turnos)"></button>
+
+                    <p-columnFilter type="text" field="nombre" display="menu" matchMode="contains"
+                        [showOperator]="false" [showAddButton]="false">
+                        <ng-template pTemplate="filtericon">
+                            <i class="fa fa-filter"></i> Nombre
+                        </ng-template>
+                    </p-columnFilter>
+                </div>
+
+                <div id="acciones_masivas_buttons_container" name="table_menu_row">
+                    <button pButton pRipple label="Nuevo turno" icon="fa-solid fa-user-shield" severity="warning"
+                        (click)='NuevoTurno()'></button>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header">
+
+        </ng-template>
+
+        <ng-template pTemplate="body" let-turno_item>
+            <tr>
+                <td>
+                    <div>
+                        {{turno_item | json}}
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8" class="empty_table_message">No hay turnos.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="editModal" header="Nuevo turno" [modal]="true" class="user-modal"
+    styleClass="p-fluid user-modal" (onHide)="Cancelar()">
+    <ng-template pTemplate="content">
+        <!-- <app-turno-form [tipo_turno]="tipo_turno" (UserCreated)="Cancelar()"></app-turno-form> -->
+    </ng-template>
+
+    <!-- <ng-template pTemplate="footer">
+        <div id="dialog_acciones_competencia" class="flex justify-content-between">
+            <button pButton pRipple label="Cancelar" icon="fa fa-times" class="p-button-outlined p-button-warning"
+                (click)="Cancelar()"></button>
+        </div>
+    </ng-template> -->
+</p-dialog>

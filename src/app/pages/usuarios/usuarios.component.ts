@@ -7,7 +7,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule, Table } from 'primeng/table';
-import { Especialista, Paciente, Usuario } from '../../modulos/auth/clases/usuario';
+import { Especialista, Usuario } from '../../modulos/auth/clases/usuario';
 import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { UsuarioService } from '../../modulos/auth/servicios/usuario.service';
 import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
