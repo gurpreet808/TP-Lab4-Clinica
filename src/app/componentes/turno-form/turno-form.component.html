@@ -95,8 +95,11 @@
                 <button pButton name="turno_form_especialidad_button" severity="help" styleClass="fullwidth"
                     (click)="ElegirEspecialidad(especialidad)">
                     <div name="turno_form_button_data_container">
+                        <div name="turno_form_button_img_container">
+                            <img
+                                [src]="especialidad.url_foto ? especialidad.url_foto : servEspecialidad.default_especialidad_img">
+                        </div>
                         <div name="turno_form_button_label">{{especialidad.nombre}}</div>
-                        <!-- <div name="turno_form_button_img_container"><img [src]="especialidad.url_foto"></div> -->
                     </div>
                 </button>
                 }

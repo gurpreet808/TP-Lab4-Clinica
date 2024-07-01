@@ -1,7 +1,7 @@
 <div id="especialidades_table_container">
-    <p-table #dt_especialidades [value]="servEspecialidad.especialidades.value" dataKey="id" editMode="row"
-        [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]"
-        [paginator]="true" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
+    <p-table #dt_especialidades [value]="servEspecialidad.especialidades.value" dataKey="id" editMode="row" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
 
         <ng-template pTemplate="caption">
             <div id="especialidades_table_header">
@@ -25,6 +25,12 @@
                     </div>
                 </th>
 
+                <th>
+                    <div>
+                        Imagen
+                    </div>
+                </th>
+
                 <th pSortableColumn="valida" class="valida_column">
                     <div>
                         Válida
@@ -41,7 +47,8 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-especialidad let-editing="editing" let-ri="rowIndex">
-            <tr [pEditableRow]="especialidad" [class.valida_row]="especialidad.valida" [class.invalida_row]="!especialidad.valida">
+            <tr [pEditableRow]="especialidad" [class.valida_row]="especialidad.valida"
+                [class.invalida_row]="!especialidad.valida">
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
@@ -53,7 +60,25 @@
                         </ng-template>
                     </p-cellEditor>
                 </td>
-                
+
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" name="especialidad_name_input"
+                                [(ngModel)]="especialidad.url_foto">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            @if (especialidad.url_foto) {
+                            <div name="especialidad_img_container">
+                                <img [src]="especialidad.url_foto" alt="">
+                            </div>
+                            } @else {
+                            Sin imagen.
+                            }
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+
                 <td class="valida_column" name="valida_cell">
                     {{ especialidad.valida ? 'Sí' : 'No' }}
                 </td>

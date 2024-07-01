@@ -305,7 +305,8 @@ export class UsuarioFormComponent implements OnInit, OnDestroy, OnChanges {
       let especialidad: Especialidad = {
         id: 'new',
         nombre: this.agregar_especialidad,
-        valida: false
+        valida: false,
+        url_foto: '',
       }
 
       if (this.servAuth.usuarioActual.value && this.servAuth.usuarioActual.value.tipo == 'admin') {

@@ -94,9 +94,9 @@ export class TurnoFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    /* if (this.servAuth.usuarioActual.value!.tipo == "paciente") {
+    if (this.servAuth.usuarioActual.value!.tipo == "paciente") {
       this.ElegirPaciente(this.servAuth.GetUsuarioAsPaciente()!);
-    } */
+    }
 
     this.servSpinner.hideWithMessage('turno-form-init');
   }

@@ -35,7 +35,8 @@ export class EspecialidadesComponent implements OnInit {
     let _especialidad = {
       id: 'new',
       nombre: this.especialidad,
-      valida: true
+      valida: true,
+      url_foto: ''
     }
 
     this.servEspecialidad.Nuevo(_especialidad).then(

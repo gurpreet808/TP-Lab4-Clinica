@@ -104,8 +104,8 @@ div[name="turno_form_button_data_container"] {
     gap: 0.25rem;
 
     div[name="turno_form_button_img_container"] {
-        width: 8rem;
-        height: 8rem;
+        width: 10rem;
+        height: 6rem;
         border-radius: 0.5rem;
         border: 1px solid #00000080;
         overflow: hidden;
@@ -113,7 +113,7 @@ div[name="turno_form_button_data_container"] {
         img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
     }
 }

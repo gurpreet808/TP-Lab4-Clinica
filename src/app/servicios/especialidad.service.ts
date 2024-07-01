@@ -7,12 +7,13 @@ import { CollectionReference, DocumentData, DocumentReference, Firestore, Query,
   providedIn: 'root'
 })
 export class EspecialidadService {
-
   especialidades: BehaviorSubject<Especialidad[]> = new BehaviorSubject<Especialidad[]>([]);
   firstRun: boolean = true;
 
   private readonly pathUrl: string = 'especialidades';
   private readonly rootRef: CollectionReference<DocumentData, DocumentData> = collection(this.firestore, this.pathUrl);
+
+  default_especialidad_img: string = 'assets/logos/especialidad-default.png';
 
   constructor(private firestore: Firestore) {
     this.CargarSubscripcion();
