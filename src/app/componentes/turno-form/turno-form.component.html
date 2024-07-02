@@ -68,7 +68,7 @@
         <div id="turno_form_pacientes_container" name="turno_form_item_container">
             <div name="turno_form_item_label">Elija un paciente:</div>
 
-            <div name="buttons_container">
+            <div name="turno_form_buttons_container">
                 @for (paciente of pacientes; track $index) {
                 <button pButton name="turno_form_paciente_button" severity="info" styleClass="fullwidth"
                     (click)="ElegirPaciente(paciente)">
@@ -90,7 +90,7 @@
         <div id="turno_form_especialidades_container" name="turno_form_item_container">
             <div name="turno_form_item_label">Elija una especialidad:</div>
 
-            <div name="buttons_container">
+            <div name="turno_form_buttons_container">
                 @for (especialidad of especialidades; track $index) {
                 <button pButton name="turno_form_especialidad_button" severity="help" styleClass="fullwidth"
                     (click)="ElegirEspecialidad(especialidad)">
@@ -116,7 +116,7 @@
         <div id="turno_form_especialistas_container" name="turno_form_item_container">
             <div name="turno_form_item_label">Elija un especialista:</div>
 
-            <div name="buttons_container">
+            <div name="turno_form_buttons_container">
                 @for (especialista of especialistas; track $index) {
                 <button pButton name="turno_form_especialista_button" severity="success" styleClass="fullwidth"
                     (click)="ElegirEspecialista(especialista)">
@@ -138,7 +138,7 @@
         <div id="turno_form_fechas_container" name="turno_form_item_container">
             <div name="turno_form_item_label">Elija la fecha:</div>
 
-            <div name="buttons_container">
+            <div name="turno_form_buttons_container">
                 @for (fecha of fechas_disponibles; track $index) {
                 <button pButton name="turno_form_fecha_button" [label]="fecha | fechaDiaMes" severity="contrast"
                     (click)="ElegirFecha(fecha)"></button>
@@ -152,10 +152,10 @@
 
         @if (!_hora && _paciente && _especialidad && _especialista && _fecha) {
         @if (turnos_filtrados_fecha.length > 0) {
-        <div id="turno_form_horarios_container" name="buttons_container" name="turno_form_item_container">
+        <div id="turno_form_horarios_container" name="turno_form_buttons_container" name="turno_form_item_container">
             <div name="turno_form_item_label">Elija la hora:</div>
 
-            <div name="buttons_container">
+            <div name="turno_form_buttons_container">
                 @for (turno of turnos_filtrados_fecha; track $index) {
                 <button pButton name="turno_form_hora_button" [label]='turno.hora' severity="contrast"
                     (click)="ElegirHora(turno)"></button>

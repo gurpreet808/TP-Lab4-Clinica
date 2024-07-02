@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { UsuarioService } from '../../modulos/auth/servicios/usuario.service';
 import { EspecialidadService } from '../../servicios/especialidad.service';
@@ -48,6 +48,7 @@ export class TurnoFormComponent implements OnInit, OnDestroy {
   especialidades_suscripcion: Subscription;
   especialistas_suscripcion: Subscription;
   turnos_ocupados_suscripcion: Subscription | undefined;
+  @Output() TurnoCreado = new EventEmitter();
 
   ready: {
     pacientes: boolean,

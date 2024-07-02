@@ -1,18 +1,18 @@
 <div id="turnos_table_container">
-    <p-table #dt_turnos id="dt_turnos" [value]="servTurno.turnos.value" dataKey="id"
-        [globalFilterFields]="filterByParams" [scrollable]="true" scrollHeight="flex" [rows]="10"
-        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
+    <p-table #dt_turnos id="dt_turnos" [value]="_turnos" dataKey="id" [globalFilterFields]="filterByParams"
+        [scrollable]="true" scrollHeight="flex" [rows]="10" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
 
         <ng-template pTemplate="caption">
             <div id="table_menu">
                 <div id="table_menu_title_container" name="table_menu_row">
-                    <div id="table_menu_title">
+                    <div id="table_menu_title" style="font-size: 1.5rem;">
                         Turnos
                     </div>
                 </div>
 
-                <div id="filter_buttons_container" name="table_menu_row">
+                <!-- <div id="filter_buttons_container" name="table_menu_row">
                     <p-iconField iconPosition="left">
                         <p-inputIcon styleClass="fa-solid fa-magnifying-glass" />
                         <input type="search" pInputText placeholder="Buscador"
@@ -29,10 +29,10 @@
                             <i class="fa fa-filter"></i> Nombre
                         </ng-template>
                     </p-columnFilter>
-                </div>
+                </div> -->
 
                 <div id="acciones_masivas_buttons_container" name="table_menu_row">
-                    <button pButton pRipple label="Nuevo turno" icon="fa-solid fa-user-shield" severity="warning"
+                    <button pButton pRipple label="Nuevo turno" icon="fa-solid fa-calendar-plus"
                         (click)='NuevoTurno()'></button>
                 </div>
             </div>
@@ -45,8 +45,33 @@
         <ng-template pTemplate="body" let-turno_item>
             <tr>
                 <td>
-                    <div>
-                        {{turno_item | json}}
+                    <div name="turno_card">
+                        <div name="turno_item_container">
+                            <app-turno-item [turno]="turno_item"></app-turno-item>
+                        </div>
+
+                        <div name="turno_item_actions">
+                            <button pButton pRipple icon="fa-solid fa-ban" rounded="true" severity="warning"
+                                label="Cancelar turno" (click)="CancelarTurno(turno_item)"></button>
+
+                            <button pButton pRipple icon="fa-solid fa-note-sticky" rounded="true" severity="secondary"
+                                label="Ver reseña" (click)="VerResenia(turno_item)"></button>
+
+                            <button pButton pRipple icon="fa-solid fa-clipboard-list" rounded="true" severity="info"
+                                label="Completar encuesta" (click)="CompletarEncuesta(turno_item)"></button>
+
+                            <button pButton pRipple icon="fa-solid fa-star" rounded="true" severity="help"
+                                label="Calificar atencion" (click)="CalificarAtencion(turno_item)"></button>
+
+                            <button pButton pRipple icon="fa-solid fa-xmark" rounded="true" severity="danger"
+                                label="Rechazar turno" (click)="RechazarTurno(turno_item)"></button>
+
+                            <button pButton pRipple icon="fa-solid fa-check" rounded="true" severity="success"
+                                label="Aceptar turno" (click)="AceptarTurno(turno_item)"></button>
+
+                            <button pButton pRipple icon="fa-solid fa-check-double" rounded="true" severity="success"
+                                label="Finalizar turno" (click)="FinalizarTurno(turno_item)"></button>
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -60,10 +85,12 @@
     </p-table>
 </div>
 
-<p-dialog [(visible)]="editModal" header="Nuevo turno" [modal]="true" class="user-modal"
-    styleClass="p-fluid user-modal" (onHide)="CancelarEdicion()">
+<p-dialog [(visible)]="showModal" [header]="" [modal]="true" class="turno-modal" styleClass="turno-modal"
+    (onHide)="CancelarModal()">
     <ng-template pTemplate="content">
-        <!-- <app-turno-form [tipo_turno]="tipo_turno" (UserCreated)="Cancelar()"></app-turno-form> -->
+        <div style="height: 100%; width: 100%;">
+            <app-turno-form (TurnoCreado)="CancelarModal()"></app-turno-form>
+        </div>
     </ng-template>
 
     <!-- <ng-template pTemplate="footer">

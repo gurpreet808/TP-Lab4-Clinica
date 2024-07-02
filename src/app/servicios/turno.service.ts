@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, firstValueFrom, skip } from 'rxjs';
-import { CollectionReference, DocumentData, DocumentReference, Firestore, Query, collection, collectionData, deleteDoc, doc, getDocs, orderBy, query, setDoc, where } from '@angular/fire/firestore';
+import { BehaviorSubject, Observable, firstValueFrom, map, skip } from 'rxjs';
+import { CollectionReference, DocumentData, DocumentReference, Firestore, Query, Timestamp, collection, collectionData, deleteDoc, doc, getDocs, orderBy, query, setDoc, where } from '@angular/fire/firestore';
 import { Turno } from '../clases/turno';
 import { Disponibilidad, DisponibilidadEspecialidad } from '../clases/disponibilidad';
 import { DisponibilidadService } from './disponibilidad.service';
@@ -26,12 +26,62 @@ export class TurnoService {
       this.rootRef,
       orderBy('fecha', 'desc')
     ) as Query<Turno, DocumentData>;
-    return collectionData<Turno>(_query, { idField: 'id' });
+    return collectionData<Turno>(_query, { idField: 'id' }).pipe(
+      map(
+        (turnos: Turno[]) => {
+          return turnos.map(
+            (turno: Turno) => {
+              return { ...turno, fecha: this.timestampToDate(turno.fecha as any) }
+            }
+          )
+        }
+      )
+    );
   }
 
   TraerTurnosOcupadosPorEspecialistaEntreFechas(fechaInicio: Date, fechaFin: Date, id_especialista: string): Observable<Turno[]> {
     let _query = query(this.rootRef, where('fecha', '>=', fechaInicio), where('fecha', '<=', fechaFin), where('id_especialista', '==', id_especialista)) as Query<Turno, DocumentData>;
-    return collectionData<Turno>(_query, { idField: 'id' });
+    return collectionData<Turno>(_query, { idField: 'id' }).pipe(
+      map(
+        (turnos: Turno[]) => {
+          return turnos.map(
+            (turno: Turno) => {
+              return { ...turno, fecha: this.timestampToDate(turno.fecha as any) }
+            }
+          )
+        }
+      )
+    );
+  }
+
+  TraerTurnosPorPaciente(id_paciente: string): Observable<Turno[]> {
+    let _query = query(this.rootRef, where('id_paciente', '==', id_paciente)) as Query<Turno, DocumentData>;
+    return collectionData<Turno>(_query, { idField: 'id' }).pipe(
+      map(
+        (turnos: Turno[]) => {
+          return turnos.map(
+            (turno: Turno) => {
+              return { ...turno, fecha: this.timestampToDate(turno.fecha as any) }
+            }
+          )
+        }
+      )
+    );
+  }
+
+  TraerTurnosPorEspecialista(id_especialista: string): Observable<Turno[]> {
+    let _query = query(this.rootRef, where('id_especialista', '==', id_especialista)) as Query<Turno, DocumentData>;
+    return collectionData<Turno>(_query, { idField: 'id' }).pipe(
+      map(
+        (turnos: Turno[]) => {
+          return turnos.map(
+            (turno: Turno) => {
+              return { ...turno, fecha: this.timestampToDate(turno.fecha as any) }
+            }
+          )
+        }
+      )
+    );
   }
 
   CargarSubscripcion(): void {
@@ -83,22 +133,6 @@ export class TurnoService {
     return _turno;
   }
 
-  TurnosPorPaciente(id_paciente: string): Turno[] {
-    return this.turnos.value.filter(turno => turno.id_paciente == id_paciente);
-  }
-
-  TurnosPorEspecialista(id_especialista: string): Turno[] {
-    return this.turnos.value.filter(turno => turno.id_especialista == id_especialista);
-  }
-
-  TurnosPorEspecialidad(id_especialidad: string): Turno[] {
-    return this.turnos.value.filter(turno => turno.especialidad == id_especialidad);
-  }
-
-  TurnosPorEstado(estado: number): Turno[] {
-    return this.turnos.value.filter(turno => turno.estado == estado);
-  }
-
   TurnosPorFecha(fecha: Date): Turno[] {
     return this.turnos.value.filter(turno => turno.fecha == fecha);
   }
@@ -121,6 +155,10 @@ export class TurnoService {
 
   ClonarTurno(turno: Turno): Turno {
     return JSON.parse(JSON.stringify(turno));
+  }
+
+  timestampToDate(timestamp: Timestamp): Date {
+    return new Date(timestamp.seconds * 1000);
   }
 
   async GenerarTurnos(id_paciente: string, id_especialista: string, id_especialidad: string, disponibilidades_especialista: DisponibilidadEspecialidad[], cant_dias: number) {

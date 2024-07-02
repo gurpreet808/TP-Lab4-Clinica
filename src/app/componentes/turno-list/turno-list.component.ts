@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService, SelectItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -12,8 +12,11 @@ import { UsuarioService } from '../../modulos/auth/servicios/usuario.service';
 import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
 import { TurnoService } from '../../servicios/turno.service';
-import { Turno } from '../../clases/turno';
+import { EstadoTurno, Turno } from '../../clases/turno';
 import { JsonPipe } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { TurnoItemComponent } from '../turno-item/turno-item.component';
+import { TurnoFormComponent } from '../turno-form/turno-form.component';
 
 @Component({
   selector: 'app-turno-list',
@@ -27,16 +30,19 @@ import { JsonPipe } from '@angular/common';
     IconFieldModule,
     InputIconModule,
     DropdownModule,
+    TurnoItemComponent,
+    TurnoFormComponent,
     JsonPipe
   ],
   templateUrl: './turno-list.component.html',
   styleUrl: './turno-list.component.scss'
 })
-export class TurnoListComponent implements OnInit {
+export class TurnoListComponent implements OnInit, OnDestroy {
+  _turnos: Turno[] = [];
   tipo_usuario_actual: string = "";
   testing: any;
 
-  editModal: boolean = false;
+  showModal: boolean = false;
   globalFilter: string = "";
   filterByParams: string[] = ["nombre", "apellido", "email"];
   sortField: string = "nombre";
@@ -47,6 +53,8 @@ export class TurnoListComponent implements OnInit {
     { label: 'Fecha de creación', value: 'fecha_creacion' }
   ];
 
+  turnos_suscription: Subscription | undefined;
+
   constructor(
     public servTurno: TurnoService,
     public servUsuario: UsuarioService,
@@ -56,11 +64,10 @@ export class TurnoListComponent implements OnInit {
   ) {
     this.servSpinner.showWithMessage("turnos-init", "Cargando datos de los turnos...");
 
-    
     this.servTurno.Ready().then(
       () => {
         console.log("TurnosComponent", "Ready");
-        
+
         this.servAuth.IsLoggedIn().then(
           (loggedIn: boolean) => {
             this.tipo_usuario_actual = this.servAuth.usuarioActual.value?.tipo || "";
@@ -78,14 +85,44 @@ export class TurnoListComponent implements OnInit {
           this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
         }
       }
-    ).finally(
-      () => {
-        this.servSpinner.hideWithMessage("turnos-init");
-      }
     );
   }
 
   ngOnInit(): void {
+    //console.log(this.servAuth.usuarioActual.value?.tipo);
+    this.tipo_usuario_actual = this.servAuth.usuarioActual.value!.tipo;
+
+    switch (this.tipo_usuario_actual) {
+      case "paciente":
+        this.turnos_suscription = this.servTurno.TraerTurnosPorPaciente(this.servAuth.usuarioActual.value!.uid).subscribe(
+          (turnos: Turno[]) => {
+            this._turnos = turnos;
+          }
+        );
+        break;
+      case "especialista":
+        this.turnos_suscription = this.servTurno.TraerTurnosPorEspecialista(this.servAuth.usuarioActual.value!.uid).subscribe(
+          (turnos: Turno[]) => {
+            this._turnos = turnos;
+          }
+        );
+        break;
+      default:
+        this.turnos_suscription = this.servTurno.TraerTodos().subscribe(
+          (turnos: Turno[]) => {
+            this._turnos = turnos;
+          }
+        );
+        break;
+    }
+
+    this.servSpinner.hideWithMessage("turnos-init");
+  }
+
+  ngOnDestroy(): void {
+    if (this.turnos_suscription) {
+      this.turnos_suscription.unsubscribe();
+    }
   }
 
   clear(table: Table) {
@@ -94,39 +131,39 @@ export class TurnoListComponent implements OnInit {
   }
 
   NuevoTurno() {
-    this.editModal = true;
+    this.showModal = true;
   }
 
-  CancelarEdicion() {
-    //console.log("Cancelar");
-    this.editModal = false;
+  CancelarModal() {
+    this.showModal = false;
   }
 
-  CancelarTurno() {
+  CancelarTurno(_turno: Turno) {
     /* Sólo pueden Paciente, Especialista y Admin si el estado del turno es Pendiente. También los Paciente si el estado es Aceptado */
+    //Debería abrir un popup o dialog para que cargue el comentario de cancelacion
   }
 
-  VerReseña() {
+  VerResenia(_turno: Turno) {
     //Sólo Especialista y Paciente si hay reseña
   }
 
-  CompletarEncuesta() {
+  CompletarEncuesta(_turno: Turno) {
     //Sólo Paciente si el estado del turno es Realizado y si hay reseña del especialista
   }
 
-  CalificarAtencion() {
+  CalificarAtencion(_turno: Turno) {
     //Sólo Paciente si el estado del turno es Realizado y si hay reseña del especialista
   }
 
-  RechazarTurno() {
+  RechazarTurno(_turno: Turno) {
     //Sólo Especialista si el estado del turno es Pendiente
   }
 
-  AceptarTurno() {
+  AceptarTurno(_turno: Turno) {
     //Sólo Especialista si el estado del turno es Pendiente
   }
 
-  FinalizarTurno() {
+  FinalizarTurno(_turno: Turno) {
     //Sólo Especialista si el estado del turno es Aceptado
   }
 
