@@ -33,6 +33,7 @@ import { JsonPipe } from '@angular/common';
   styleUrl: './turno-list.component.scss'
 })
 export class TurnoListComponent implements OnInit {
+  tipo_usuario_actual: string = "";
   testing: any;
 
   editModal: boolean = false;
@@ -55,9 +56,16 @@ export class TurnoListComponent implements OnInit {
   ) {
     this.servSpinner.showWithMessage("turnos-init", "Cargando datos de los turnos...");
 
+    
     this.servTurno.Ready().then(
       () => {
         console.log("TurnosComponent", "Ready");
+        
+        this.servAuth.IsLoggedIn().then(
+          (loggedIn: boolean) => {
+            this.tipo_usuario_actual = this.servAuth.usuarioActual.value?.tipo || "";
+          }
+        );
       }
     ).catch(
       (error: any) => {
@@ -89,9 +97,37 @@ export class TurnoListComponent implements OnInit {
     this.editModal = true;
   }
 
-  Cancelar() {
+  CancelarEdicion() {
     //console.log("Cancelar");
     this.editModal = false;
+  }
+
+  CancelarTurno() {
+    /* Sólo pueden Paciente, Especialista y Admin si el estado del turno es Pendiente. También los Paciente si el estado es Aceptado */
+  }
+
+  VerReseña() {
+    //Sólo Especialista y Paciente si hay reseña
+  }
+
+  CompletarEncuesta() {
+    //Sólo Paciente si el estado del turno es Realizado y si hay reseña del especialista
+  }
+
+  CalificarAtencion() {
+    //Sólo Paciente si el estado del turno es Realizado y si hay reseña del especialista
+  }
+
+  RechazarTurno() {
+    //Sólo Especialista si el estado del turno es Pendiente
+  }
+
+  AceptarTurno() {
+    //Sólo Especialista si el estado del turno es Pendiente
+  }
+
+  FinalizarTurno() {
+    //Sólo Especialista si el estado del turno es Aceptado
   }
 
   actionHandler(actionObject: { action: string, item: Turno }) {
