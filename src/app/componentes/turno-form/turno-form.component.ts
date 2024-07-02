@@ -80,7 +80,7 @@ export class TurnoFormComponent implements OnInit, OnDestroy {
     this.especialidades_suscripcion = this.servEspecialidad.especialidades.subscribe(
       (_especialidades) => {
         this.ready.especialidades = true;
-        this.especialidades = _especialidades;
+        this.especialidades = _especialidades.filter((especialidad: Especialidad) => especialidad.valida);
         this.FiltrarEspecialistas();
       }
     );
@@ -228,8 +228,8 @@ export class TurnoFormComponent implements OnInit, OnDestroy {
     this.especialistas = this.servUsuario.especialistas.value.filter(
       (especialista: Especialista) => {
         // Verificar si el especialista tiene la especialidad seleccionada
-        const tieneEspecialidad = this._especialidad 
-          ? especialista.especialidades.includes(this._especialidad.id) 
+        const tieneEspecialidad = this._especialidad
+          ? especialista.especialidades.includes(this._especialidad.id)
           : true; // Si no se ha seleccionado especialidad, mostrar todos los especialistas
 
         return especialista.habilitado && tieneEspecialidad && especialista.especialidades.some(
