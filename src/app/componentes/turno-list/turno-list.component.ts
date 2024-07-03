@@ -14,7 +14,7 @@ import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
 import { TurnoService } from '../../servicios/turno.service';
 import { EstadoTurno, Turno } from '../../clases/turno';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe, KeyValuePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TurnoItemComponent } from '../turno-item/turno-item.component';
 import { TurnoFormComponent } from '../turno-form/turno-form.component';
@@ -39,6 +39,7 @@ import { ResaltarEstadoTurnoDirective } from '../../directivas/resaltar-estado-t
     NombreApellidoUsuarioPipe,
     ResaltarEstadoTurnoDirective,
     AsyncPipe,
+    KeyValuePipe,
     JsonPipe
   ],
   templateUrl: './turno-list.component.html',

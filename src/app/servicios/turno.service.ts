@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, firstValueFrom, map, skip } from 'rxjs';
 import { CollectionReference, DocumentData, DocumentReference, Firestore, Query, Timestamp, collection, collectionData, deleteDoc, doc, getDocs, orderBy, query, setDoc, where } from '@angular/fire/firestore';
-import { Turno } from '../clases/turno';
+import { Turno, TURNO_DEFAULT } from '../clases/turno';
 import { Disponibilidad, DisponibilidadEspecialidad } from '../clases/disponibilidad';
 import { DisponibilidadService } from './disponibilidad.service';
 
@@ -217,25 +217,14 @@ export class TurnoService {
                 const fechaTurno = new Date(_fecha_iteracion);
                 fechaTurno.setHours(hora, 0, 0, 0);
 
-                let _turno_model: Turno = {
-                  id: "new",
-                  id_especialista: id_especialista,
-                  id_paciente: id_paciente,
-                  estado: 1,
-                  fecha: fechaTurno,
-                  hora: hora.toString() + ':00',
-                  especialidad: id_especialidad,
-                  comentario: {
-                    autor: "",
-                    texto: ""
-                  },
-                  encuesta: {
-                    1: "",
-                    2: "",
-                    3: ""
-                  },
-                  calificacion: 0
-                };
+                let _turno_model = this.ClonarTurno(TURNO_DEFAULT);
+
+                _turno_model.id_especialista = id_especialista;
+                _turno_model.id_paciente = id_paciente;
+                _turno_model.estado = 1;
+                _turno_model.fecha = fechaTurno;
+                _turno_model.hora = hora.toString() + ':00';
+                _turno_model.especialidad = id_especialidad;
 
                 //console.log(disponibilidades_clinica_dia);
 

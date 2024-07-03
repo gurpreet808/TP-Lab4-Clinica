@@ -9,6 +9,7 @@ export interface Turno {
     comentario: TurnoComentario;
     encuesta: TurnoEncuesta;
     calificacion: number;
+    historia_clinica: HistoriaClinica;
 }
 
 export enum EstadoTurno {
@@ -29,3 +30,37 @@ export interface TurnoEncuesta {
     2: string;
     3: string;
 }
+
+export interface HistoriaClinica {
+    altura: number;
+    peso: number;
+    temperatura: number;
+    presion: number;
+    [key: string]: number;
+}
+
+export const TURNO_DEFAULT: Turno = {
+    id: 'new',
+    id_paciente: '',
+    id_especialista: '',
+    estado: EstadoTurno.Pendiente,
+    fecha: new Date(),
+    hora: '',
+    especialidad: '',
+    comentario: {
+        autor: '',
+        texto: ''
+    },
+    encuesta: {
+        1: '',
+        2: '',
+        3: ''
+    },
+    calificacion: 0,
+    historia_clinica: {
+        altura: 0,
+        peso: 0,
+        temperatura: 0,
+        presion: 0
+    }
+};

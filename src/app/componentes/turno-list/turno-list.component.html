@@ -127,6 +127,24 @@
             }
 
             <input id="turno_comentario" pInputText type="text" [(ngModel)]="_turno_seleccionado.comentario.texto">
+
+            @if (_turno_seleccionado.estado == 5) {
+            <div id="historia_clinica_container">
+                <div id="historia_clinica_header">
+                    Cargar Historia Clínica
+                </div>
+
+                <div id="historia_clinica_form">
+                    @for (item of _turno_seleccionado.historia_clinica | keyvalue; track $index) {
+                    <div name="historia_clinica_input">
+                        <label [for]='"historia_clinica_"+item.key'>{{item.key}}</label>
+                        <input type="text" pInputText [id]='"historia_clinica_"+item.key'
+                            [(ngModel)]="_turno_seleccionado.historia_clinica[item.key]">
+                    </div>
+                    }
+                </div>
+            </div>
+            }
             } @else {
             <div>No hay turno seleccionado</div>
             }
