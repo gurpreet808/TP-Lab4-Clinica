@@ -103,6 +103,61 @@ div#turno_modal_container {
     flex-direction: column;
     gap: 1rem;
 
+    [name="turno_resenia_item"] {
+        label {
+            font-weight: 700;
+        }
+
+        div#turno_resenia_encuesta {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 0.125rem;
+
+            div[name="turno_resenia_encuesta_pregunta"] {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.5rem;
+
+                label {
+                    font-weight: 400;
+                }
+
+                div {
+                    /* Agregar borde inferior con puntos */
+                    border-bottom: 1px dashed rgba(0, 0, 0, 0.35);
+                }
+            }
+        }
+    }
+
+    div#turno_encuesta_container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        div[name="turno_encuesta_pregunta"] {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
+
+    div#turno_calificacion_container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    div#turno_resenia_container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 }
 
 div#dialog_action_buttons {

@@ -8,6 +8,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
+import { RatingModule } from 'primeng/rating';
 import { UsuarioService } from '../../modulos/auth/servicios/usuario.service';
 import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
@@ -32,6 +33,7 @@ import { ResaltarEstadoTurnoDirective } from '../../directivas/resaltar-estado-t
     IconFieldModule,
     InputIconModule,
     DropdownModule,
+    RatingModule,
     TurnoItemComponent,
     TurnoFormComponent,
     NombreApellidoUsuarioPipe,
@@ -51,6 +53,10 @@ export class TurnoListComponent implements OnInit, OnDestroy {
   showModal: boolean = false;
   actionModal: string = "";
   titleModal: string = "";
+
+  pregunta_1: string = "¿Se le hizo fácil solicitar el turno?";
+  pregunta_2: string = "¿Esperó mucho tiempo antes de ser atendido?";
+  pregunta_3: string = "¿Nuestras instalaciones estaban limpias?";
 
   globalFilter: string = "";
   filterByParams: string[] = ["nombre", "apellido", "email"];

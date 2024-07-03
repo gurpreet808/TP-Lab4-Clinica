@@ -27,7 +27,7 @@
                     <button id="reset_filters_btn" pButton label="Reset" class="p-button-outlined p-button-sm"
                         icon="fa-solid fa-filter-circle-xmark" (click)="clear(dt_turnos)"></button>
 
-                    <p-columnFilter type="text" field="nombre" display="menu" matchMode="contains"
+                    <p-columnFilter pInputText type="text" field="nombre" display="menu" matchMode="contains"
                         [showOperator]="false" [showAddButton]="false">
                         <ng-template pTemplate="filtericon">
                             <i class="fa fa-filter"></i> Nombre
@@ -69,11 +69,16 @@
                             }
 
                             @if (tipo_usuario_actual == "paciente" && turno_item.estado == 5) {
+                            @if (turno_item.encuesta[1] == "" || turno_item.encuesta[2] == "" || turno_item.encuesta[3]
+                            == ""){
                             <button pButton pRipple icon="fa-solid fa-clipboard-list" rounded="true" severity="info"
                                 label="Completar encuesta" (click)="CompletarEncuesta(turno_item)"></button>
+                            }
 
-                            <button pButton pRipple icon="fa-solid fa-star" rounded="true" severity="help"
-                                label="Calificar atencion" (click)="CalificarAtencion(turno_item)"></button>
+                            @if (turno_item.calificacion == 0) { <button pButton pRipple icon="fa-solid fa-star"
+                                rounded="true" severity="help" label="Calificar atencion"
+                                (click)="CalificarAtencion(turno_item)"></button>
+                            }
                             }
 
                             @if (tipo_usuario_actual == "especialista") {
@@ -121,7 +126,7 @@
             <div>Indique el motivo:</div>
             }
 
-            <input id="turno_comentario" type="text" [(ngModel)]="_turno_seleccionado.comentario.texto">
+            <input id="turno_comentario" pInputText type="text" [(ngModel)]="_turno_seleccionado.comentario.texto">
             } @else {
             <div>No hay turno seleccionado</div>
             }
@@ -130,21 +135,24 @@
         @case ("encuesta") {
         <div id="turno_encuesta_container">
             @if (_turno_seleccionado) {
-            <div> Responda las siguientes preguntas:</div>
+            <h3>Responda las siguientes preguntas:</h3>
 
             <div name="turno_encuesta_pregunta">
-                <label for="turno_encuesta_pregunta_1">Pregunta 1:</label>
-                <input id="turno_encuesta_pregunta_1" type="text">
+                <label for="turno_encuesta_pregunta_1">{{pregunta_1}}</label>
+                <input id="turno_encuesta_pregunta_1" pInputText type="text"
+                    [(ngModel)]="_turno_seleccionado.encuesta[1]">
             </div>
 
             <div name="turno_encuesta_pregunta">
-                <label for="turno_encuesta_pregunta_2">Pregunta 2:</label>
-                <input id="turno_encuesta_pregunta_2" type="text">
+                <label for="turno_encuesta_pregunta_2">{{pregunta_2}}</label>
+                <input id="turno_encuesta_pregunta_2" pInputText type="text"
+                    [(ngModel)]="_turno_seleccionado.encuesta[2]">
             </div>
 
             <div name="turno_encuesta_pregunta">
-                <label for="turno_encuesta_pregunta_3">Pregunta 3:</label>
-                <input id="turno_encuesta_pregunta_3" type="text">
+                <label for="turno_encuesta_pregunta_3">{{pregunta_3}}</label>
+                <input id="turno_encuesta_pregunta_3" pInputText type="text"
+                    [(ngModel)]="_turno_seleccionado.encuesta[3]">
             </div>
             } @else {
             <div>No hay turno seleccionado</div>
@@ -155,7 +163,7 @@
         <div id="turno_calificacion_container">
             @if (_turno_seleccionado) {
             <div>¿Cómo califica la atención recibida?</div>
-            <input id="turno_calificacion" type="text">
+            <p-rating [(ngModel)]="_turno_seleccionado.calificacion" [cancel]="false" [stars]="5" />
             } @else {
             <div>No hay turno seleccionado</div>
             }
@@ -166,23 +174,41 @@
             @if (_turno_seleccionado) {
             <div name="turno_resenia_item">
                 <label for="turno_resenia_comentario">Comentario por {{_turno_seleccionado.comentario.autor |
-                    nombreApellidoUsuario | async}}</label>
+                    nombreApellidoUsuario | async}}:</label>
                 <div id="turno_resenia_comentario">{{_turno_seleccionado.comentario.texto}}</div>
             </div>
 
+            @if (_turno_seleccionado.encuesta[1] != "" && _turno_seleccionado.encuesta[1] != "" &&
+            _turno_seleccionado.encuesta[2] != "" && _turno_seleccionado.encuesta[3]) {
             <div name="turno_resenia_item">
                 <label for="turno_resenia_encuesta">Encuesta</label>
                 <div id="turno_resenia_encuesta">
-                    <div>Pregunta 1: {{_turno_seleccionado.encuesta[1]}}</div>
-                    <div>Pregunta 2: {{_turno_seleccionado.encuesta[2]}}</div>
-                    <div>Pregunta 3: {{_turno_seleccionado.encuesta[3]}}</div>
+                    <div name="turno_resenia_encuesta_pregunta">
+                        <label>{{pregunta_1}}</label>
+                        <div>{{_turno_seleccionado.encuesta[1]}}</div>
+                    </div>
+
+                    <div name="turno_resenia_encuesta_pregunta">
+                        <label>{{pregunta_2}}</label>
+                        <div>{{_turno_seleccionado.encuesta[2]}}</div>
+                    </div>
+
+                    <div name="turno_resenia_encuesta_pregunta">
+                        <label>{{pregunta_3}}</label>
+                        <div>{{_turno_seleccionado.encuesta[3]}}</div>
+                    </div>
                 </div>
             </div>
+            }
 
+            @if (_turno_seleccionado.calificacion != 0) {
             <div name="turno_resenia_item">
-                <label for="turno_resenia_calificacion">Calificación</label>
-                <div id="turno_resenia_calificacion">{{_turno_seleccionado.calificacion}}</div>
+                <label for="turno_resenia_calificacion">Calificación de atención</label>
+                <div id="turno_resenia_calificacion">
+                    <p-rating [(ngModel)]="_turno_seleccionado.calificacion" [readonly]="true" [cancel]="false" />
+                </div>
             </div>
+            }
             } @else {
             <div>No hay turno seleccionado</div>
             }
