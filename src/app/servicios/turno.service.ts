@@ -31,7 +31,7 @@ export class TurnoService {
         (turnos: Turno[]) => {
           return turnos.map(
             (turno: Turno) => {
-              return { ...turno, fecha: this.timestampToDate(turno.fecha as any) }
+              return { ...turno, fecha: this.HandleDate(turno.fecha) }
             }
           )
         }
@@ -46,7 +46,7 @@ export class TurnoService {
         (turnos: Turno[]) => {
           return turnos.map(
             (turno: Turno) => {
-              return { ...turno, fecha: this.timestampToDate(turno.fecha as any) }
+              return { ...turno, fecha: this.HandleDate(turno.fecha) }
             }
           )
         }
@@ -61,7 +61,7 @@ export class TurnoService {
         (turnos: Turno[]) => {
           return turnos.map(
             (turno: Turno) => {
-              return { ...turno, fecha: this.timestampToDate(turno.fecha as any) }
+              return { ...turno, fecha: this.HandleDate(turno.fecha) }
             }
           )
         }
@@ -76,7 +76,7 @@ export class TurnoService {
         (turnos: Turno[]) => {
           return turnos.map(
             (turno: Turno) => {
-              return { ...turno, fecha: this.timestampToDate(turno.fecha as any) }
+              return { ...turno, fecha: this.HandleDate(turno.fecha) }
             }
           )
         }
@@ -154,10 +154,24 @@ export class TurnoService {
   }
 
   ClonarTurno(turno: Turno): Turno {
-    return JSON.parse(JSON.stringify(turno));
+    let _turno: Turno = JSON.parse(JSON.stringify(turno));
+    _turno.fecha = new Date(turno.fecha);
+    return _turno;
   }
 
-  timestampToDate(timestamp: Timestamp): Date {
+  HandleDate(fecha: any): Date {
+    if (typeof fecha === 'string') {
+      return new Date(fecha);
+    }
+
+    if (fecha.seconds !== undefined) {
+      return new Date(fecha.seconds * 1000);
+    }
+
+    return fecha;
+  }
+
+  TimestampToDate(timestamp: Timestamp): Date {
     return new Date(timestamp.seconds * 1000);
   }
 

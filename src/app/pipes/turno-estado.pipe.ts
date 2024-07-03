@@ -13,7 +13,7 @@ export class TurnoEstadoPipe implements PipeTransform {
       case EstadoTurno.Cancelado: return 'Cancelado';
       case EstadoTurno.Rechazado: return 'Rechazado';
       case EstadoTurno.Aceptado: return 'Aceptado';
-      case EstadoTurno.Realizado: return 'Realizado';
+      case EstadoTurno.Finalizado: return 'Finalizado';
       default: return 'Desconocido';
     }
   }

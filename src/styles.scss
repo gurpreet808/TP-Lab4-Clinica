@@ -43,3 +43,78 @@ $paciente: #49c6ff;
 .empty_table_message {
     text-align: center;
 }
+
+.turno-pendiente {
+    /* Violeta */
+    background: #f3e8ff;
+    border: solid #c084fc;
+    border-width: 1px;
+    border-radius: 0.5rem;
+    color: #6b21a8;
+
+    [name="turno_estado"] {
+        background-color: #c084fc !important;
+        color: #6b21a8 !important;
+        border-color: #6b21a8 !important;
+    }
+}
+
+.turno-rechazado {
+    /* Rojo */
+    background: #fee2e2;
+    border: solid #fca5a5;
+    border-width: 1px;
+    border-radius: 0.5rem;
+    color: #dc2626;
+
+    [name="turno_estado"] {
+        background-color: #fca5a5 !important;
+        color: #dc2626 !important;
+        border-color: #dc2626 !important;
+    }
+}
+
+.turno-cancelado {
+    /* Tonos naranja */
+    background: #fef3c7;
+    border: solid #fcd34d;
+    border-width: 1px;
+    border-radius: 0.5rem;
+    color: #c66a00;
+
+    [name="turno_estado"] {
+        background-color: #ffd06a !important;
+        color: #c66a00 !important;
+        border-color: #c66a00 !important;
+    }
+}
+
+.turno-aceptado {
+    /* Celeste cielo */
+    background: #e0f2fe;
+    border: solid #bfdbfe;
+    border-width: 1px;
+    border-radius: 0.5rem;
+    color: #0ea5e9;
+
+    [name="turno_estado"] {
+        background-color: #a7dbff !important;
+        color: #0ea5e9 !important;
+        border-color: #0ea5e9 !important;
+    }
+}
+
+.turno-finalizado {
+    /* Verde oscuro */
+    background: #d1fae5;
+    border: solid #4ade80;
+    border-width: 1px;
+    border-radius: 0.5rem;
+    color: #15803d;
+
+    [name="turno_estado"] {
+        background-color: #8bdba8 !important;
+        color: #15803d !important;
+        border-color: #15803d !important;
+    }
+}

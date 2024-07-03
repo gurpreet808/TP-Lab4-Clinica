@@ -17,6 +17,8 @@ import { JsonPipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TurnoItemComponent } from '../turno-item/turno-item.component';
 import { TurnoFormComponent } from '../turno-form/turno-form.component';
+import { NombreApellidoUsuarioPipe } from '../../pipes/nombre-apellido-usuario.pipe';
+import { ResaltarEstadoTurnoDirective } from '../../directivas/resaltar-estado-turno.directive';
 
 @Component({
   selector: 'app-turno-list',
@@ -32,6 +34,8 @@ import { TurnoFormComponent } from '../turno-form/turno-form.component';
     DropdownModule,
     TurnoItemComponent,
     TurnoFormComponent,
+    NombreApellidoUsuarioPipe,
+    ResaltarEstadoTurnoDirective,
     JsonPipe
   ],
   templateUrl: './turno-list.component.html',
@@ -144,11 +148,16 @@ export class TurnoListComponent implements OnInit, OnDestroy {
     this.actionModal = "";
     this.titleModal = "";
     this.showModal = false;
+    this._turno_seleccionado = undefined;
   }
 
   CancelarTurno(_turno: Turno) {
     /* Sólo pueden Paciente, Especialista y Admin si el estado del turno es Pendiente. También los Paciente si el estado es Aceptado */
     //Debería abrir un popup o dialog para que cargue el comentario de cancelacion
+    this._turno_seleccionado = this.servTurno.ClonarTurno(_turno);
+    this._turno_seleccionado.comentario.autor = this.servAuth.usuarioActual.value!.uid;
+    this._turno_seleccionado.estado = EstadoTurno.Cancelado;
+
     this.actionModal = "comentario";
     this.titleModal = "Cancelar Turno";
     this.showModal = true;
@@ -156,6 +165,8 @@ export class TurnoListComponent implements OnInit, OnDestroy {
 
   VerResenia(_turno: Turno) {
     //Sólo Especialista y Paciente si hay reseña
+    this._turno_seleccionado = this.servTurno.ClonarTurno(_turno);
+
     this.actionModal = "verdatos";
     this.titleModal = "Reseña del turno";
     this.showModal = true;
@@ -163,6 +174,8 @@ export class TurnoListComponent implements OnInit, OnDestroy {
 
   CompletarEncuesta(_turno: Turno) {
     //Sólo Paciente si el estado del turno es Realizado y si hay reseña del especialista
+    this._turno_seleccionado = this.servTurno.ClonarTurno(_turno);
+
     this.actionModal = "encuesta";
     this.titleModal = "Encuesta de atención";
     this.showModal = true;
@@ -170,6 +183,8 @@ export class TurnoListComponent implements OnInit, OnDestroy {
 
   CalificarAtencion(_turno: Turno) {
     //Sólo Paciente si el estado del turno es Realizado y si hay reseña del especialista
+    this._turno_seleccionado = this.servTurno.ClonarTurno(_turno);
+
     this.actionModal = "calificacion";
     this.titleModal = "Calificación de atención";
     this.showModal = true;
@@ -177,6 +192,10 @@ export class TurnoListComponent implements OnInit, OnDestroy {
 
   RechazarTurno(_turno: Turno) {
     //Sólo Especialista si el estado del turno es Pendiente
+    this._turno_seleccionado = this.servTurno.ClonarTurno(_turno);
+    this._turno_seleccionado.comentario.autor = this.servAuth.usuarioActual.value!.uid;
+    this._turno_seleccionado.estado = EstadoTurno.Rechazado;
+
     this.actionModal = "comentario";
     this.titleModal = "Rechazar Turno";
     this.showModal = true;
@@ -185,27 +204,54 @@ export class TurnoListComponent implements OnInit, OnDestroy {
   AceptarTurno(_turno: Turno) {
     //Sólo Especialista si el estado del turno es Pendiente
     //Sólo cambiar de estado
+    this._turno_seleccionado = this.servTurno.ClonarTurno(_turno);
+    this._turno_seleccionado.estado = EstadoTurno.Aceptado;
+    this.GuardarCambios();
   }
 
   FinalizarTurno(_turno: Turno) {
     //Sólo Especialista si el estado del turno es Aceptado
+    this._turno_seleccionado = this.servTurno.ClonarTurno(_turno);
+    this._turno_seleccionado.comentario.autor = this.servAuth.usuarioActual.value!.uid;
+    this._turno_seleccionado.estado = EstadoTurno.Finalizado;
+
     this.actionModal = "comentario";
     this.titleModal = "Finalizar Turno";
     this.showModal = true;
   }
 
-  actionHandler(actionObject: { action: string, item: Turno }) {
-    //console.log("actionHandler", actionObject);
-
-    switch (actionObject.action) {
-      case "test":
-        this.Test();
-        break;
-      default:
-        this.messageService.add({ severity: 'warn', life: 10000, summary: 'Advertencia', detail: "No se encontró la función" });
-        console.log("actionHandler", "No se reconoce la acción", actionObject.action);
-        break;
+  GuardarCambios() {
+    if (!this._turno_seleccionado) {
+      this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: 'No se ha seleccionado un turno para modificar.' });
+      return;
     }
+
+    this.servSpinner.showWithMessage("turnos-save", "Guardando cambios...");
+    console.log("GuardarCambios", this._turno_seleccionado);
+
+    this.servTurno.Modificar(this._turno_seleccionado).then(
+      (resultado: any) => {
+        this.messageService.add({
+          severity: 'success', life: 10000, summary: 'Éxito', detail: 'Los cambios se guardaron correctamente.'
+        });
+      }
+    ).catch(
+      (error: any) => {
+        if (typeof error === 'string') {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        } else if (error instanceof Error) {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+        } else {
+          console.error("GuardarCambios", error);
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+        }
+      }
+    ).finally(
+      () => {
+        this.servSpinner.hideWithMessage("turnos-save");
+        this.CancelarModal();
+      }
+    );
   }
 
   Test(any?: any) {

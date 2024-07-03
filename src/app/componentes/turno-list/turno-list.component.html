@@ -45,7 +45,7 @@
         <ng-template pTemplate="body" let-turno_item>
             <tr>
                 <td>
-                    <div name="turno_card">
+                    <div name="turno_card" resaltarEstadoTurno [estadoTurno]="turno_item.estado">
                         <div name="turno_item_container">
                             <app-turno-item [turno]="turno_item"></app-turno-item>
                         </div>
@@ -94,27 +94,78 @@
         }
         @case ("comentario") {
         <div id="turno_comentario_container">
+            @if (_turno_seleccionado) {
             @if (titleModal == "Finalizar Turno") {
             <div>Comentario:</div>
             } @else {
             <div>Indique el motivo:</div>
             }
-            <input id="turno_comentario" type="text" [(ngModel)]="_turno_seleccionado">
+
+            <input id="turno_comentario" type="text" [(ngModel)]="_turno_seleccionado.comentario.texto">
+            } @else {
+            <div>No hay turno seleccionado</div>
+            }
         </div>
         }
         @case ("encuesta") {
         <div id="turno_encuesta_container">
-            Aqui la encuesta
+            @if (_turno_seleccionado) {
+            <div> Responda las siguientes preguntas:</div>
+
+            <div name="turno_encuesta_pregunta">
+                <label for="turno_encuesta_pregunta_1">Pregunta 1:</label>
+                <input id="turno_encuesta_pregunta_1" type="text">
+            </div>
+
+            <div name="turno_encuesta_pregunta">
+                <label for="turno_encuesta_pregunta_2">Pregunta 2:</label>
+                <input id="turno_encuesta_pregunta_2" type="text">
+            </div>
+
+            <div name="turno_encuesta_pregunta">
+                <label for="turno_encuesta_pregunta_3">Pregunta 3:</label>
+                <input id="turno_encuesta_pregunta_3" type="text">
+            </div>
+            } @else {
+            <div>No hay turno seleccionado</div>
+            }
         </div>
         }
         @case ("calificacion") {
         <div id="turno_calificacion_container">
-            Aqui la calificacion
+            @if (_turno_seleccionado) {
+            <div>¿Cómo califica la atención recibida?</div>
+            <input id="turno_calificacion" type="text">
+            } @else {
+            <div>No hay turno seleccionado</div>
+            }
         </div>
         }
         @case ("verdatos") {
         <div id="turno_resenia_container">
-            Aqui la reseña
+            @if (_turno_seleccionado) {
+            <div name="turno_resenia_item">
+                <label for="turno_resenia_comentario">Comentario por {{_turno_seleccionado.comentario.autor |
+                    nombreApellidoUsuario}}</label>
+                <div id="turno_resenia_comentario">{{_turno_seleccionado.comentario.texto}}</div>
+            </div>
+
+            <div name="turno_resenia_item">
+                <label for="turno_resenia_encuesta">Encuesta</label>
+                <div id="turno_resenia_encuesta">
+                    <div>Pregunta 1: {{_turno_seleccionado.encuesta[1]}}</div>
+                    <div>Pregunta 2: {{_turno_seleccionado.encuesta[2]}}</div>
+                    <div>Pregunta 3: {{_turno_seleccionado.encuesta[3]}}</div>
+                </div>
+            </div>
+
+            <div name="turno_resenia_item">
+                <label for="turno_resenia_calificacion">Calificación</label>
+                <div id="turno_resenia_calificacion">{{_turno_seleccionado.calificacion}}</div>
+            </div>
+            } @else {
+            <div>No hay turno seleccionado</div>
+            }
         </div>
         }
         @default {
@@ -128,7 +179,7 @@
                 (click)="CancelarModal()"></button>
 
             <button pButton pRipple label="Confirmar" icon="fa fa-check" severity="success"
-                (click)="CancelarModal()"></button>
+                (click)="GuardarCambios()"></button>
         </div>
         }
     </div>

@@ -3,7 +3,8 @@
     <div name="turno_header_row">
         <div name="turno_fecha">
             <i class="fa-solid fa-calendar-days"></i>
-            {{(turno.fecha | fechaDiaMes) + " " + turno.hora}}</div>
+            {{(turno.fecha | fechaDiaMes) + " " + turno.hora}}
+        </div>
         <div name="turno_estado_container">
             <label>Estado:</label>
             <div name="turno_estado">{{turno.estado | turnoEstado}}</div>
@@ -15,10 +16,14 @@
             <label>Especialista:</label>
             <div>
                 {{turno.id_especialista | nombreApellidoUsuario | async}}
-                <span>({{turno.especialidad | especialidad | async}})</span>
             </div>
         </div>
-    
+
+        <div name="turno_data_group">
+            <label>Especialidad:</label>
+            <div>{{turno.especialidad | especialidad | async}}</div>
+        </div>
+
         <div name="turno_data_group">
             <label>Paciente:</label>
             <div>{{turno.id_paciente | nombreApellidoUsuario | async}}</div>
