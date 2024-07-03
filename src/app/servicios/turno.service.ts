@@ -161,7 +161,7 @@ export class TurnoService {
     return new Date(timestamp.seconds * 1000);
   }
 
-  async GenerarTurnos(id_paciente: string, id_especialista: string, id_especialidad: string, disponibilidades_especialista: DisponibilidadEspecialidad[], cant_dias: number) {
+  async GenerarTurnos(id_paciente: string, id_especialista: string, id_especialidad: string, disponibilidades_especialista: DisponibilidadEspecialidad[], cantidad_dias: number) {
     let _turnos: Turno[] = [];
 
     let _fecha_inicio: Date = new Date();
@@ -174,13 +174,13 @@ export class TurnoService {
 
     let _fecha_fin: Date = new Date(_fecha_inicio);
     let _fecha_iteracion: Date = new Date(_fecha_inicio);
-    _fecha_fin.setDate(_fecha_inicio.getDate() + cant_dias);
+    _fecha_fin.setDate(_fecha_inicio.getDate() + cantidad_dias);
 
     //console.log(_fecha_fin);
     //console.log(_fecha_inicio.getDate());
     //console.log(_fecha_inicio.getDay());
 
-    for (let _date = 0; _date < cant_dias + 1; _date++) {
+    for (let _numero_de_dia = 0; _numero_de_dia < cantidad_dias + 1; _numero_de_dia++) {
       //console.log(_fecha_iteracion.getDate(), _fecha_iteracion.getDay());
 
       for (const disponibilidad of disponibilidades_especialista) {
@@ -214,7 +214,13 @@ export class TurnoService {
                   comentario: {
                     autor: "",
                     texto: ""
-                  }
+                  },
+                  encuesta: {
+                    1: "",
+                    2: "",
+                    3: ""
+                  },
+                  calificacion: 0
                 };
 
                 //console.log(disponibilidades_clinica_dia);
