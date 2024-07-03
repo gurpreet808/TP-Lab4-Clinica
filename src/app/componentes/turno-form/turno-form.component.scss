@@ -6,14 +6,7 @@ div#nuevo_turno_container {
     align-items: center;
     gap: 0.5rem;
     height: 100%;
-
-    div#nuevo_turno_title {
-        width: 100%;
-        font-size: 1.5rem;
-        font-weight: bold;
-        text-align: center;
-    }
-
+    
     div#turno_a_solicitar_container {
         display: flex;
         flex-direction: row;

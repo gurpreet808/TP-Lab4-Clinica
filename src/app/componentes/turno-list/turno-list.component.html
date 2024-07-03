@@ -85,18 +85,51 @@
     </p-table>
 </div>
 
-<p-dialog [(visible)]="showModal" [header]="" [modal]="true" class="turno-modal" styleClass="turno-modal"
+<p-dialog [(visible)]="showModal" [header]="titleModal" [modal]="true" class="turno-modal" styleClass="turno-modal"
     (onHide)="CancelarModal()">
-    <ng-template pTemplate="content">
-        <div style="height: 100%; width: 100%;">
-            <app-turno-form (TurnoCreado)="CancelarModal()"></app-turno-form>
+    <div id="turno_modal_container" style="height: 100%; width: 100%;">
+        @switch (actionModal) {
+        @case ("nuevo") {
+        <app-turno-form (TurnoCreado)="CancelarModal()"></app-turno-form>
+        }
+        @case ("comentario") {
+        <div id="turno_comentario_container">
+            @if (titleModal == "Finalizar Turno") {
+            <div>Comentario:</div>
+            } @else {
+            <div>Indique el motivo:</div>
+            }
+            <input id="turno_comentario" type="text" [(ngModel)]="_turno_seleccionado">
         </div>
-    </ng-template>
+        }
+        @case ("encuesta") {
+        <div id="turno_encuesta_container">
+            Aqui la encuesta
+        </div>
+        }
+        @case ("calificacion") {
+        <div id="turno_calificacion_container">
+            Aqui la calificacion
+        </div>
+        }
+        @case ("verdatos") {
+        <div id="turno_resenia_container">
+            Aqui la reseña
+        </div>
+        }
+        @default {
+        <div>Accion no registrada</div>
+        }
+        }
 
-    <!-- <ng-template pTemplate="footer">
-        <div id="dialog_acciones_competencia" class="flex justify-content-between">
-            <button pButton pRipple label="Cancelar" icon="fa fa-times" class="p-button-outlined p-button-warning"
-                (click)="Cancelar()"></button>
+        @if (actionModal == "comentario" || actionModal == "encuesta" || actionModal == "calificacion") {
+        <div id="dialog_action_buttons">
+            <button pButton pRipple label="Descartar" icon="fa fa-times" severity="warning"
+                (click)="CancelarModal()"></button>
+
+            <button pButton pRipple label="Confirmar" icon="fa fa-check" severity="success"
+                (click)="CancelarModal()"></button>
         </div>
-    </ng-template> -->
+        }
+    </div>
 </p-dialog>

@@ -39,10 +39,14 @@ import { TurnoFormComponent } from '../turno-form/turno-form.component';
 })
 export class TurnoListComponent implements OnInit, OnDestroy {
   _turnos: Turno[] = [];
+  _turno_seleccionado: Turno | undefined;
   tipo_usuario_actual: string = "";
   testing: any;
 
   showModal: boolean = false;
+  actionModal: string = "";
+  titleModal: string = "";
+
   globalFilter: string = "";
   filterByParams: string[] = ["nombre", "apellido", "email"];
   sortField: string = "nombre";
@@ -131,40 +135,63 @@ export class TurnoListComponent implements OnInit, OnDestroy {
   }
 
   NuevoTurno() {
+    this.actionModal = "nuevo";
+    this.titleModal = "Nuevo Turno";
     this.showModal = true;
   }
 
   CancelarModal() {
+    this.actionModal = "";
+    this.titleModal = "";
     this.showModal = false;
   }
 
   CancelarTurno(_turno: Turno) {
     /* Sólo pueden Paciente, Especialista y Admin si el estado del turno es Pendiente. También los Paciente si el estado es Aceptado */
     //Debería abrir un popup o dialog para que cargue el comentario de cancelacion
+    this.actionModal = "comentario";
+    this.titleModal = "Cancelar Turno";
+    this.showModal = true;
   }
 
   VerResenia(_turno: Turno) {
     //Sólo Especialista y Paciente si hay reseña
+    this.actionModal = "verdatos";
+    this.titleModal = "Reseña del turno";
+    this.showModal = true;
   }
 
   CompletarEncuesta(_turno: Turno) {
     //Sólo Paciente si el estado del turno es Realizado y si hay reseña del especialista
+    this.actionModal = "encuesta";
+    this.titleModal = "Encuesta de atención";
+    this.showModal = true;
   }
 
   CalificarAtencion(_turno: Turno) {
     //Sólo Paciente si el estado del turno es Realizado y si hay reseña del especialista
+    this.actionModal = "calificacion";
+    this.titleModal = "Calificación de atención";
+    this.showModal = true;
   }
 
   RechazarTurno(_turno: Turno) {
     //Sólo Especialista si el estado del turno es Pendiente
+    this.actionModal = "comentario";
+    this.titleModal = "Rechazar Turno";
+    this.showModal = true;
   }
 
   AceptarTurno(_turno: Turno) {
     //Sólo Especialista si el estado del turno es Pendiente
+    //Sólo cambiar de estado
   }
 
   FinalizarTurno(_turno: Turno) {
     //Sólo Especialista si el estado del turno es Aceptado
+    this.actionModal = "comentario";
+    this.titleModal = "Finalizar Turno";
+    this.showModal = true;
   }
 
   actionHandler(actionObject: { action: string, item: Turno }) {
