@@ -8,7 +8,11 @@
             <div id="table_menu">
                 <div id="table_menu_title_container" name="table_menu_row">
                     <div id="table_menu_title" style="font-size: 1.5rem;">
-                        Turnos
+                        @if (tipo_usuario_actual == "paciente" || tipo_usuario_actual == "especialista") {
+                        Mis
+                        } Turnos
+
+                        {{tipo_usuario_actual}}
                     </div>
                 </div>
 
@@ -32,8 +36,10 @@
                 </div> -->
 
                 <div id="acciones_masivas_buttons_container" name="table_menu_row">
+                    @if (tipo_usuario_actual == "admin") {
                     <button pButton pRipple label="Nuevo turno" icon="fa-solid fa-calendar-plus"
                         (click)='NuevoTurno()'></button>
+                    }
                 </div>
             </div>
         </ng-template>
@@ -51,26 +57,40 @@
                         </div>
 
                         <div name="turno_item_actions">
+                            @if (turno_item.estado == 1 || (turno_item.estado == 4 &&
+                            tipo_usuario_actual == "paciente")) {
                             <button pButton pRipple icon="fa-solid fa-ban" rounded="true" severity="warning"
                                 label="Cancelar turno" (click)="CancelarTurno(turno_item)"></button>
+                            }
 
+                            @if (turno_item.estado != 1 && turno_item.estado != 4 && tipo_usuario_actual != "admin") {
                             <button pButton pRipple icon="fa-solid fa-note-sticky" rounded="true" severity="secondary"
                                 label="Ver reseña" (click)="VerResenia(turno_item)"></button>
+                            }
 
+                            @if (tipo_usuario_actual == "paciente" && turno_item.estado == 5) {
                             <button pButton pRipple icon="fa-solid fa-clipboard-list" rounded="true" severity="info"
                                 label="Completar encuesta" (click)="CompletarEncuesta(turno_item)"></button>
 
                             <button pButton pRipple icon="fa-solid fa-star" rounded="true" severity="help"
                                 label="Calificar atencion" (click)="CalificarAtencion(turno_item)"></button>
+                            }
 
+                            @if (tipo_usuario_actual == "especialista") {
+                            @if (turno_item.estado == 1) {
                             <button pButton pRipple icon="fa-solid fa-xmark" rounded="true" severity="danger"
                                 label="Rechazar turno" (click)="RechazarTurno(turno_item)"></button>
 
                             <button pButton pRipple icon="fa-solid fa-check" rounded="true" severity="success"
                                 label="Aceptar turno" (click)="AceptarTurno(turno_item)"></button>
+                            }
 
+                            @if (turno_item.estado == 4) {
                             <button pButton pRipple icon="fa-solid fa-check-double" rounded="true" severity="success"
                                 label="Finalizar turno" (click)="FinalizarTurno(turno_item)"></button>
+                            }
+                            }
+
                         </div>
                     </div>
                 </td>
@@ -146,7 +166,7 @@
             @if (_turno_seleccionado) {
             <div name="turno_resenia_item">
                 <label for="turno_resenia_comentario">Comentario por {{_turno_seleccionado.comentario.autor |
-                    nombreApellidoUsuario}}</label>
+                    nombreApellidoUsuario | async}}</label>
                 <div id="turno_resenia_comentario">{{_turno_seleccionado.comentario.texto}}</div>
             </div>
 
