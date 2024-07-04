@@ -35,7 +35,7 @@ export interface HistoriaClinica {
     altura: number;
     peso: number;
     temperatura: number;
-    presion: number;
+    "presión": number;
     [key: string]: number;
 }
 
@@ -61,6 +61,6 @@ export const TURNO_DEFAULT: Turno = {
         altura: 0,
         peso: 0,
         temperatura: 0,
-        presion: 0
+        "presión": 0
     }
 };

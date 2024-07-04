@@ -8,13 +8,14 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
+import { FieldsetModule } from 'primeng/fieldset';
 import { RatingModule } from 'primeng/rating';
 import { UsuarioService } from '../../modulos/auth/servicios/usuario.service';
 import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
 import { TurnoService } from '../../servicios/turno.service';
-import { EstadoTurno, Turno } from '../../clases/turno';
-import { AsyncPipe, JsonPipe, KeyValuePipe } from '@angular/common';
+import { EstadoTurno, Turno, TURNO_DEFAULT } from '../../clases/turno';
+import { AsyncPipe, JsonPipe, KeyValuePipe, TitleCasePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TurnoItemComponent } from '../turno-item/turno-item.component';
 import { TurnoFormComponent } from '../turno-form/turno-form.component';
@@ -34,12 +35,14 @@ import { ResaltarEstadoTurnoDirective } from '../../directivas/resaltar-estado-t
     InputIconModule,
     DropdownModule,
     RatingModule,
+    FieldsetModule,
     TurnoItemComponent,
     TurnoFormComponent,
     NombreApellidoUsuarioPipe,
     ResaltarEstadoTurnoDirective,
     AsyncPipe,
     KeyValuePipe,
+    TitleCasePipe,
     JsonPipe
   ],
   templateUrl: './turno-list.component.html',
@@ -58,6 +61,9 @@ export class TurnoListComponent implements OnInit, OnDestroy {
   pregunta_1: string = "¿Se le hizo fácil solicitar el turno?";
   pregunta_2: string = "¿Esperó mucho tiempo antes de ser atendido?";
   pregunta_3: string = "¿Nuestras instalaciones estaban limpias?";
+
+  nombre_campo_historia_clinica: string = "";
+  valor_campo_historia_clinica: number = 0;
 
   globalFilter: string = "";
   filterByParams: string[] = ["nombre", "apellido", "email"];
@@ -112,6 +118,7 @@ export class TurnoListComponent implements OnInit, OnDestroy {
       case "paciente":
         this.turnos_suscription = this.servTurno.TraerTurnosPorPaciente(this.servAuth.usuarioActual.value!.uid).subscribe(
           (turnos: Turno[]) => {
+            console.log("TraerTurnosPorPaciente", turnos);
             this._turnos = turnos;
           }
         );
@@ -119,6 +126,7 @@ export class TurnoListComponent implements OnInit, OnDestroy {
       case "especialista":
         this.turnos_suscription = this.servTurno.TraerTurnosPorEspecialista(this.servAuth.usuarioActual.value!.uid).subscribe(
           (turnos: Turno[]) => {
+            console.log("TraerTurnosPorEspecialista", turnos);
             this._turnos = turnos;
           }
         );
@@ -126,6 +134,7 @@ export class TurnoListComponent implements OnInit, OnDestroy {
       default:
         this.turnos_suscription = this.servTurno.TraerTodos().subscribe(
           (turnos: Turno[]) => {
+            console.log("TraerTodos", turnos);
             this._turnos = turnos;
           }
         );
@@ -234,6 +243,11 @@ export class TurnoListComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if ((this._turno_seleccionado.estado == EstadoTurno.Cancelado || this._turno_seleccionado.estado == EstadoTurno.Rechazado || this._turno_seleccionado.estado == EstadoTurno.Finalizado) && !this._turno_seleccionado.comentario.texto) {
+      this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: 'Debe ingresar un comentario.' });
+      return;
+    }
+
     this.servSpinner.showWithMessage("turnos-save", "Guardando cambios...");
     console.log("GuardarCambios", this._turno_seleccionado);
 
@@ -260,6 +274,40 @@ export class TurnoListComponent implements OnInit, OnDestroy {
         this.CancelarModal();
       }
     );
+  }
+
+  AgregarCampoDinamicoHistoriaClinica() {
+    if (!this.nombre_campo_historia_clinica) {
+      this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: 'Debe ingresar un nombre para el campo.' });
+      return;
+    }
+
+    if (this._turno_seleccionado && this._turno_seleccionado.historia_clinica[this.nombre_campo_historia_clinica]) {
+      this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: 'Ya existe un campo con ese nombre.' });
+      return;
+    }
+
+    if (this.valor_campo_historia_clinica === null || this.valor_campo_historia_clinica === undefined) {
+      this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: 'Debe ingresar un valor para el campo.' });
+      return;
+    }
+
+    if (this._turno_seleccionado) {
+      this._turno_seleccionado.historia_clinica[this.nombre_campo_historia_clinica] = this.valor_campo_historia_clinica;
+    }
+
+    this.nombre_campo_historia_clinica = "";
+    this.valor_campo_historia_clinica = 0;
+  }
+
+  BorrarCampoDinamicoHistoriaClinica(key: string) {
+    if (this._turno_seleccionado) {
+      delete this._turno_seleccionado.historia_clinica[key];
+    }
+  }
+
+  EsCampoFijo(key: string): boolean {
+    return Object.keys(TURNO_DEFAULT.historia_clinica).includes(key);
   }
 
   Test(any?: any) {

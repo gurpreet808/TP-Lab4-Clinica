@@ -120,131 +120,150 @@
         @case ("comentario") {
         <div id="turno_comentario_container">
             @if (_turno_seleccionado) {
-            @if (titleModal == "Finalizar Turno") {
-            <div>Comentario:</div>
-            } @else {
-            <div>Indique el motivo:</div>
-            }
+            <p-fieldset [legend]='titleModal == "Finalizar Turno" ? "Comentario" : "Indique el motivo"'>
+                <input id="turno_comentario" pInputText type="text" [(ngModel)]="_turno_seleccionado.comentario.texto">
+            </p-fieldset>
 
-            <input id="turno_comentario" pInputText type="text" [(ngModel)]="_turno_seleccionado.comentario.texto">
 
             @if (_turno_seleccionado.estado == 5) {
             <div id="historia_clinica_container">
-                <div id="historia_clinica_header">
-                    Cargar Historia Clínica
+                <p-fieldset legend="Cargar Historia Clínica">
+                    <div id="historia_clinica_form">
+                        @for (item of _turno_seleccionado.historia_clinica | keyvalue; track $index) {
+                        <div name="historia_clinica_input">
+                            <label [for]='"historia_clinica_"+item.key'>{{item.key | titlecase}}</label>
+                            <input pInputText type="text" [id]='"historia_clinica_"+item.key'
+                                [(ngModel)]="_turno_seleccionado.historia_clinica[item.key]">
+                            @if (!EsCampoFijo(item.key)) {
+                            <button pButton icon="fa fa-times" severity="danger"
+                                (click)="BorrarCampoDinamicoHistoriaClinica(item.key)"></button>
+                            }
+                        </div>
+                        }
+
+                        @if ((_turno_seleccionado.historia_clinica | keyvalue).length < 7) { <p-fieldset
+                            legend="Agregar dato adicional">
+                            <div id="historia_clinica_agregar_form">
+                                <div name="historia_clinica_agregar_input">
+                                    <label for="historia_clinica_agregar_key">Nombre del dato</label>
+                                    <input pInputText type="text" id="historia_clinica_agregar_key"
+                                        [(ngModel)]="nombre_campo_historia_clinica">
+                                </div>
+
+                                <div name="historia_clinica_agregar_input">
+                                    <label for="historia_clinica_agregar_value">Valor</label>
+                                    <input pInputText type="text" id="historia_clinica_agregar_value"
+                                        [(ngModel)]="valor_campo_historia_clinica">
+                                </div>
+
+                                <button pButton pRipple label="Agregar" icon="fa fa-plus"
+                                    id="historia_clinica_agregar_button"
+                                    (click)="AgregarCampoDinamicoHistoriaClinica()"></button>
+                            </div>
+                </p-fieldset>
+                }
+
+            </div>
+            </p-fieldset>
+        </div>
+        }
+        } @else {
+        <div>No hay turno seleccionado</div>
+        }
+    </div>
+    }
+    @case ("encuesta") {
+    <div id="turno_encuesta_container">
+        @if (_turno_seleccionado) {
+        <h3>Responda las siguientes preguntas:</h3>
+
+        <div name="turno_encuesta_pregunta">
+            <label for="turno_encuesta_pregunta_1">{{pregunta_1}}</label>
+            <input id="turno_encuesta_pregunta_1" pInputText type="text" [(ngModel)]="_turno_seleccionado.encuesta[1]">
+        </div>
+
+        <div name="turno_encuesta_pregunta">
+            <label for="turno_encuesta_pregunta_2">{{pregunta_2}}</label>
+            <input id="turno_encuesta_pregunta_2" pInputText type="text" [(ngModel)]="_turno_seleccionado.encuesta[2]">
+        </div>
+
+        <div name="turno_encuesta_pregunta">
+            <label for="turno_encuesta_pregunta_3">{{pregunta_3}}</label>
+            <input id="turno_encuesta_pregunta_3" pInputText type="text" [(ngModel)]="_turno_seleccionado.encuesta[3]">
+        </div>
+        } @else {
+        <div>No hay turno seleccionado</div>
+        }
+    </div>
+    }
+    @case ("calificacion") {
+    <div id="turno_calificacion_container">
+        @if (_turno_seleccionado) {
+        <div>¿Cómo califica la atención recibida?</div>
+        <p-rating [(ngModel)]="_turno_seleccionado.calificacion" [cancel]="false" [stars]="5" />
+        } @else {
+        <div>No hay turno seleccionado</div>
+        }
+    </div>
+    }
+    @case ("verdatos") {
+    <div id="turno_resenia_container">
+        @if (_turno_seleccionado) {
+        <div name="turno_resenia_item">
+            <label for="turno_resenia_comentario">Comentario por {{_turno_seleccionado.comentario.autor |
+                nombreApellidoUsuario | async}}:</label>
+            <div id="turno_resenia_comentario">{{_turno_seleccionado.comentario.texto}}</div>
+        </div>
+
+        @if (_turno_seleccionado.encuesta[1] != "" && _turno_seleccionado.encuesta[1] != "" &&
+        _turno_seleccionado.encuesta[2] != "" && _turno_seleccionado.encuesta[3]) {
+        <div name="turno_resenia_item">
+            <label for="turno_resenia_encuesta">Encuesta</label>
+            <div id="turno_resenia_encuesta">
+                <div name="turno_resenia_encuesta_pregunta">
+                    <label>{{pregunta_1}}</label>
+                    <div>{{_turno_seleccionado.encuesta[1]}}</div>
                 </div>
 
-                <div id="historia_clinica_form">
-                    @for (item of _turno_seleccionado.historia_clinica | keyvalue; track $index) {
-                    <div name="historia_clinica_input">
-                        <label [for]='"historia_clinica_"+item.key'>{{item.key}}</label>
-                        <input type="text" pInputText [id]='"historia_clinica_"+item.key'
-                            [(ngModel)]="_turno_seleccionado.historia_clinica[item.key]">
-                    </div>
-                    }
+                <div name="turno_resenia_encuesta_pregunta">
+                    <label>{{pregunta_2}}</label>
+                    <div>{{_turno_seleccionado.encuesta[2]}}</div>
+                </div>
+
+                <div name="turno_resenia_encuesta_pregunta">
+                    <label>{{pregunta_3}}</label>
+                    <div>{{_turno_seleccionado.encuesta[3]}}</div>
                 </div>
             </div>
-            }
-            } @else {
-            <div>No hay turno seleccionado</div>
-            }
         </div>
         }
-        @case ("encuesta") {
-        <div id="turno_encuesta_container">
-            @if (_turno_seleccionado) {
-            <h3>Responda las siguientes preguntas:</h3>
 
-            <div name="turno_encuesta_pregunta">
-                <label for="turno_encuesta_pregunta_1">{{pregunta_1}}</label>
-                <input id="turno_encuesta_pregunta_1" pInputText type="text"
-                    [(ngModel)]="_turno_seleccionado.encuesta[1]">
+        @if (_turno_seleccionado.calificacion != 0) {
+        <div name="turno_resenia_item">
+            <label for="turno_resenia_calificacion">Calificación de atención</label>
+            <div id="turno_resenia_calificacion">
+                <p-rating [(ngModel)]="_turno_seleccionado.calificacion" [readonly]="true" [cancel]="false" />
             </div>
-
-            <div name="turno_encuesta_pregunta">
-                <label for="turno_encuesta_pregunta_2">{{pregunta_2}}</label>
-                <input id="turno_encuesta_pregunta_2" pInputText type="text"
-                    [(ngModel)]="_turno_seleccionado.encuesta[2]">
-            </div>
-
-            <div name="turno_encuesta_pregunta">
-                <label for="turno_encuesta_pregunta_3">{{pregunta_3}}</label>
-                <input id="turno_encuesta_pregunta_3" pInputText type="text"
-                    [(ngModel)]="_turno_seleccionado.encuesta[3]">
-            </div>
-            } @else {
-            <div>No hay turno seleccionado</div>
-            }
         </div>
         }
-        @case ("calificacion") {
-        <div id="turno_calificacion_container">
-            @if (_turno_seleccionado) {
-            <div>¿Cómo califica la atención recibida?</div>
-            <p-rating [(ngModel)]="_turno_seleccionado.calificacion" [cancel]="false" [stars]="5" />
-            } @else {
-            <div>No hay turno seleccionado</div>
-            }
-        </div>
+        } @else {
+        <div>No hay turno seleccionado</div>
         }
-        @case ("verdatos") {
-        <div id="turno_resenia_container">
-            @if (_turno_seleccionado) {
-            <div name="turno_resenia_item">
-                <label for="turno_resenia_comentario">Comentario por {{_turno_seleccionado.comentario.autor |
-                    nombreApellidoUsuario | async}}:</label>
-                <div id="turno_resenia_comentario">{{_turno_seleccionado.comentario.texto}}</div>
-            </div>
+    </div>
+    }
+    @default {
+    <div>Accion no registrada</div>
+    }
+    }
 
-            @if (_turno_seleccionado.encuesta[1] != "" && _turno_seleccionado.encuesta[1] != "" &&
-            _turno_seleccionado.encuesta[2] != "" && _turno_seleccionado.encuesta[3]) {
-            <div name="turno_resenia_item">
-                <label for="turno_resenia_encuesta">Encuesta</label>
-                <div id="turno_resenia_encuesta">
-                    <div name="turno_resenia_encuesta_pregunta">
-                        <label>{{pregunta_1}}</label>
-                        <div>{{_turno_seleccionado.encuesta[1]}}</div>
-                    </div>
+    @if (actionModal == "comentario" || actionModal == "encuesta" || actionModal == "calificacion") {
+    <div id="dialog_action_buttons">
+        <button pButton pRipple label="Descartar" icon="fa fa-times" severity="warning"
+            (click)="CancelarModal()"></button>
 
-                    <div name="turno_resenia_encuesta_pregunta">
-                        <label>{{pregunta_2}}</label>
-                        <div>{{_turno_seleccionado.encuesta[2]}}</div>
-                    </div>
-
-                    <div name="turno_resenia_encuesta_pregunta">
-                        <label>{{pregunta_3}}</label>
-                        <div>{{_turno_seleccionado.encuesta[3]}}</div>
-                    </div>
-                </div>
-            </div>
-            }
-
-            @if (_turno_seleccionado.calificacion != 0) {
-            <div name="turno_resenia_item">
-                <label for="turno_resenia_calificacion">Calificación de atención</label>
-                <div id="turno_resenia_calificacion">
-                    <p-rating [(ngModel)]="_turno_seleccionado.calificacion" [readonly]="true" [cancel]="false" />
-                </div>
-            </div>
-            }
-            } @else {
-            <div>No hay turno seleccionado</div>
-            }
-        </div>
-        }
-        @default {
-        <div>Accion no registrada</div>
-        }
-        }
-
-        @if (actionModal == "comentario" || actionModal == "encuesta" || actionModal == "calificacion") {
-        <div id="dialog_action_buttons">
-            <button pButton pRipple label="Descartar" icon="fa fa-times" severity="warning"
-                (click)="CancelarModal()"></button>
-
-            <button pButton pRipple label="Confirmar" icon="fa fa-check" severity="success"
-                (click)="GuardarCambios()"></button>
-        </div>
-        }
+        <button pButton pRipple label="Confirmar" icon="fa fa-check" severity="success"
+            (click)="GuardarCambios()"></button>
+    </div>
+    }
     </div>
 </p-dialog>

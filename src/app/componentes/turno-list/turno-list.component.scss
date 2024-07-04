@@ -158,6 +158,42 @@ div#turno_modal_container {
         flex-direction: column;
         gap: 0.5rem;
     }
+
+    div#historia_clinica_container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        div#historia_clinica_form {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+
+            div[name="historia_clinica_input"] {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.5rem;
+            }
+        }
+    }
+
+    div#historia_clinica_agregar_form {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        div[name="historia_clinica_agregar_input"] {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
 }
 
 div#dialog_action_buttons {
