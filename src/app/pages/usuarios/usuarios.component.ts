@@ -132,6 +132,7 @@ export class UsuariosComponent implements OnInit {
 
   OcultarHistoriaClinica() {
     this.showHistoriaClinica = false;
+    this.usuario_seleccionado = undefined;
   }
 
   MostrarHistoriaClinica(usuario: Usuario) {
