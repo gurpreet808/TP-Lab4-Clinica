@@ -33,7 +33,7 @@
             [class.invalid-input]="isValidControl('hora_inicio')">
             <label for="hora_inicio">Hora inicio</label>
             <p-inputNumber inputId="hora_inicio" inputStyleClass="fullwidth" styleClass="fullwidth"
-                formControlName="hora_inicio" [min]="0" [maxlength]="23" [useGrouping]="false" showValidationErrors
+                formControlName="hora_inicio" [min]="0" [max]="23" [useGrouping]="false" showValidationErrors
                 [validationMessages]="mensajes_validacion" errorContainerId="hora_inicio_error_container" />
 
             <div id="hora_inicio_error_container" name="error_container"></div>
@@ -42,7 +42,7 @@
         <div id="hora_fin_container" name="horarios_form_input" [class.invalid-input]="isValidControl('hora_fin')">
             <label for="hora_fin">Hora fin</label>
             <p-inputNumber inputId="hora_fin" inputStyleClass="fullwidth" styleClass="fullwidth"
-                formControlName="hora_fin" [min]="0" [maxlength]="23" [useGrouping]="false" showValidationErrors
+                formControlName="hora_fin" [min]="0" [max]="23" [useGrouping]="false" showValidationErrors
                 [validationMessages]="mensajes_validacion" errorContainerId="hora_fin_error_container" />
 
             <div id="hora_fin_error_container" name="error_container"></div>
@@ -53,7 +53,7 @@
                 [disabled]="!horarioForm.valid" (click)="GuardarDisponibilidad()"></button>
 
             @if (disponibilidadSeleccionada) {
-            <button type="submit" pButton pRipple label="Cancelar edición" severity="warning" icon="fa fa-times"
+            <button type="submit" pButton pRipple label="Cancelar" severity="warning" icon="fa fa-ban"
                 (click)="CancelarEdicion()"></button>
             }
 
