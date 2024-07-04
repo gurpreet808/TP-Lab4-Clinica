@@ -5,6 +5,7 @@
         nombreApellidoUsuario | async}}
     </div>
 
+    @if (turnos.length > 0) {
     @for (turno of turnos; track $index) {
     <div name="historia_clinica_item_card" class="cristal_card">
         <div name="historia_clinica_header">
@@ -30,6 +31,9 @@
         </div>
 
     </div>
+    }
+    } @else {
+    <div id="historia_clinica_empty">No hay registros</div>
     }
 </div>
 }
