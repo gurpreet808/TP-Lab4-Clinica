@@ -88,6 +88,10 @@ export class EspecialidadService {
     return _especialidad;
   }
 
+  obtenerEspecialidadPorId(id: string): Especialidad | undefined {
+    return this.especialidades.value.find(especialidad => especialidad.id === id);
+  }
+
   async Ready(): Promise<boolean> {
     if (this.firstRun) {
       //console.log("firstRun EspecialidadService READY");

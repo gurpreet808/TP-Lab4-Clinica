@@ -81,6 +81,10 @@ export class ObraSocialService {
     return _obra_social;
   }
 
+  obtenerObraSocialPorId(id: string): ObraSocial | undefined {
+    return this.obras_sociales.value.find(obraSocial => obraSocial.id === id);
+  }
+
   async Ready(): Promise<boolean> {
     if (this.firstRun) {
       //console.log("firstRun ObraSocialService READY");

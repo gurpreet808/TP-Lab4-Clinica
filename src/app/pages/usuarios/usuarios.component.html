@@ -68,6 +68,9 @@
 
                     <button pButton pRipple label="Nuevo especialista" icon="fa-solid fa-user-doctor" severity="success"
                         (click)='NuevoUsuario("especialista")'></button>
+
+                    <button pButton type="button" label="Descargar Excel" icon="fa-regular fa-file-excel"
+                        (click)="ExportarExcelUsuarios()"></button>
                 </div>
             </div>
         </ng-template>

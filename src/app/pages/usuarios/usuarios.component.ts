@@ -7,7 +7,7 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule, Table } from 'primeng/table';
-import { Especialista, Usuario } from '../../modulos/auth/clases/usuario';
+import { Especialista, Paciente, Usuario } from '../../modulos/auth/clases/usuario';
 import { AuthService } from '../../modulos/auth/servicios/auth.service';
 import { UsuarioService } from '../../modulos/auth/servicios/usuario.service';
 import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service';
@@ -15,6 +15,9 @@ import { UsuarioFormComponent } from '../../componentes/usuario-form/usuario-for
 import { UsuarioItemComponent } from '../../componentes/usuario-item/usuario-item.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { HistoriaClinicaComponent } from '../../componentes/historia-clinica/historia-clinica.component';
+import { WorkSheet, read, utils, writeFile } from 'xlsx';
+import { EspecialidadService } from '../../servicios/especialidad.service';
+import { ObraSocialService } from '../../servicios/obra-social.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -62,6 +65,8 @@ export class UsuariosComponent implements OnInit {
   constructor(
     public servUsuario: UsuarioService,
     public servAuth: AuthService,
+    public servEspecialidad: EspecialidadService,
+    public servObraSocial: ObraSocialService,
     public servSpinner: SpinnerService,
     public messageService: MessageService
   ) {
@@ -138,6 +143,57 @@ export class UsuariosComponent implements OnInit {
   MostrarHistoriaClinica(usuario: Usuario) {
     this.usuario_seleccionado = usuario;
     this.showHistoriaClinica = true;
+  }
+
+  ExportarExcelUsuarios() {
+    const nombreHoja = 'Usuarios';
+    const nombreArchivo = 'usuarios';
+    const datos = this.servUsuario.usuarios.value.map((usuario: Usuario) => this.convertirUsuarioParaExcel(usuario));
+
+    this.ExportArrayToExcel([{ items: datos, nombreHoja }], nombreArchivo);
+  }
+
+  private convertirUsuarioParaExcel(usuario: Usuario): any {
+    const usuarioParaExportar: any = {
+      'Tipo': usuario.tipo,
+      'Nombre': usuario.nombre,
+      'Apellido': usuario.apellido,
+      'DNI': usuario.dni,
+      'Edad': usuario.edad,
+      'Email': usuario.email,
+      'Fecha de Alta': usuario.fecha_alta.toLocaleDateString('es-ES'),
+      'Foto 1': usuario.url_foto_1
+    };
+
+    if (usuario.tipo === 'especialista') {
+      const especialista = usuario as Especialista;
+      usuarioParaExportar['Habilitado como especialista'] = especialista.habilitado ? 'Si' : 'No';
+      usuarioParaExportar['Especialidades'] = this.obtenerNombresEspecialidades(especialista.especialidades);
+    } else if (usuario.tipo === 'paciente') {
+      const paciente = usuario as Paciente;
+      usuarioParaExportar['Foto 2'] = paciente.url_foto_2;
+      usuarioParaExportar['Obra Social'] = this.servObraSocial.obtenerObraSocialPorId(paciente.obra_social)?.nombre || '';
+    }
+
+    return usuarioParaExportar;
+  }
+
+  private obtenerNombresEspecialidades(especialidadIds: string[]): string {
+    return especialidadIds
+      .map(id => this.servEspecialidad.obtenerEspecialidadPorId(id)?.nombre || '')
+      .filter(nombre => nombre !== '')
+      .join(', ');
+  }
+
+  ExportArrayToExcel(datos: { items: any[], nombreHoja: string }[], nombreArchivo: string) {
+    const workbook = utils.book_new();
+
+    for (let i = 0; i < datos.length; i++) {
+      const worksheet = utils.json_to_sheet(datos[i].items);
+      utils.book_append_sheet(workbook, worksheet, datos[i].nombreHoja);
+    }
+
+    writeFile(workbook, nombreArchivo + '.xlsx');
   }
 
   actionHandler(actionObject: { action: string, item: Usuario }) {
