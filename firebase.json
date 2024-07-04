@@ -1,8 +1,4 @@
 {
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
   "hosting": {
     "source": ".",
     "ignore": [
@@ -13,8 +9,5 @@
     "frameworksBackend": {
       "region": "us-central1"
     }
-  },
-  "storage": {
-    "rules": "storage.rules"
   }
 }
