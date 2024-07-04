@@ -118,6 +118,8 @@ export class UsuarioService {
       throw new Error("Tipo de usuario vacío");
     }
 
+    _usuario.clave = "";
+
     return _usuario;
   }
 
