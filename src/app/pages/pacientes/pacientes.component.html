@@ -1,0 +1,22 @@
+<div id="pacientes_container">
+    <div id="pacientes_title">Mis pacientes</div>
+
+    @if (ids_pacientes.length > 0) {
+    @for (paciente_id of ids_pacientes; track $index) {
+    <button pButton [label]="(paciente_id | nombreApellidoUsuario | async)!"
+        (click)="MostrarHistoriaClinica(paciente_id)"></button>
+    }
+    } @else {
+    <div id="no_pacientes">No tienes pacientes que hayas atendido</div>
+    }
+
+</div>
+
+<p-dialog [(visible)]="showHistoriaClinica" [modal]="true" class="user-modal" styleClass="p-fluid user-modal"
+    (onHide)="OcultarHistoriaClinica()">
+    <ng-template pTemplate="content">
+        @if (paciente_seleccionado) {
+        <app-historia-clinica [paciente_id]="paciente_seleccionado"></app-historia-clinica>
+        }
+    </ng-template>
+</p-dialog>

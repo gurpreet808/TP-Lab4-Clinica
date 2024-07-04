@@ -15,5 +15,6 @@ export const routes: Routes = [
     { path: 'solicitar-turno', canActivate: [authGuard], data: { roles_permitidos: ['paciente'] }, loadComponent: () => import('./pages/solicitar-turno/solicitar-turno.component').then(c => c.SolicitarTurnoComponent) },
     { path: 'mis-turnos', canActivate: [authGuard], data: { roles_permitidos: ['paciente', 'especialista'] }, loadComponent: () => import('./pages/mis-turnos/mis-turnos.component').then(c => c.MisTurnosComponent) },
     { path: 'turnos', canActivate: [authGuard], data: { roles_permitidos: ['admin'] }, loadComponent: () => import('./pages/mis-turnos/mis-turnos.component').then(c => c.MisTurnosComponent) },
+    { path: 'pacientes', canActivate: [authGuard], data: { roles_permitidos: ['especialista'] }, loadComponent: () => import('./pages/pacientes/pacientes.component').then(c => c.PacientesComponent) },
     { path: '**', component: Error404Component }
 ];

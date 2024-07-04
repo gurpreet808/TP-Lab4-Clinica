@@ -80,6 +80,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     return [
       { label: 'Home', icon: 'fa-solid fa-house', routerLink: '/' },
       { label: 'Mis Turnos', icon: 'fa-solid fa-calendar-days', routerLink: '/mis-turnos' },
+      { label: 'Pacientes', icon: 'fa-solid fa-user-friends', routerLink: '/pacientes' },
       { label: 'Mi perfil', icon: 'fa-solid fa-user', routerLink: '/mi-perfil' }
     ];
   }
