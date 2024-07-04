@@ -93,6 +93,11 @@
                                 [rounded]="true"
                                 [severity]="servUsuario.GetUserAsEspecialista(usuario_item).habilitado ? 'contrast' : 'secondary'"></button>
                             }
+
+                            @if (usuario_item.tipo == "paciente") {
+                            <button pButton label="Ver historia clínica" icon="fa-solid fa-book-medical"
+                                (click)="MostrarHistoriaClinica(usuario_item)"></button>
+                            }
                         </div>
                     </div>
 
@@ -113,11 +118,13 @@
     <ng-template pTemplate="content">
         <app-usuario-form [tipo_usuario]="tipo_usuario" (UserCreated)="Cancelar()"></app-usuario-form>
     </ng-template>
+</p-dialog>
 
-    <!-- <ng-template pTemplate="footer">
-        <div id="dialog_acciones_competencia" class="flex justify-content-between">
-            <button pButton pRipple label="Cancelar" icon="fa fa-times" class="p-button-outlined p-button-warning"
-                (click)="Cancelar()"></button>
-        </div>
-    </ng-template> -->
+<p-dialog [(visible)]="showHistoriaClinica" [modal]="true" class="user-modal" styleClass="p-fluid user-modal"
+    (onHide)="OcultarHistoriaClinica()">
+    <ng-template pTemplate="content">
+        @if (usuario_seleccionado) {
+        <app-historia-clinica [paciente_id]="usuario_seleccionado.uid"></app-historia-clinica>
+        }
+    </ng-template>
 </p-dialog>

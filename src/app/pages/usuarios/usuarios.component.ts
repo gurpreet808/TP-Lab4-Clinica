@@ -14,6 +14,7 @@ import { SpinnerService } from '../../modulos/spinner/servicios/spinner.service'
 import { UsuarioFormComponent } from '../../componentes/usuario-form/usuario-form.component';
 import { UsuarioItemComponent } from '../../componentes/usuario-item/usuario-item.component';
 import { DropdownModule } from 'primeng/dropdown';
+import { HistoriaClinicaComponent } from '../../componentes/historia-clinica/historia-clinica.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -28,7 +29,8 @@ import { DropdownModule } from 'primeng/dropdown';
     InputIconModule,
     DropdownModule,
     UsuarioItemComponent,
-    UsuarioFormComponent
+    UsuarioFormComponent,
+    HistoriaClinicaComponent
   ],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.scss'
@@ -38,6 +40,9 @@ export class UsuariosComponent implements OnInit {
   testing: any;
 
   editModal: boolean = false;
+  showHistoriaClinica: boolean = false;
+  usuario_seleccionado: Usuario | undefined;
+
   globalFilter: string = "";
   filterByParams: string[] = ["nombre", "apellido", "email"];
   sortField: string = "nombre";
@@ -123,6 +128,15 @@ export class UsuariosComponent implements OnInit {
         }
       }
     );
+  }
+
+  OcultarHistoriaClinica() {
+    this.showHistoriaClinica = false;
+  }
+
+  MostrarHistoriaClinica(usuario: Usuario) {
+    this.usuario_seleccionado = usuario;
+    this.showHistoriaClinica = true;
   }
 
   actionHandler(actionObject: { action: string, item: Usuario }) {
