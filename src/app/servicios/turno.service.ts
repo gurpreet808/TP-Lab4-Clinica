@@ -84,6 +84,21 @@ export class TurnoService {
     );
   }
 
+  TraerTurnosPorPacientePorEstado(id_paciente: string, estado: number): Observable<Turno[]> {
+    let _query = query(this.rootRef, where('id_paciente', '==', id_paciente), where('estado', '==', estado), orderBy('fecha', 'desc')) as Query<Turno, DocumentData>;
+    return collectionData<Turno>(_query, { idField: 'id' }).pipe(
+      map(
+        (turnos: Turno[]) => {
+          return turnos.map(
+            (turno: Turno) => {
+              return { ...turno, fecha: this.HandleDate(turno.fecha) }
+            }
+          )
+        }
+      )
+    );
+  }
+
   CargarSubscripcion(): void {
     this.TraerTodos().subscribe(
       (turnos: Turno[]) => {

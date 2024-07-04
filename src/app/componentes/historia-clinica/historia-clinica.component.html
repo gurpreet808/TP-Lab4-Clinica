@@ -1,0 +1,35 @@
+@if (paciente_id) {
+<div id="historia_clinica_container" class="cristal_card">
+    <div id="historia_clinica_title">
+        <i class="fa-solid fa-book-medical"></i> Historia clínica de {{paciente_id |
+        nombreApellidoUsuario | async}}
+    </div>
+
+    @for (turno of turnos; track $index) {
+    <div name="historia_clinica_item_card" class="cristal_card">
+        <div name="historia_clinica_header">
+            <div name="historia_clinica_fecha_container">
+                <label [for]='"historia_clinica_turno_"+$index'>Fecha</label>
+                <div [id]='"historia_clinica_turno_"+$index'>{{turno.fecha | date:'dd/MM/yyyy HH:mm'}}</div>
+            </div>
+
+            <div name="historia_clinica_especialista_container">
+                <label [for]='"historia_clinica_turno_"+$index'>Cargado por</label>
+                <div [id]='"historia_clinica_turno_"+$index'>{{turno.id_especialista | nombreApellidoUsuario | async}}
+                </div>
+            </div>
+        </div>
+
+        <div name="historia_clinica_body">
+            @for (item of turno.historia_clinica | keyvalue; track $index) {
+            <div name="historia_clinica_value">
+                <label [for]='"historia_clinica_"+item.key'>{{item.key | titlecase}}</label>
+                <div [id]='"historia_clinica_"+item.key'>{{item.value}}</div>
+            </div>
+            }
+        </div>
+
+    </div>
+    }
+</div>
+}

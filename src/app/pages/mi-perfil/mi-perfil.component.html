@@ -12,5 +12,11 @@
     </div>
     }
 
+    @if (servAuth.usuarioActual.value.tipo == "paciente") {
+    <div id="mi_historia_clinica_container">
+        <app-historia-clinica [paciente_id]="servAuth.GetUsuarioAsPaciente()!.uid"></app-historia-clinica>
+    </div>
+    }
+
 </div>
 }
