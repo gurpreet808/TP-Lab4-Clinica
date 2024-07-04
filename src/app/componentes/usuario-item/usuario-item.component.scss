@@ -17,6 +17,8 @@ div[name="usuario_item"] {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0.5rem;
+        width: 100%;
+        justify-items: stretch;
 
         .usuario_item_info_group {
             label {
