@@ -40,7 +40,7 @@ export class TurnoService {
   }
 
   TraerTurnosOcupadosPorEspecialistaEntreFechas(fechaInicio: Date, fechaFin: Date, id_especialista: string): Observable<Turno[]> {
-    let _query = query(this.rootRef, where('fecha', '>=', fechaInicio), where('fecha', '<=', fechaFin), where('id_especialista', '==', id_especialista)) as Query<Turno, DocumentData>;
+    let _query = query(this.rootRef, where('fecha', '>=', fechaInicio), where('fecha', '<=', fechaFin), where('id_especialista', '==', id_especialista), orderBy('fecha', 'desc')) as Query<Turno, DocumentData>;
     return collectionData<Turno>(_query, { idField: 'id' }).pipe(
       map(
         (turnos: Turno[]) => {
@@ -55,7 +55,7 @@ export class TurnoService {
   }
 
   TraerTurnosPorPaciente(id_paciente: string): Observable<Turno[]> {
-    let _query = query(this.rootRef, where('id_paciente', '==', id_paciente)) as Query<Turno, DocumentData>;
+    let _query = query(this.rootRef, where('id_paciente', '==', id_paciente), orderBy('fecha', 'desc')) as Query<Turno, DocumentData>;
     return collectionData<Turno>(_query, { idField: 'id' }).pipe(
       map(
         (turnos: Turno[]) => {
@@ -70,7 +70,7 @@ export class TurnoService {
   }
 
   TraerTurnosPorEspecialista(id_especialista: string): Observable<Turno[]> {
-    let _query = query(this.rootRef, where('id_especialista', '==', id_especialista)) as Query<Turno, DocumentData>;
+    let _query = query(this.rootRef, where('id_especialista', '==', id_especialista), orderBy('fecha', 'desc')) as Query<Turno, DocumentData>;
     return collectionData<Turno>(_query, { idField: 'id' }).pipe(
       map(
         (turnos: Turno[]) => {
