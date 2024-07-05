@@ -259,17 +259,10 @@ export class TurnoFormComponent implements OnInit, OnDestroy {
     if (this._especialista && this._paciente && this._especialidad) {
       this.servTurno.GenerarTurnos(this._paciente.uid, this._especialista.uid, this._especialidad.id, this._especialista.disponibilidades, 15).then(
         (_turnos: Turno[]) => {
-          console.log(_turnos);
+          //console.log(_turnos);
 
           this.turnos_ocupados_suscripcion = this.servTurno.TraerTurnosOcupadosPorEspecialistaEntreFechas(_turnos[0].fecha, _turnos[_turnos.length - 1].fecha, this._especialista!.uid).subscribe(
             (_turnos_ocupados: Turno[]) => {
-
-              _turnos_ocupados.forEach(
-                (turno: Turno) => {
-                  turno.fecha = new Date((turno.fecha as any).seconds * 1000);
-                }
-              );
-
               //console.log(_turnos_ocupados);
 
               _turnos.forEach(
