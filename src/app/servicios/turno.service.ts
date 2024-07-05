@@ -201,10 +201,6 @@ export class TurnoService {
     return fecha;
   }
 
-  TimestampToDate(timestamp: Timestamp): Date {
-    return new Date(timestamp.seconds * 1000);
-  }
-
   async GenerarTurnos(id_paciente: string, id_especialista: string, id_especialidad: string, disponibilidades_especialista: DisponibilidadEspecialidad[], cantidad_dias: number) {
     let _turnos: Turno[] = [];
 
