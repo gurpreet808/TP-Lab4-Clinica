@@ -394,6 +394,18 @@ export class TurnoListComponent implements OnInit, OnDestroy {
   }
 
   private actualizarCamposDeBusqueda() {
+    if (this.tipo_usuario_actual === "paciente") {
+      this.camposDeBusqueda = this.camposDeBusqueda.filter(campo => campo.value !== 'id_paciente');
+    } else if (!this.camposDeBusqueda.some(campo => campo.value === 'id_paciente')) {
+      this.camposDeBusqueda.push({ label: 'Paciente', value: 'id_paciente' });
+    }
+
+    if (this.tipo_usuario_actual === "especialista") {
+      this.camposDeBusqueda = this.camposDeBusqueda.filter(campo => campo.value !== 'id_especialista');
+    } else if (!this.camposDeBusqueda.some(campo => campo.value === 'id_especialista')) {
+      this.camposDeBusqueda.push({ label: 'Especialista', value: 'id_especialista' });
+    }
+
     // Obtener los campos dinámicos de la historia clínica
     const camposDinamicos = this.obtenerCamposDinamicosHistoriaClinica();
 
