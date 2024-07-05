@@ -163,6 +163,20 @@ export class UsuarioService {
     throw new Error('Usuario no encontrado');
   }
 
+  ObtenerNombreApellidoUsuarioPorID(uid: string): { nombre: string, apellido: string } | undefined {
+    if (uid == null || uid == "" || uid == undefined) {
+      return undefined;
+    }
+
+    let usuario = this.usuarios.value.find(usuario => usuario.uid == uid);
+
+    if (usuario) {
+      return { nombre: usuario.nombre, apellido: usuario.apellido };
+    } else {
+      return undefined;
+    }
+  }
+
   GetUserAsPaciente(_usuario: Usuario): Paciente {
     return _usuario as Paciente;
   }

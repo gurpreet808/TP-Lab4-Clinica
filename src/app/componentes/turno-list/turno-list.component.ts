@@ -21,6 +21,7 @@ import { TurnoItemComponent } from '../turno-item/turno-item.component';
 import { TurnoFormComponent } from '../turno-form/turno-form.component';
 import { NombreApellidoUsuarioPipe } from '../../pipes/nombre-apellido-usuario.pipe';
 import { ResaltarEstadoTurnoDirective } from '../../directivas/resaltar-estado-turno.directive';
+import { EspecialidadService } from '../../servicios/especialidad.service';
 
 @Component({
   selector: 'app-turno-list',
@@ -65,6 +66,22 @@ export class TurnoListComponent implements OnInit, OnDestroy {
   nombre_campo_historia_clinica: string = "";
   valor_campo_historia_clinica: number = 0;
 
+  _turnosFiltrados: Turno[] = [];
+  campoSeleccionado: string = "";
+  valorBusqueda: string = "";
+  camposDeBusqueda: SelectItem[] = [
+    { label: 'Paciente', value: 'id_paciente' },
+    { label: 'Especialista', value: 'id_especialista' },
+    { label: 'Estado', value: 'estado' },
+    { label: 'Fecha', value: 'fecha' },
+    { label: 'Hora', value: 'hora' },
+    { label: 'Especialidad', value: 'especialidad' },
+    { label: 'Comentario', value: 'comentario' },
+    { label: 'Encuesta', value: 'encuesta' },
+    { label: 'Calificación', value: 'calificacion' }
+    // Faltan las opciones para campos dinámicos de la historia clínica
+  ];
+
   globalFilter: string = "";
   filterByParams: string[] = ["nombre", "apellido", "email"];
   sortField: string = "nombre";
@@ -81,6 +98,7 @@ export class TurnoListComponent implements OnInit, OnDestroy {
     public servTurno: TurnoService,
     public servUsuario: UsuarioService,
     public servAuth: AuthService,
+    public servEspecialidad: EspecialidadService,
     public servSpinner: SpinnerService,
     public messageService: MessageService
   ) {
@@ -120,6 +138,8 @@ export class TurnoListComponent implements OnInit, OnDestroy {
           (turnos: Turno[]) => {
             console.log("TraerTurnosPorPaciente", turnos);
             this._turnos = turnos;
+            this.actualizarCamposDeBusqueda();
+            this.FiltrarTurnos();
           }
         );
         break;
@@ -128,6 +148,8 @@ export class TurnoListComponent implements OnInit, OnDestroy {
           (turnos: Turno[]) => {
             console.log("TraerTurnosPorEspecialista", turnos);
             this._turnos = turnos;
+            this.actualizarCamposDeBusqueda();
+            this.FiltrarTurnos();
           }
         );
         break;
@@ -136,6 +158,8 @@ export class TurnoListComponent implements OnInit, OnDestroy {
           (turnos: Turno[]) => {
             console.log("TraerTodos", turnos);
             this._turnos = turnos;
+            this.actualizarCamposDeBusqueda();
+            this.FiltrarTurnos();
           }
         );
         break;
@@ -308,6 +332,92 @@ export class TurnoListComponent implements OnInit, OnDestroy {
 
   EsCampoFijo(key: string): boolean {
     return Object.keys(TURNO_DEFAULT.historia_clinica).includes(key);
+  }
+
+  FiltrarTurnos() {
+    //console.log("FiltrarTurnos", this.campoSeleccionado, this.valorBusqueda);
+    //console.log("Opciones de búsqueda", this.camposDeBusqueda);
+
+    if (!this.campoSeleccionado || !this.valorBusqueda) {
+      this._turnosFiltrados = this._turnos;
+    } else {
+      this._turnosFiltrados = this._turnos.filter(
+        (turno: Turno) => {
+          const valorCampo = this.obtenerValorCampo(turno, this.campoSeleccionado);
+
+          //console.log("Valor campo", valorCampo);
+
+          if (typeof valorCampo === 'string') {
+            return valorCampo.toLowerCase().includes(this.valorBusqueda.toLowerCase());
+          } else if (valorCampo instanceof Date) {
+            return valorCampo.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }).includes(this.valorBusqueda);
+          } else if (valorCampo !== undefined) { // Agregar condición para undefined
+            return valorCampo.toString().toLowerCase().includes(this.valorBusqueda.toLowerCase());
+          } else {
+            return false; // Si valorCampo es undefined, no se incluye en el filtro
+          }
+        }
+      );
+    }
+  }
+
+  private obtenerValorCampo(turno: Turno, campo: string): string | number | Date {
+    if (typeof campo !== 'string') {
+      console.error('El campo debe ser una cadena de texto:', campo);
+      return ''; // O un valor por defecto adecuado
+    }
+
+    if (campo.startsWith('historia_clinica.')) {
+      const campoHistoriaClinica = campo.split('.')[1];
+      return turno.historia_clinica[campoHistoriaClinica] || '';
+    } else if (campo === 'id_paciente') {
+      let usuario_encontrado: { nombre: string; apellido: string; } | undefined = this.servUsuario.ObtenerNombreApellidoUsuarioPorID(turno[campo]);
+      return usuario_encontrado ? `${usuario_encontrado.nombre} ${usuario_encontrado.apellido}` : '';
+    } else if (campo === 'id_especialista') {
+      let usuario_encontrado: { nombre: string; apellido: string; } | undefined = this.servUsuario.ObtenerNombreApellidoUsuarioPorID(turno[campo]);
+      return usuario_encontrado ? `${usuario_encontrado.nombre} ${usuario_encontrado.apellido}` : '';
+    } else if (campo === 'especialidad') {
+      return this.servEspecialidad.obtenerEspecialidadPorId(turno[campo])?.nombre || '';
+    } else if (campo === 'estado') {
+      return EstadoTurno[turno[campo]];
+    } else if (campo === 'fecha') {
+      return turno.fecha;
+    } else if (campo === 'hora') {
+      return turno.hora;
+    } else if (campo === 'comentario') {
+      return turno.comentario.texto;
+    } else if (campo === 'encuesta') {
+      return Object.values(turno.encuesta).join(' ');
+    } else {
+      return (turno as any)[campo];
+    }
+  }
+
+  private actualizarCamposDeBusqueda() {
+    // Obtener los campos dinámicos de la historia clínica
+    const camposDinamicos = this.obtenerCamposDinamicosHistoriaClinica();
+
+    // Agregar los campos dinámicos al dropdown
+    this.camposDeBusqueda = [
+      ...this.camposDeBusqueda.filter(campo => !(campo.value as string).startsWith('historia_clinica.')), // Eliminar los campos dinámicos anteriores
+      ...camposDinamicos.map(campo => ({ label: `Historia Clínica: ${campo}`, value: `historia_clinica.${campo}` }))
+    ];
+  }
+
+  private obtenerCamposDinamicosHistoriaClinica(): string[] {
+    const campos: Set<string> = new Set();
+    this._turnos.forEach(turno => {
+      Object.keys(turno.historia_clinica).forEach(key => {
+        if (!this.esCampoFijoHistoriaClinica(key)) {
+          campos.add(key);
+        }
+      });
+    });
+    return Array.from(campos);
+  }
+
+  private esCampoFijoHistoriaClinica(key: string): boolean {
+    return ['altura', 'peso', 'temperatura', 'presion'].includes(key);
   }
 
   Test(any?: any) {

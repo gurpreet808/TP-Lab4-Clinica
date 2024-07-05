@@ -1,5 +1,5 @@
 <div id="turnos_table_container">
-    <p-table #dt_turnos id="dt_turnos" [value]="_turnos" dataKey="id" [globalFilterFields]="filterByParams"
+    <p-table #dt_turnos id="dt_turnos" [value]="_turnosFiltrados" dataKey="id" [globalFilterFields]="filterByParams"
         [scrollable]="true" scrollHeight="flex" [rows]="10" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} items">
@@ -17,28 +17,35 @@
                 </div>
 
                 <!-- <div id="filter_buttons_container" name="table_menu_row">
-                    <p-iconField iconPosition="left">
-                        <p-inputIcon styleClass="fa-solid fa-magnifying-glass" />
-                        <input type="search" pInputText placeholder="Buscador"
-                            (input)="dt_turnos.filterGlobal($any($event.target).value, 'contains')"
-                            [(ngModel)]="globalFilter">
-                    </p-iconField>
+                        <p-iconField iconPosition="left">
+                            <p-inputIcon styleClass="fa-solid fa-magnifying-glass" />
+                            <input type="search" pInputText placeholder="Buscador"
+                                (input)="dt_turnos.filterGlobal($any($event.target).value, 'contains')"
+                                [(ngModel)]="globalFilter">
+                        </p-iconField>
 
-                    <button id="reset_filters_btn" pButton label="Reset" class="p-button-outlined p-button-sm"
-                        icon="fa-solid fa-filter-circle-xmark" (click)="clear(dt_turnos)"></button>
+                        <button id="reset_filters_btn" pButton label="Reset" class="p-button-outlined p-button-sm"
+                            icon="fa-solid fa-filter-circle-xmark" (click)="clear(dt_turnos)"></button>
 
-                    <p-columnFilter pInputText type="text" field="nombre" display="menu" matchMode="contains"
-                        [showOperator]="false" [showAddButton]="false">
-                        <ng-template pTemplate="filtericon">
-                            <i class="fa fa-filter"></i> Nombre
-                        </ng-template>
-                    </p-columnFilter>
-                </div> -->
+                        <p-columnFilter pInputText type="text" field="nombre" display="menu" matchMode="contains"
+                            [showOperator]="false" [showAddButton]="false">
+                            <ng-template pTemplate="filtericon">
+                                <i class="fa fa-filter"></i> Nombre
+                            </ng-template>
+                        </p-columnFilter>
+                    </div> -->
 
                 <div id="acciones_masivas_buttons_container" name="table_menu_row">
                     @if (tipo_usuario_actual == "admin") {
                     <button pButton pRipple label="Nuevo turno" icon="fa-solid fa-calendar-plus"
                         (click)='NuevoTurno()'></button>
+                    } @else {
+                    <div id="filtro_unico_container">
+                        <p-dropdown [options]="camposDeBusqueda" [(ngModel)]="campoSeleccionado" optionLabel="label"
+                            placeholder="Seleccionar campo" appendTo="body" optionValue="value"></p-dropdown>
+                        <input pInputText type="text" [(ngModel)]="valorBusqueda" placeholder="Buscar"
+                            (input)="FiltrarTurnos()">
+                    </div>
                     }
                 </div>
             </div>
