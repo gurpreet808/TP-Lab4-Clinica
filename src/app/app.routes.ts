@@ -5,7 +5,7 @@ import { authGuard } from './modulos/auth/guards/auth.guard';
 import { noAuthGuard } from './modulos/auth/guards/no-auth.guard';
 
 export const routes: Routes = [
-    { path: '', component: BienvenidaComponent },
+    { path: '', component: BienvenidaComponent, data: { animation: 'fadeInLeft' } },
     { path: 'login', canActivate: [noAuthGuard], loadComponent: () => import('./pages/login/login.component').then(c => c.LoginComponent) },
     { path: 'registro', canActivate: [noAuthGuard], loadComponent: () => import('./pages/registro/registro.component').then(c => c.RegistroComponent) },
     { path: 'usuarios', canActivate: [authGuard], data: { roles_permitidos: ['admin'] }, loadComponent: () => import('./pages/usuarios/usuarios.component').then(c => c.UsuariosComponent) },

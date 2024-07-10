@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ChildrenOutletContexts, RouterLink, RouterOutlet } from '@angular/router';
 import { NavBarComponent } from './componentes/nav-bar/nav-bar.component';
 import { SpinnerComponent } from './modulos/spinner/componentes/spinner/spinner.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -9,24 +9,27 @@ import { SpinnerService } from './modulos/spinner/servicios/spinner.service';
 import { PrimeNGConfig, Translation } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { routerTransition } from './app.animations';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
+    RouterLink,
     NavBarComponent,
     SpinnerComponent,
     ToastModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  animations: [routerTransition]
 })
 export class AppComponent implements OnInit {
   title = 'TPLab4Clinica';
 
-  constructor(public servAuth: AuthService, public servSpinner: SpinnerService, private primengConfig: PrimeNGConfig, private http: HttpClient) {
+  constructor(public servAuth: AuthService, public servSpinner: SpinnerService, private primengConfig: PrimeNGConfig, private http: HttpClient, private contexts: ChildrenOutletContexts) {
     this.servSpinner.showWithMessage("app-init", "Cargando...");
   }
 
@@ -47,5 +50,9 @@ export class AppComponent implements OnInit {
         this.servSpinner.hideWithMessage("app-init");
       }
     );
+  }
+
+  getRouteAnimationData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }
 }
