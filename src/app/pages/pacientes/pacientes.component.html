@@ -1,22 +1,103 @@
 <div id="pacientes_container">
     <div id="pacientes_title">Mis pacientes</div>
 
-    @if (ids_pacientes.length > 0) {
-    @for (paciente_id of ids_pacientes; track $index) {
-    <button pButton [label]="(paciente_id | nombreApellidoUsuario | async)!"
-        (click)="MostrarHistoriaClinica(paciente_id)"></button>
-    }
-    } @else {
-    <div id="no_pacientes">No tienes pacientes que hayas atendido</div>
-    }
+    <div id="pacientes_buttons_container">
+        @if (pacientes.length > 0) {
+        @for (paciente of pacientes; track $index) {
+        <div name="paciente_button_container" (click)="SeleccionarPaciente(paciente)">
+            <div name="paciente_button_img_container">
+                <img [src]="paciente.url_foto_1" alt="">
+            </div>
+            <div name="paciente_button_nombre_container">
+                {{ paciente.nombre + ", "+ paciente.apellido}}
+            </div>
+        </div>
+        }
+        } @else {
+        <div id="no_pacientes">No tienes pacientes que hayas atendido</div>
+        }
+    </div>
 
+    @if (paciente_seleccionado) {
+    <div id="paciente_turno_detalle" class="cristal_card">
+        <div id="paciente_turno_header">
+            <div id="paciente_turno_detalle_title">Detalle de los turnos</div>
+            <button pButton label="Ver historia clínica" icon="fa-solid fa-book-medical"
+                (click)="MostrarHistoriaClinica()"></button>
+        </div>
+
+        @if (turnos_paciente.length > 0) {
+        @for (turno of turnos_paciente; track $index) {
+        <div name="turno_card" resaltarEstadoTurno [estadoTurno]="turno.estado">
+            <div name="turno_item_container">
+                <app-turno-item [turno]="turno"></app-turno-item>
+            </div>
+
+            <div name="turno_item_actions">
+                <button pButton pRipple icon="fa-solid fa-note-sticky" rounded="true" severity="secondary"
+                    label="Ver reseña" (click)="VerResenia(turno)"></button>
+            </div>
+        </div>
+        }
+        } @else {
+        <div id="no_turnos">No hay turnos finalizados para este paciente</div>
+        }
+    </div>
+    }
 </div>
 
-<p-dialog [(visible)]="showHistoriaClinica" [modal]="true" class="user-modal" styleClass="p-fluid user-modal"
-    (onHide)="OcultarHistoriaClinica()">
+<p-dialog [(visible)]="showModal" [modal]="true" (onHide)="OcultarModal()" [header]="modalTitle">
     <ng-template pTemplate="content">
         @if (paciente_seleccionado) {
-        <app-historia-clinica [paciente_id]="paciente_seleccionado"></app-historia-clinica>
+        @if (modalAction == "historia_clinica") {
+        <app-historia-clinica [paciente_id]="paciente_seleccionado.uid"></app-historia-clinica>
+        }
+
+        @if (modalAction == "reseña") {
+        <div id="turno_resenia_container">
+            @if (turno_seleccionado) {
+            <div name="turno_resenia_item">
+                <label for="turno_resenia_comentario">Comentario por {{turno_seleccionado.comentario.autor |
+                    nombreApellidoUsuario | async}}:</label>
+                <div id="turno_resenia_comentario">{{turno_seleccionado.comentario.texto}}</div>
+            </div>
+
+            @if (turno_seleccionado.encuesta[1] != "" && turno_seleccionado.encuesta[1] != "" &&
+            turno_seleccionado.encuesta[2] != "" && turno_seleccionado.encuesta[3]) {
+            <div name="turno_resenia_item">
+                <label for="turno_resenia_encuesta">Encuesta</label>
+                <div id="turno_resenia_encuesta">
+                    <div name="turno_resenia_encuesta_pregunta">
+                        <label>{{pregunta_1}}</label>
+                        <div>{{turno_seleccionado.encuesta[1]}}</div>
+                    </div>
+
+                    <div name="turno_resenia_encuesta_pregunta">
+                        <label>{{pregunta_2}}</label>
+                        <div>{{turno_seleccionado.encuesta[2]}}</div>
+                    </div>
+
+                    <div name="turno_resenia_encuesta_pregunta">
+                        <label>{{pregunta_3}}</label>
+                        <div>{{turno_seleccionado.encuesta[3]}}</div>
+                    </div>
+                </div>
+            </div>
+            }
+
+            @if (turno_seleccionado.calificacion != 0) {
+            <div name="turno_resenia_item">
+                <label for="turno_resenia_calificacion">Calificación de atención</label>
+                <div id="turno_resenia_calificacion">
+                    <p-rating [(ngModel)]="turno_seleccionado.calificacion" [readonly]="true" [cancel]="false" />
+                </div>
+            </div>
+            }
+            } @else {
+            <div>No hay turno seleccionado</div>
+            }
+        </div>
+        }
         }
     </ng-template>
 </p-dialog>

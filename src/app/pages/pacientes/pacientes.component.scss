@@ -1,4 +1,155 @@
-div#pacientes_title {
-    font-size: 1.5rem;
-    font-weight: bold;
+div#pacientes_container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    div#pacientes_title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    div#pacientes_buttons_container {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.5rem;
+
+        div[name="paciente_button_container"] {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 10rem;
+            height: 10rem;
+            background-color: aqua;
+            border-radius: 50%;
+            position: relative; // Para posicionar la etiqueta del nombre
+            cursor: pointer;
+
+            div[name="paciente_button_img_container"] {
+                width: 10rem;
+                height: 10rem;
+                border-radius: 50%;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 2px solid #0284c7;
+                background-color: #0284c7;
+
+                img {
+                    //max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            div[name="paciente_button_nombre_container"] {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                width: 90%; // Reducir el ancho para dejar espacio al borde
+                padding: 0.5rem;
+                background-color: rgba(0, 75, 111, 0.5);
+                border-radius: 0.5rem;
+                color: white;
+                position: absolute;
+                bottom: 0;
+                left: 5%; // Centrar la etiqueta horizontalmente
+                flex-wrap: wrap; // Permitir saltos de línea en el texto
+                word-break: break-word; // Permitir que las palabras se dividan si es necesario
+            }
+        }
+    }
+
+    div#paciente_turno_detalle {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        div#paciente_turno_header {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+
+            div#paciente_turno_detalle_title {
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+        }
+
+        div[name="turno_card"] {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 0.75rem;
+
+            div[name="turno_item_container"] {
+                flex: 4;
+
+                @media (max-width: 576px) {
+                    flex: none;
+                    width: 100%;
+                }
+            }
+
+            div[name="turno_item_actions"] {
+                flex: 1;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                align-items: center;
+                gap: 0.5rem;
+
+                @media (max-width: 576px) {
+                    flex: none;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+div#turno_resenia_container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+[name="turno_resenia_item"] {
+    label {
+        font-weight: 700;
+    }
+
+    div#turno_resenia_encuesta {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 0.125rem;
+
+        div[name="turno_resenia_encuesta_pregunta"] {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+
+            label {
+                font-weight: 400;
+            }
+
+            div {
+                /* Agregar borde inferior con puntos */
+                border-bottom: 1px dashed rgba(0, 0, 0, 0.35);
+            }
+        }
+    }
 }
