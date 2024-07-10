@@ -18,6 +18,10 @@ import { HistoriaClinicaComponent } from '../../componentes/historia-clinica/his
 import { WorkSheet, read, utils, writeFile } from 'xlsx';
 import { EspecialidadService } from '../../servicios/especialidad.service';
 import { ObraSocialService } from '../../servicios/obra-social.service';
+import { TurnoService } from '../../servicios/turno.service';
+import { EstadoTurno, Turno } from '../../clases/turno';
+import { Especialidad } from '../../clases/especialidad';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-usuarios',
@@ -65,6 +69,7 @@ export class UsuariosComponent implements OnInit {
   constructor(
     public servUsuario: UsuarioService,
     public servAuth: AuthService,
+    public servTurno: TurnoService,
     public servEspecialidad: EspecialidadService,
     public servObraSocial: ObraSocialService,
     public servSpinner: SpinnerService,
@@ -194,6 +199,42 @@ export class UsuariosComponent implements OnInit {
     }
 
     writeFile(workbook, nombreArchivo + '.xlsx');
+  }
+
+  async ExportarExcelUsuarioTurnos(usuario: Usuario) {
+    const nombreHoja = 'Turnos';
+    const nombreArchivo = 'turnos-' + usuario.nombre + '-' + usuario.apellido;
+    const datos: any[] = [];
+
+    await firstValueFrom(this.servTurno.TraerTurnosPorPaciente(usuario.uid)).then(
+      (turnos: Turno[]) => {
+        turnos.forEach(
+          (turno: Turno) => {
+            datos.push({
+              'Fecha': turno.fecha.toLocaleDateString('es-ES'),
+              'Hora': turno.hora,
+              'Especialidad': this.servEspecialidad.obtenerEspecialidadPorId(turno.especialidad)?.nombre || '',
+              'Especialista': this.servUsuario.usuarios.value.find(u => u.uid === turno.id_especialista)?.nombre || '',
+              'Estado': EstadoTurno[turno.estado],
+            });
+          }
+        );
+
+        this.ExportArrayToExcel([{ items: datos, nombreHoja }], nombreArchivo);
+      }
+    ).catch(
+      (error: any) => {
+        if (typeof error === 'string') {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        } else if (error instanceof Error) {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+        } else {
+          console.error("ExportarExcelUsuarioTurnos", error);
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+        }
+      }
+    );
+
   }
 
   actionHandler(actionObject: { action: string, item: Usuario }) {

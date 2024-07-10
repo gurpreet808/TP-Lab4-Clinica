@@ -69,8 +69,8 @@
                     <button pButton pRipple label="Nuevo especialista" icon="fa-solid fa-user-doctor" severity="success"
                         (click)='NuevoUsuario("especialista")'></button>
 
-                    <button pButton type="button" label="Descargar Excel" icon="fa-regular fa-file-excel"
-                        (click)="ExportarExcelUsuarios()"></button>
+                    <button pButton type="button" label="Descargar datos Usuarios" icon="fa-regular fa-file-excel"
+                        severity="help" (click)="ExportarExcelUsuarios()"></button>
                 </div>
             </div>
         </ng-template>
@@ -100,6 +100,10 @@
                             @if (usuario_item.tipo == "paciente") {
                             <button pButton label="Ver historia clínica" icon="fa-solid fa-book-medical"
                                 (click)="MostrarHistoriaClinica(usuario_item)"></button>
+
+                            <button pButton type="button" label="Descargar detalles de los turnos"
+                                icon="fa-regular fa-file-excel" severity="help"
+                                (click)="ExportarExcelUsuarioTurnos(usuario_item)"></button>
                             }
                         </div>
                     </div>
