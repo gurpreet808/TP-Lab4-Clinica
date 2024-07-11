@@ -1,10 +1,12 @@
 div#informes_container {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
     gap: 0.5rem;
+    height: 100%;
+    width: 100%;
 
     div#informes_header {
         display: flex;
@@ -29,5 +31,10 @@ div#informes_container {
             align-items: center;
             gap: 0.5rem;
         }
+    }
+
+    div#informes_body {
+        height: 100%;
+        width: 100%;
     }
 }
