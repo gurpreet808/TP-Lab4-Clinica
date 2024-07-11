@@ -109,12 +109,13 @@ export class GraficoTurnosPorEspecialistaComponent implements OnInit {
           }
         });
 
+        const fechasOrdenadas = Object.keys(turnosPorFecha).reverse();
         // Ordenar las fechas de menor a mayor
-        const fechasOrdenadas = Object.keys(turnosPorFecha).sort((a, b) => {
+        /* const fechasOrdenadas = Object.keys(turnosPorFecha).sort((a, b) => {
           const fechaA = new Date(a);
           const fechaB = new Date(b);
           return fechaA.getTime() - fechaB.getTime();
-        });
+        }); */
 
         this.datosGrafico.labels = fechasOrdenadas;
         this.datosGrafico.datasets[0].data = fechasOrdenadas.map(fecha => turnosPorFecha[fecha]);

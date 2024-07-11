@@ -67,13 +67,14 @@ export class GraficoTurnosPorFechaComponent implements OnInit {
         throw new Error("No se encontraron turnos para mostrar en el gráfico.");
       }
 
+      const fechasOrdenadas = Object.keys(turnosPorFecha).reverse();
       //Revisar ordenamiento de fechas, o pasar esto a la funcion ObtenerTurnosAgrupadosPorFecha
-      const fechasOrdenadas = Object.keys(turnosPorFecha).sort((a, b) => {
+      /* const fechasOrdenadas = Object.keys(turnosPorFecha).sort((a, b) => {
         const fechaA = new Date(a);
         const fechaB = new Date(b);
         return fechaA.getTime() - fechaB.getTime();
-      });
-      console.log(fechasOrdenadas);
+      }); */
+      //console.log(fechasOrdenadas);
 
       this.datosGrafico.labels = fechasOrdenadas;
       this.datosGrafico.datasets[0].data = fechasOrdenadas.map(fecha => turnosPorFecha[fecha]);
