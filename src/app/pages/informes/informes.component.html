@@ -2,34 +2,39 @@
     <div id="informes_header">
         <div id="informes_title">Informes</div>
         <div id="informes_buttons_container">
-            <button pButton label="Ingresos al sistema" (click)='ElegirOpcion("ingresos")'></button>
-            <button pButton label="Cantidad de turnos por especialidad"
+            <button pButton severity="success" label="Ingresos al sistema" (click)='ElegirOpcion("ingresos")'></button>
+            <button pButton severity="success" label="Cantidad de turnos por especialidad"
                 (click)='ElegirOpcion("turnos_especialidad")'></button>
-            <button pButton label="Cantidad de turnos por día" (click)='ElegirOpcion("turnos_dia")'></button>
-            <button pButton label="Cantidad de turnos por especialista"
+            <button pButton severity="success" label="Cantidad de turnos por día"
+                (click)='ElegirOpcion("turnos_dia")'></button>
+            <button pButton severity="success" label="Cantidad de turnos por especialista"
                 (click)='ElegirOpcion("turnos_especialista")'></button>
-            <button pButton label="Cantidad de turnos finalizados por especialista"
+            <button pButton severity="success" label="Cantidad de turnos finalizados por especialista"
                 (click)='ElegirOpcion("turnos_finalizados_especialista")'></button>
         </div>
     </div>
 
     @if (opcion_seleccionada) {
     <div id="informes_body" class="cristal_card">
-        {{opcion_seleccionada}}
         @switch (opcion_seleccionada) {
         @case ("ingresos"){
+        <h2>Registro de ingresos al sistema</h2>
         <app-ingresos></app-ingresos>
         }
         @case ("turnos_especialidad") {
+        <h2>Cantidad de turnos por especialidad</h2>
         <app-grafico-turnos-por-especialidad></app-grafico-turnos-por-especialidad>
         }
         @case ("turnos_dia") {
+        <h2>Cantidad de turnos por día</h2>
         <app-grafico-turnos-por-fecha></app-grafico-turnos-por-fecha>
         }
         @case ("turnos_especialista") {
+        <h2>Cantidad de turnos por especialista en lapso de tiempo</h2>
         <app-grafico-turnos-por-especialista></app-grafico-turnos-por-especialista>
         }
         @case ("turnos_finalizados_especialista") {
+        <h2>Cantidad de turnos finalizados por especialista en lapso de tiempo</h2>
         <app-grafico-turnos-finalizados-por-especialista></app-grafico-turnos-finalizados-por-especialista>
         }
         }
