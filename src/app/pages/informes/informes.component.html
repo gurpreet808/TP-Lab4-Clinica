@@ -1,0 +1,22 @@
+<div id="informes_container">
+    <div id="informes_header">
+        <div id="informes_title">Informes</div>
+        <div id="informes_buttons_container">
+            <button pButton label="Ingresos al sistema" (click)='ElegirOpcion("ingresos")'></button>
+            <button pButton label="Cantidad de turnos por día" (click)='ElegirOpcion("turnos_dia")'></button>
+            <button pButton label="Cantidad de turnos por especialista"
+                (click)='ElegirOpcion("turnos_especialista")'></button>
+            <button pButton label="Cantidad de turnos finalizados por especialista"
+                (click)='ElegirOpcion("turnos_finalizados_especialista")'></button>
+        </div>
+    </div>
+
+    <div id="informes_body">
+        {{opcion_seleccionada}}
+        @switch (opcion_seleccionada) {
+        @case ("ingresos"){
+        <app-ingresos></app-ingresos>
+        }
+        }
+    </div>
+</div>

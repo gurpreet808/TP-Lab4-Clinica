@@ -1,0 +1,35 @@
+<div id="ingresos_container">
+    <button pButton label="Descargar Excel" icon="fa-regular fa-file-excel" severity="success"
+        (click)="DescargarExcel()"></button>
+
+    <div id="ingresos_table_container">
+        <p-table [value]="login_logs">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="usuario">
+                        Usuario <p-sortIcon field="usuario" />
+                    </th>
+                    <th pSortableColumn="fecha">
+                        Fecha <p-sortIcon field="fecha" />
+                    </th>
+                    <th pSortableColumn="hora">
+                        Hora <p-sortIcon field="hora" />
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-ingreso>
+                <tr>
+                    <td>{{ ingreso.usuario }}</td>
+                    <td>{{ ingreso.fecha}}</td>
+                    <td>{{ ingreso.hora }}</td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8" class="empty_table_message">No hay ingresos registrados.</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

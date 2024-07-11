@@ -16,5 +16,6 @@ export const routes: Routes = [
     { path: 'mis-turnos', canActivate: [authGuard], data: { roles_permitidos: ['paciente', 'especialista'], animation: 'fadeInLeft' }, loadComponent: () => import('./pages/mis-turnos/mis-turnos.component').then(c => c.MisTurnosComponent) },
     { path: 'turnos', canActivate: [authGuard], data: { roles_permitidos: ['admin'], animation: 'zoomInLeft' }, loadComponent: () => import('./pages/mis-turnos/mis-turnos.component').then(c => c.MisTurnosComponent) },
     { path: 'pacientes', canActivate: [authGuard], data: { roles_permitidos: ['especialista'], animation: 'rollIn' }, loadComponent: () => import('./pages/pacientes/pacientes.component').then(c => c.PacientesComponent) },
+    { path: 'informes', canActivate: [authGuard], data: { roles_permitidos: ['admin'], animation: 'rollIn' }, loadComponent: () => import('./pages/informes/informes.component').then(c => c.InformesComponent) },
     { path: '**', component: Error404Component }
 ];

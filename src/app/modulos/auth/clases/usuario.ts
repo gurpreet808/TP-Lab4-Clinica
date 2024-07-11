@@ -23,3 +23,9 @@ export interface Paciente extends Usuario {
     url_foto_2: string;
     obra_social: string; //Guarda el ID de la obra social
 }
+
+export interface LoginLog {
+    usuario: string;
+    fecha: string;
+    hora: string;
+}

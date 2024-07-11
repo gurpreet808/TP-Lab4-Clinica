@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Auth, User, UserCredential, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { Especialista, Paciente, Usuario } from '../clases/usuario';
-import { BehaviorSubject, firstValueFrom, skip } from 'rxjs';
+import { Especialista, LoginLog, Paciente, Usuario } from '../clases/usuario';
+import { BehaviorSubject, firstValueFrom, Observable, skip } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { UsuarioService } from './usuario.service';
+import { collection, collectionData, CollectionReference, doc, DocumentData, Firestore, orderBy, query, Query, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,9 @@ export class AuthService {
   emailVerified: boolean = false;
   firstRun: boolean = true;
 
-  constructor(private auth: Auth, private _http: HttpClient, private _servUsuario: UsuarioService) {
+  loginlogsRef: CollectionReference<DocumentData, DocumentData> = collection(this.firestore, 'loginlogs');
+
+  constructor(private auth: Auth, private _http: HttpClient, private _servUsuario: UsuarioService, private firestore: Firestore) {
     this._servUsuario.Ready().then(
       (ready: boolean) => {
         //console.log("servUsuario ready?", ready);
@@ -61,6 +64,7 @@ export class AuthService {
     return signInWithEmailAndPassword(this.auth, email, password).then(
       (datos) => {
         //console.log(datos);
+        this.LoginLog(email);
         return datos;
       }
     ).catch(
@@ -81,6 +85,7 @@ export class AuthService {
       async (datos: UserCredential) => {
         //console.log(datos);
         await sendEmailVerification(datos.user);
+        await this.LoginLog(email);
         return datos;
       }
     ).catch(
@@ -253,6 +258,24 @@ export class AuthService {
     }
 
     return false;
+  }
+
+  LoginLog(email: string) {
+    let log: LoginLog = {
+      usuario: email,
+      fecha: new Date().toLocaleDateString(),
+      hora: new Date().toLocaleTimeString()
+    };
+    let docRef = doc(this.loginlogsRef);
+    return setDoc(docRef, log);
+  }
+
+  TraerLoginLogs(): Promise<LoginLog[]> {
+    let filteredQuery: Query<LoginLog, DocumentData> = query(
+      this.loginlogsRef,
+      orderBy('fecha', 'asc')
+    ) as Query<LoginLog, DocumentData>;
+    return firstValueFrom(collectionData<LoginLog>(filteredQuery));
   }
 
   async IsLoggedIn(): Promise<boolean> {

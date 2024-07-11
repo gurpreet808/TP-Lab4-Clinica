@@ -63,6 +63,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
       { label: 'Obras Sociales', icon: 'fa-solid fa-clinic-medical', routerLink: '/obras-sociales' },
       { label: 'Especialidades', icon: 'fa-solid fa-stethoscope', routerLink: '/especialidades' },
       { label: 'Turnos', icon: 'fa-solid fa-calendar-days', routerLink: '/turnos' },
+      { label: 'Informes', icon: 'fa-solid fa-chart-line', routerLink: '/informes' },
       { label: 'Mi perfil', icon: 'fa-solid fa-user', routerLink: '/mi-perfil' }
     ];
   }
