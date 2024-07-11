@@ -28,4 +28,5 @@ export interface LoginLog {
     usuario: string;
     fecha: string;
     hora: string;
+    timestamp: number;
 }

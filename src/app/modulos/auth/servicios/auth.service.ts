@@ -84,8 +84,8 @@ export class AuthService {
     return await createUserWithEmailAndPassword(this.auth, email, password).then(
       async (datos: UserCredential) => {
         //console.log(datos);
-        await sendEmailVerification(datos.user);
         await this.LoginLog(email);
+        await sendEmailVerification(datos.user);
         return datos;
       }
     ).catch(
@@ -261,10 +261,12 @@ export class AuthService {
   }
 
   LoginLog(email: string) {
+    const now = new Date();
     let log: LoginLog = {
       usuario: email,
-      fecha: new Date().toLocaleDateString(),
-      hora: new Date().toLocaleTimeString()
+      fecha: now.toLocaleDateString(),
+      hora: `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`,
+      timestamp: now.getTime()
     };
     let docRef = doc(this.loginlogsRef);
     return setDoc(docRef, log);
@@ -273,7 +275,7 @@ export class AuthService {
   TraerLoginLogs(): Promise<LoginLog[]> {
     let filteredQuery: Query<LoginLog, DocumentData> = query(
       this.loginlogsRef,
-      orderBy('fecha', 'asc')
+      orderBy('timestamp', 'desc')
     ) as Query<LoginLog, DocumentData>;
     return firstValueFrom(collectionData<LoginLog>(filteredQuery));
   }
