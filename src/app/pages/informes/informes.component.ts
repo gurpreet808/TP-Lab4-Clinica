@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { GraficoTurnosPorEspecialidadComponent } from './componentes/grafico-turnos-por-especialidad/grafico-turnos-por-especialidad.component';
 import { GraficoTurnosPorFechaComponent } from './componentes/grafico-turnos-por-fecha/grafico-turnos-por-fecha.component';
 import { GraficoTurnosPorEspecialistaComponent } from './componentes/grafico-turnos-por-especialista/grafico-turnos-por-especialista.component';
+import { GraficoTurnosFinalizadosPorEspecialistaComponent } from './componentes/grafico-turnos-finalizados-por-especialista/grafico-turnos-finalizados-por-especialista.component';
 
 @Component({
   selector: 'app-informes',
@@ -13,6 +14,7 @@ import { GraficoTurnosPorEspecialistaComponent } from './componentes/grafico-tur
     GraficoTurnosPorEspecialidadComponent,
     GraficoTurnosPorFechaComponent,
     GraficoTurnosPorEspecialistaComponent,
+    GraficoTurnosFinalizadosPorEspecialistaComponent,
     ButtonModule,
   ],
   templateUrl: './informes.component.html',

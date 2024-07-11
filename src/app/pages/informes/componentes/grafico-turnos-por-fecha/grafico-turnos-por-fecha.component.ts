@@ -62,11 +62,14 @@ export class GraficoTurnosPorFechaComponent implements OnInit {
   private async obtenerDatosGrafico() {
     try {
       const turnosPorFecha = await this.ObtenerTurnosAgrupadosPorFecha();
+
+      //Revisar ordenamiento de fechas, o pasar esto a la funcion ObtenerTurnosAgrupadosPorFecha
       const fechasOrdenadas = Object.keys(turnosPorFecha).sort((a, b) => {
         const fechaA = new Date(a);
         const fechaB = new Date(b);
         return fechaA.getTime() - fechaB.getTime();
       });
+      console.log(fechasOrdenadas);
 
       this.datosGrafico.labels = fechasOrdenadas;
       this.datosGrafico.datasets[0].data = fechasOrdenadas.map(fecha => turnosPorFecha[fecha]);

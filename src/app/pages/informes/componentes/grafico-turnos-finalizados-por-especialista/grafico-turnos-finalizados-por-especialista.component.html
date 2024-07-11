@@ -1,0 +1,40 @@
+<div id="grafico_turnos_finalizados_por_especialista_container">
+    <div id="grafico_turnos_finalizados_por_especialista_filter_container">
+        <div id="grafico_turnos_finalizados_por_especialista_select_container">
+            <label for="grafico_turnos_finalizados_por_especialista_select">Filtrar descarga por
+                especialista:</label>
+
+            <p-dropdown id="grafico_turnos_finalizados_por_especialista_select" [options]="especialistas"
+                optionLabel="label" optionValue="value" [filter]="true" [(ngModel)]="especialista_seleccionado"
+                placeholder="Seleccionar especialista" appendTo="body" [showClear]="true">
+            </p-dropdown>
+        </div>
+
+        <div id="grafico_turnos_finalizados_por_especialista_fechas_container">
+            <div id="grafico_turnos_finalizados_por_especialista_fecha_inicio_container">
+                <label for="grafico_turnos_finalizados_por_especialista_fecha_inicio">Fecha de inicio:</label>
+                <p-calendar id="grafico_turnos_finalizados_por_especialista_fecha_inicio" [(ngModel)]="fecha_inicio"
+                    [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+            </div>
+
+            <div id="grafico_turnos_finalizados_por_especialista_fecha_fin_container">
+                <label for="grafico_turnos_finalizados_por_especialista_fecha_fin">Fecha de fin:</label>
+                <p-calendar id="grafico_turnos_finalizados_por_especialista_fecha_fin" [(ngModel)]="fecha_fin"
+                    [showIcon]="true" dateFormat="dd/mm/yy" appendTo="body"></p-calendar>
+            </div>
+
+            <div id="grafico_turnos_finalizados_por_especialista_generar_container">
+                <button pButton label="Generar" icon="fa-solid fa-chart-simple" severity="primary"
+                    (click)="generarGrafico()"></button>
+            </div>
+        </div>
+    </div>
+
+    @if (showGrafico) {
+    <button pButton label="Descargar" icon="fa-regular fa-file-pdf" severity="info" (click)="descargarPDF()"></button>
+
+    <div id="grafico_turnos_finalizados_por_especialista">
+        <p-chart [type]="tipoGrafico" [data]="datosGrafico" [options]="opcionesGrafico" [responsive]="true"></p-chart>
+    </div>
+    }
+</div>
