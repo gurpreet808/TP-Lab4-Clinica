@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { IngresosComponent } from './componentes/ingresos/ingresos.component';
 import { ButtonModule } from 'primeng/button';
+import { GraficoTurnosPorEspecialidadComponent } from './componentes/grafico-turnos-por-especialidad/grafico-turnos-por-especialidad.component';
 
 @Component({
   selector: 'app-informes',
   standalone: true,
   imports: [
     IngresosComponent,
-    ButtonModule
+    GraficoTurnosPorEspecialidadComponent,
+    ButtonModule,
   ],
   templateUrl: './informes.component.html',
   styleUrl: './informes.component.scss'
