@@ -89,6 +89,10 @@ export class GraficoTurnosPorEspecialistaComponent implements OnInit {
         const turnos = await firstValueFrom(this.servTurno.TraerTurnosOcupadosPorEspecialistaEntreFechas(new Date(this.fecha_inicio!), new Date(this.fecha_fin!.setHours(23, 59, 59, 0)), this.especialista_seleccionado));
         const turnosPorFecha: { [fecha: string]: number } = {};
 
+        if (turnos == null || turnos == undefined || turnos.length == 0) {
+          throw new Error("No se encontraron turnos para mostrar en el gráfico.");
+        }
+
         console.log("Turnos por especialista:", turnos);
 
         if (turnos == undefined || turnos.length === 0) {
@@ -114,12 +118,18 @@ export class GraficoTurnosPorEspecialistaComponent implements OnInit {
 
         this.datosGrafico.labels = fechasOrdenadas;
         this.datosGrafico.datasets[0].data = fechasOrdenadas.map(fecha => turnosPorFecha[fecha]);
-      } catch (error) {
-        console.error("Error al generar el gráfico:", error);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo generar el gráfico.' });
+        this.showGrafico = true;
+      } catch (error: any) {
+        if (typeof error === 'string') {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        } else if (error instanceof Error) {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+        } else {
+          console.error("DescargarPDF", error);
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+        }
       } finally {
         this.servSpinner.hideWithMessage('grafico-turnos-por-especialista-generar');
-        this.showGrafico = true;
       }
     }
   }

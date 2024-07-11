@@ -104,9 +104,15 @@ export class GraficoTurnosPorEspecialidadComponent implements OnInit {
       const imagenBase64 = canvas.toDataURL('image/png');
 
       this.servPDFMake.generarPDFGrafico('Turnos por especialidad', 'turnos-por-especialidad', imagenBase64);
-    } catch (error) {
-      console.error("Error al generar el PDF:", error);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo generar el PDF del gráfico.' });
+    } catch (error: any) {
+      if (typeof error === 'string') {
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+      } else if (error instanceof Error) {
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+      } else {
+        console.error("DescargarPDF", error);
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+      }
     } finally {
       this.servSpinner.hideWithMessage('generar-pdf-grafico');
     }

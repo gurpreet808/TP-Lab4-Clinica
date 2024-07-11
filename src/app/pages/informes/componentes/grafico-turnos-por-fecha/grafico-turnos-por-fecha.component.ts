@@ -63,6 +63,10 @@ export class GraficoTurnosPorFechaComponent implements OnInit {
     try {
       const turnosPorFecha = await this.ObtenerTurnosAgrupadosPorFecha();
 
+      if (turnosPorFecha == null || turnosPorFecha == undefined || Object.keys(turnosPorFecha).length == 0) {
+        throw new Error("No se encontraron turnos para mostrar en el gráfico.");
+      }
+
       //Revisar ordenamiento de fechas, o pasar esto a la funcion ObtenerTurnosAgrupadosPorFecha
       const fechasOrdenadas = Object.keys(turnosPorFecha).sort((a, b) => {
         const fechaA = new Date(a);
@@ -73,11 +77,16 @@ export class GraficoTurnosPorFechaComponent implements OnInit {
 
       this.datosGrafico.labels = fechasOrdenadas;
       this.datosGrafico.datasets[0].data = fechasOrdenadas.map(fecha => turnosPorFecha[fecha]);
-    } catch (error) {
-      console.error("Error al obtener datos del gráfico:", error);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudieron obtener los datos del gráfico.' });
-    } finally {
       this.showGrafico = true;
+    } catch (error: any) {
+      if (typeof error === 'string') {
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+      } else if (error instanceof Error) {
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+      } else {
+        console.error("GuardarCambios", error);
+        this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+      }
     }
   }
 

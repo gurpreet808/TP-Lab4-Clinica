@@ -95,12 +95,10 @@ export class GraficoTurnosFinalizadosPorEspecialistaComponent implements OnInit 
             );
           }
         );
-
         const turnosPorFecha: { [fecha: string]: number } = {};
-
         console.log("Turnos finalizados por especialista:", turnos);
 
-        if (turnos.length === 0) {
+        if (turnos == null || turnos == undefined || turnos.length == 0) {
           throw new Error("No se encontraron turnos finalizados para el especialista seleccionado en el rango de fechas especificado.");
         }
 
@@ -123,12 +121,18 @@ export class GraficoTurnosFinalizadosPorEspecialistaComponent implements OnInit 
 
         this.datosGrafico.labels = fechasOrdenadas;
         this.datosGrafico.datasets[0].data = fechasOrdenadas.map(fecha => turnosPorFecha[fecha]);
-      } catch (error) {
-        console.error("Error al generar el gráfico:", error);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo generar el gráfico.' });
+        this.showGrafico = true;
+      } catch (error: any) {
+        if (typeof error === 'string') {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error });
+        } else if (error instanceof Error) {
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: error.message });
+        } else {
+          console.error("GuardarCambios", error);
+          this.messageService.add({ severity: 'error', life: 10000, summary: 'Error', detail: JSON.stringify(error) });
+        }
       } finally {
         this.servSpinner.hideWithMessage('grafico-turnos-finalizados-por-especialista-generar');
-        this.showGrafico = true;
       }
     }
   }
