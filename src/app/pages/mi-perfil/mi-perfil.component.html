@@ -30,7 +30,7 @@
             </p-dropdown>
 
             <button pButton label="Descargar Historia clínica" icon="fa-regular fa-file-pdf"
-                (click)="ExportarPDF()"></button>
+                [disabled]="!(paciente_turnos.length > 0)" (click)="ExportarPDF()"></button>
         </div>
 
         <app-historia-clinica [paciente_id]="servAuth.GetUsuarioAsPaciente()!.uid"
