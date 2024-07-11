@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IngresosComponent } from './componentes/ingresos/ingresos.component';
 import { ButtonModule } from 'primeng/button';
 import { GraficoTurnosPorEspecialidadComponent } from './componentes/grafico-turnos-por-especialidad/grafico-turnos-por-especialidad.component';
+import { GraficoTurnosPorFechaComponent } from './componentes/grafico-turnos-por-fecha/grafico-turnos-por-fecha.component';
 
 @Component({
   selector: 'app-informes',
@@ -9,6 +10,7 @@ import { GraficoTurnosPorEspecialidadComponent } from './componentes/grafico-tur
   imports: [
     IngresosComponent,
     GraficoTurnosPorEspecialidadComponent,
+    GraficoTurnosPorFechaComponent,
     ButtonModule,
   ],
   templateUrl: './informes.component.html',

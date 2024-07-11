@@ -1,0 +1,9 @@
+<div id="grafico_turnos_por_fecha_container">
+    @if (showGrafico) {
+    <button pButton label="Descargar" icon="fa-regular fa-file-pdf" severity="info" (click)="DescargarPDF()"></button>
+
+    <div id="grafico_turnos_por_fecha">
+        <p-chart [type]="tipoGrafico" [data]="datosGrafico" [options]="opcionesGrafico" [responsive]="true"></p-chart>
+    </div>
+    }
+</div>

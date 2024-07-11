@@ -3,7 +3,8 @@
         <div id="informes_title">Informes</div>
         <div id="informes_buttons_container">
             <button pButton label="Ingresos al sistema" (click)='ElegirOpcion("ingresos")'></button>
-            <button pButton label="Cantidad de turnos por especialidad" (click)='ElegirOpcion("turnos_especialidad")'></button>
+            <button pButton label="Cantidad de turnos por especialidad"
+                (click)='ElegirOpcion("turnos_especialidad")'></button>
             <button pButton label="Cantidad de turnos por día" (click)='ElegirOpcion("turnos_dia")'></button>
             <button pButton label="Cantidad de turnos por especialista"
                 (click)='ElegirOpcion("turnos_especialista")'></button>
@@ -19,7 +20,10 @@
         <app-ingresos></app-ingresos>
         }
         @case ("turnos_especialidad") {
-            <app-grafico-turnos-por-especialidad></app-grafico-turnos-por-especialidad>
+        <app-grafico-turnos-por-especialidad></app-grafico-turnos-por-especialidad>
+        }
+        @case ("turnos_dia") {
+        <app-grafico-turnos-por-fecha></app-grafico-turnos-por-fecha>
         }
         }
     </div>
