@@ -1,3 +1,10 @@
-@if (showGrafico) {
-<p-chart [type]="tipoGrafico" [data]="datosGrafico" [options]="opcionesGrafico" [responsive]="true" />
-}
+<div id="grafico_turnos_por_especialidad_container">
+    @if (showGrafico) {
+    <button pButton label="Descargar" icon="fa-regular fa-file-pdf" severity="info" (click)="DescargarPDF()"></button>
+
+    <div id="grafico_turnos_por_especialidad" #grafico_turnos_por_especialidad>
+        <p-chart [type]="tipoGrafico" [data]="datosGrafico" [options]="opcionesGrafico"
+            [responsive]="true" />
+    </div>
+    }
+</div>

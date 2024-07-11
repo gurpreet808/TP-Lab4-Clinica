@@ -95,4 +95,20 @@ export class PDFMakeService {
       }
     };
   }
+
+  generarPDFGrafico(titulo: string, nombre_archivo: string, imagenBase64: string): void {
+    const docDefinition: TDocumentDefinitions = {
+      content: [
+        { text: titulo, style: 'header' },
+        { text: `Fecha de Emisión: ${new Date().toLocaleDateString('es-ES')}`, style: 'subheader' },
+        { image: imagenBase64, width: 500, alignment: 'center' }
+      ],
+      styles: {
+        header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+        subheader: { fontSize: 14, margin: [0, 5, 0, 10] }
+      }
+    };
+
+    pdfMake.createPdf(docDefinition).download(`${nombre_archivo}.pdf`);
+  }
 }

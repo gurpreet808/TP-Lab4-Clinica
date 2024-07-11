@@ -6,12 +6,16 @@ import { EspecialidadService } from '../../../../servicios/especialidad.service'
 import { TurnoService } from '../../../../servicios/turno.service';
 import { Turno } from '../../../../clases/turno';
 import { SpinnerService } from '../../../../modulos/spinner/servicios/spinner.service';
+import { ButtonModule } from 'primeng/button';
+import { PDFMakeService } from '../../../../servicios/pdfmake.service';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-grafico-turnos-por-especialidad',
   standalone: true,
   imports: [
-    ChartModule
+    ChartModule,
+    ButtonModule
   ],
   templateUrl: './grafico-turnos-por-especialidad.component.html',
   styleUrl: './grafico-turnos-por-especialidad.component.scss'
@@ -46,7 +50,8 @@ export class GraficoTurnosPorEspecialidadComponent implements OnInit {
     private servTurno: TurnoService,
     private servEspecialidad: EspecialidadService,
     private messageService: MessageService,
-    private servSpinner: SpinnerService
+    private servSpinner: SpinnerService,
+    private servPDFMake: PDFMakeService
   ) {
     this.servSpinner.showWithMessage('grafico-turnos-por-especialidad-init', 'Cargando datos del gráfico...');
     this.obtenerDatosGrafico();
@@ -88,5 +93,22 @@ export class GraficoTurnosPorEspecialidadComponent implements OnInit {
       });
 
     return turnosPorEspecialidad;
+  }
+
+  async DescargarPDF() {
+    this.servSpinner.showWithMessage('generar-pdf-grafico', 'Generando PDF...');
+    let elemento: HTMLElement | null = document.getElementById("grafico_turnos_por_especialidad");
+
+    try {
+      const canvas = await html2canvas(elemento!);
+      const imagenBase64 = canvas.toDataURL('image/png');
+
+      this.servPDFMake.generarPDFGrafico('Turnos por especialidad', 'turnos-por-especialidad', imagenBase64);
+    } catch (error) {
+      console.error("Error al generar el PDF:", error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo generar el PDF del gráfico.' });
+    } finally {
+      this.servSpinner.hideWithMessage('generar-pdf-grafico');
+    }
   }
 }
