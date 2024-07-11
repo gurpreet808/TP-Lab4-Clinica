@@ -1,5 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Paciente } from '../../modulos/auth/clases/usuario';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { TurnoService } from '../../servicios/turno.service';
 import { Turno } from '../../clases/turno';
 import { Subscription } from 'rxjs';
@@ -23,6 +22,7 @@ export class HistoriaClinicaComponent implements OnInit, OnDestroy {
   @Input() paciente_id: string | undefined;
   turnos: Turno[] = [];
   turnos_suscription: Subscription | undefined;
+  @Output() Turnos: EventEmitter<Turno[]> = new EventEmitter<Turno[]>();
 
   constructor(public servTurno: TurnoService) { }
 
@@ -31,6 +31,7 @@ export class HistoriaClinicaComponent implements OnInit, OnDestroy {
       this.turnos_suscription = this.servTurno.TraerTurnosPorPacientePorEstado(this.paciente_id, 5).subscribe(
         (turnos: Turno[]) => {
           this.turnos = turnos;
+          this.Turnos.emit(this.turnos);
         }
       );
     }
@@ -41,8 +42,4 @@ export class HistoriaClinicaComponent implements OnInit, OnDestroy {
       this.turnos_suscription.unsubscribe();
     }
   }
-
-  DescargarPDF() { }
-
-  DescargarExcel() { }
 }

@@ -13,8 +13,28 @@
     }
 
     @if (servAuth.usuarioActual.value.tipo == "paciente") {
+
     <div id="mi_historia_clinica_container">
-        <app-historia-clinica [paciente_id]="servAuth.GetUsuarioAsPaciente()!.uid"></app-historia-clinica>
+        <div id="mi_historia_clinica_descarga_container">
+            <label for="mi_historia_clinica_select_especialista">Filtrar descarga por especialista:</label>
+
+            <p-dropdown id="mi_historia_clinica_select_especialista" [options]="especialistas_options"
+                [(ngModel)]="especialista_filtra_turnos" placeholder="Seleccionar especialista" appendTo="body"
+                [showClear]="true">
+                <ng-template pTemplate="selectedItem">
+                    <div>{{ especialista_filtra_turnos | nombreApellidoUsuario | async}}</div>
+                </ng-template>
+                <ng-template let-especialista pTemplate="item">
+                    <div>{{ especialista | nombreApellidoUsuario | async}}</div>
+                </ng-template>
+            </p-dropdown>
+
+            <button pButton label="Descargar Historia clínica" icon="fa-regular fa-file-pdf"
+                (click)="ExportarPDF()"></button>
+        </div>
+
+        <app-historia-clinica [paciente_id]="servAuth.GetUsuarioAsPaciente()!.uid"
+            (Turnos)="TurnosHandler($event)"></app-historia-clinica>
     </div>
     }
 
