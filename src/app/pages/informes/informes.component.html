@@ -1,4 +1,4 @@
-<div id="informes_container">
+<div id="informes_container" class="cristal_card">
     <div id="informes_header">
         <div id="informes_title">Informes</div>
         <div id="informes_buttons_container">
@@ -13,7 +13,8 @@
         </div>
     </div>
 
-    <div id="informes_body">
+    @if (opcion_seleccionada) {
+    <div id="informes_body" class="cristal_card">
         {{opcion_seleccionada}}
         @switch (opcion_seleccionada) {
         @case ("ingresos"){
@@ -25,6 +26,10 @@
         @case ("turnos_dia") {
         <app-grafico-turnos-por-fecha></app-grafico-turnos-por-fecha>
         }
+        @case ("turnos_especialista") {
+        <app-grafico-turnos-por-especialista></app-grafico-turnos-por-especialista>
+        }
         }
     </div>
+    }
 </div>

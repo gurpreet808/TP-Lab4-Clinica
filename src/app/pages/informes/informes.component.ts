@@ -3,6 +3,7 @@ import { IngresosComponent } from './componentes/ingresos/ingresos.component';
 import { ButtonModule } from 'primeng/button';
 import { GraficoTurnosPorEspecialidadComponent } from './componentes/grafico-turnos-por-especialidad/grafico-turnos-por-especialidad.component';
 import { GraficoTurnosPorFechaComponent } from './componentes/grafico-turnos-por-fecha/grafico-turnos-por-fecha.component';
+import { GraficoTurnosPorEspecialistaComponent } from './componentes/grafico-turnos-por-especialista/grafico-turnos-por-especialista.component';
 
 @Component({
   selector: 'app-informes',
@@ -11,6 +12,7 @@ import { GraficoTurnosPorFechaComponent } from './componentes/grafico-turnos-por
     IngresosComponent,
     GraficoTurnosPorEspecialidadComponent,
     GraficoTurnosPorFechaComponent,
+    GraficoTurnosPorEspecialistaComponent,
     ButtonModule,
   ],
   templateUrl: './informes.component.html',

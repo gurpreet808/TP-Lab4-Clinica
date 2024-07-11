@@ -5,6 +5,7 @@ div#informes_container {
     justify-content: flex-start;
     align-items: center;
     gap: 0.5rem;
+    padding: 0.5rem;
     height: 100%;
     width: 100%;
 
@@ -38,5 +39,6 @@ div#informes_container {
         width: 100%;
         overflow: auto;
         min-height: 0px;
+        padding: 0.5rem;
     }
 }
